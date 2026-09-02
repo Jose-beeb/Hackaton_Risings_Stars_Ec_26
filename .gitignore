@@ -1,0 +1,26 @@
+# Entornos virtuales y dependencias
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+node_modules/
+dist/
+build/
+
+# Variables de entorno y secretos
+.env
+.env.local
+*.key
+*.pem
+
+# IDEs y SO
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AedesGuard — Inteligencia Epidemiológica Predictiva</title>
+  
+  <!-- Leaflet & Leaflet Heat CSS/JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+  
+  <!-- Google Fonts: Outfit & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dark-theme">
+  <!-- Header / Navigation Bar -->
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-badge">⚡ Track 2: Public Health</div>
+      <h1 class="brand-title">Aedes<span>Guard</span></h1>
+      <span class="brand-subtitle">Vigilancia Predictiva de Arbovirosis</span>
+    </div>
+    <div class="header-actions">
+      <button id="btn-view-toggle" class="btn btn-secondary">📱 Vista Ciudadana / Brigada</button>
+      <button id="btn-simulate-report" class="btn btn-primary">🚨 Simular Reporte en Vivo</button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="app-layout">
+    <!-- Sidebar: Metrics & Brigade Dispatch -->
+    <aside class="sidebar">
+      <section class="kpi-panel">
+        <div class="kpi-card critical">
+          <span class="kpi-label">Focos Críticos</span>
+          <span id="kpi-critical-count" class="kpi-value">--</span>
+          <span class="kpi-trend">⚠️ Eclosión &lt; 5 días</span>
+        </div>
+        <div class="kpi-card medium">
+          <span class="kpi-label">Total Monitoreados</span>
+          <span id="kpi-total-count" class="kpi-value">--</span>
+          <span class="kpi-trend">📍 Piloto Guayaquil</span>
+        </div>
+        <div class="kpi-card success">
+          <span class="kpi-label">Ahorro Estimado B2G</span>
+          <span class="kpi-value">42%</span>
+          <span class="kpi-trend">🌱 Fumigación Focalizada</span>
+        </div>
+      </section>
+
+      <!-- Dispatch Controls -->
+      <section class="dispatch-panel">
+        <h3>🧭 Despacho de Cuadrillas</h3>
+        <p class="dispatch-desc">Optimización heurística (TSP + Ponderación IRE) para máximo impacto sanitario.</p>
+        <button id="btn-calc-route" class="btn btn-accent full-width">⚡ Trazar Ruta Óptima de Brigada</button>
+        <div id="route-summary" class="route-summary hidden">
+          <div class="summary-stat"><strong>Distancia:</strong> <span id="route-dist">--</span> km</div>
+          <div class="summary-stat"><strong>Tiempo Est.:</strong> <span id="route-time">--</span> min</div>
+          <div class="summary-stat"><strong>Focos a tratar:</strong> <span id="route-stops">--</span></div>
+        </div>
+      </section>
+
+      <!-- Priority Foci Feed -->
+      <section class="foci-feed">
+        <h3>🔥 Focos de Mayor Riesgo</h3>
+        <div id="foci-list" class="foci-list">
+          <div class="loading-state">Cargando datos epidemiológicos...</div>
+        </div>
+      </section>
+    </aside>
+
+    <!-- Map View -->
+    <section class="map-container">
+      <div id="map"></div>
+      <div class="map-legend">
+        <div class="legend-item"><span class="dot critical"></span> Crítico (IRE &gt; 70)</div>
+        <div class="legend-item"><span class="dot medium"></span> Medio (IRE 40-70)</div>
+        <div class="legend-item"><span class="dot low"></span> Bajo (IRE &lt; 40)</div>
+        <div class="legend-item"><span class="line-indicator"></span> Ruta de Brigada</div>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
