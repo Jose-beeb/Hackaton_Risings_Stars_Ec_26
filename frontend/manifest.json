@@ -1,7 +1,7 @@
 {
-  "name": "AedesGuard",
-  "short_name": "AedesGuard",
-  "description": "Vigilancia predictiva de Aedes aegypti para prevención del dengue",
+  "name": "MosquitoAlert",
+  "short_name": "MosquitoAlert",
+  "description": "Ojo al mosquito — Detecta y reporta criaderos para proteger tu comunidad",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0f172a",
