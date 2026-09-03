@@ -3,7 +3,7 @@
   "metadata": {
     "title": "AedesGuard Guayaquil Pilot Dataset",
     "total_foci": 40,
-    "generated_at": "2026-09-02T13:05:21.498428Z",
+    "generated_at": "2026-09-03T15:31:10.884842Z",
     "bounding_box": {
       "min_lat": -2.28,
       "max_lat": -2.09,
@@ -17,25 +17,30 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -79.846868,
-          -2.16299
+          -79.884273,
+          -2.245928
         ]
       },
       "properties": {
-        "id": "foco-013",
-        "sector": "Durán (Zona Centro)",
+        "id": "foco-020",
+        "sector": "Guasmo Sur",
         "container_type": "open_tank",
         "container_name": "Tanque / Cisterna sin tapa",
-        "estimated_volume_l": 200,
-        "water_detected": true,
-        "temperature_c": 26.8,
-        "humidity_pct": 81.5,
-        "ire_score": 62.4,
-        "risk_level": "MEDIUM",
-        "days_to_emergence": 8,
+        "container_category": "artificial",
+        "container_size": "large",
+        "estimated_volume_liters": 200.0,
+        "water_present": true,
+        "organic_matter_present": true,
+        "temperature_c": 26.9,
+        "humidity_pct": 83.3,
+        "ire_score": 97.4,
+        "risk_level": "CRITICAL",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 10,
         "status": "PENDING",
-        "reported_at": "2026-09-01T20:05:21.498428Z",
-        "recommended_action": "Eliminación física del depósito"
+        "reported_at": "2026-09-02T04:31:10.884842Z",
+        "recommended_action": "Intervencion prioritaria: drenaje inmediato, aplicacion de larvicida biologico (Bacillus thuringiensis israelensis) y reporte a autoridad sanitaria.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
       }
     },
     {
@@ -43,25 +48,216 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -79.933131,
-          -2.145898
+          -79.921233,
+          -2.212435
         ]
       },
       "properties": {
-        "id": "foco-035",
+        "id": "foco-028",
+        "sector": "Suburbio Oeste",
+        "container_type": "open_tank",
+        "container_name": "Tanque / Cisterna sin tapa",
+        "container_category": "artificial",
+        "container_size": "large",
+        "estimated_volume_liters": 200.0,
+        "water_present": true,
+        "organic_matter_present": true,
+        "temperature_c": 28.6,
+        "humidity_pct": 79.7,
+        "ire_score": 96.1,
+        "risk_level": "CRITICAL",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T10:31:10.884842Z",
+        "recommended_action": "Intervencion prioritaria: drenaje inmediato, aplicacion de larvicida biologico (Bacillus thuringiensis israelensis) y reporte a autoridad sanitaria.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.924182,
+          -2.145647
+        ]
+      },
+      "properties": {
+        "id": "foco-040",
         "sector": "Mapasingue",
         "container_type": "tire",
         "container_name": "Llanta en desuso",
-        "estimated_volume_l": 15,
-        "water_detected": true,
+        "container_category": "artificial",
+        "container_size": "medium",
+        "estimated_volume_liters": 15.0,
+        "water_present": true,
+        "organic_matter_present": true,
         "temperature_c": 27.3,
-        "humidity_pct": 89.2,
-        "ire_score": 62.3,
-        "risk_level": "MEDIUM",
-        "days_to_emergence": 8,
+        "humidity_pct": 79.8,
+        "ire_score": 82.0,
+        "risk_level": "CRITICAL",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
         "status": "PENDING",
-        "reported_at": "2026-08-31T19:05:21.498428Z",
-        "recommended_action": "Eliminación física del depósito"
+        "reported_at": "2026-09-02T17:31:10.884842Z",
+        "recommended_action": "Intervencion prioritaria: drenaje inmediato, aplicacion de larvicida biologico (Bacillus thuringiensis israelensis) y reporte a autoridad sanitaria.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.8887,
+          -2.143332
+        ]
+      },
+      "properties": {
+        "id": "foco-018",
+        "sector": "Samanes / Sauces",
+        "container_type": "open_tank",
+        "container_name": "Tanque / Cisterna sin tapa",
+        "container_category": "artificial",
+        "container_size": "large",
+        "estimated_volume_liters": 200.0,
+        "water_present": true,
+        "organic_matter_present": false,
+        "temperature_c": 29.2,
+        "humidity_pct": 88.2,
+        "ire_score": 78.8,
+        "risk_level": "CRITICAL",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T14:31:10.884842Z",
+        "recommended_action": "Intervencion prioritaria: drenaje inmediato, aplicacion de larvicida biologico (Bacillus thuringiensis israelensis) y reporte a autoridad sanitaria.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.909276,
+          -2.201166
+        ]
+      },
+      "properties": {
+        "id": "foco-021",
+        "sector": "Suburbio Oeste",
+        "container_type": "open_tank",
+        "container_name": "Tanque / Cisterna sin tapa",
+        "container_category": "artificial",
+        "container_size": "large",
+        "estimated_volume_liters": 200.0,
+        "water_present": true,
+        "organic_matter_present": false,
+        "temperature_c": 27.3,
+        "humidity_pct": 84.0,
+        "ire_score": 77.5,
+        "risk_level": "CRITICAL",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T01:31:10.884842Z",
+        "recommended_action": "Intervencion prioritaria: drenaje inmediato, aplicacion de larvicida biologico (Bacillus thuringiensis israelensis) y reporte a autoridad sanitaria.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.906285,
+          -2.256874
+        ]
+      },
+      "properties": {
+        "id": "foco-002",
+        "sector": "Guasmo Sur",
+        "container_type": "clogged_drain",
+        "container_name": "Canaleta obstruida",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "estimated_volume_liters": 10.0,
+        "water_present": true,
+        "organic_matter_present": true,
+        "temperature_c": 27.6,
+        "humidity_pct": 83.6,
+        "ire_score": 75.8,
+        "risk_level": "CRITICAL",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T02:31:10.884842Z",
+        "recommended_action": "Intervencion prioritaria: drenaje inmediato, aplicacion de larvicida biologico (Bacillus thuringiensis israelensis) y reporte a autoridad sanitaria.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.908751,
+          -2.209879
+        ]
+      },
+      "properties": {
+        "id": "foco-032",
+        "sector": "Suburbio Oeste",
+        "container_type": "open_tank",
+        "container_name": "Tanque / Cisterna sin tapa",
+        "container_category": "artificial",
+        "container_size": "large",
+        "estimated_volume_liters": 200.0,
+        "water_present": true,
+        "organic_matter_present": false,
+        "temperature_c": 29.4,
+        "humidity_pct": 84.2,
+        "ire_score": 74.2,
+        "risk_level": "CRITICAL",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T11:31:10.884842Z",
+        "recommended_action": "Intervencion prioritaria: drenaje inmediato, aplicacion de larvicida biologico (Bacillus thuringiensis israelensis) y reporte a autoridad sanitaria.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.88799,
+          -2.251941
+        ]
+      },
+      "properties": {
+        "id": "foco-014",
+        "sector": "Guasmo Sur",
+        "container_type": "open_tank",
+        "container_name": "Tanque / Cisterna sin tapa",
+        "container_category": "artificial",
+        "container_size": "large",
+        "estimated_volume_liters": 200.0,
+        "water_present": true,
+        "organic_matter_present": false,
+        "temperature_c": 28.6,
+        "humidity_pct": 76.1,
+        "ire_score": 70.6,
+        "risk_level": "CRITICAL",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-02T09:31:10.884842Z",
+        "recommended_action": "Intervencion prioritaria: drenaje inmediato, aplicacion de larvicida biologico (Bacillus thuringiensis israelensis) y reporte a autoridad sanitaria.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
       }
     },
     {
@@ -78,16 +274,21 @@
         "sector": "Durán (Zona Centro)",
         "container_type": "tire",
         "container_name": "Llanta en desuso",
-        "estimated_volume_l": 15,
-        "water_detected": true,
+        "container_category": "artificial",
+        "container_size": "medium",
+        "estimated_volume_liters": 15.0,
+        "water_present": true,
+        "organic_matter_present": false,
         "temperature_c": 27.6,
         "humidity_pct": 87.5,
-        "ire_score": 61.8,
-        "risk_level": "MEDIUM",
-        "days_to_emergence": 8,
+        "ire_score": 70.5,
+        "risk_level": "CRITICAL",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
         "status": "PENDING",
-        "reported_at": "2026-09-02T07:05:21.498428Z",
-        "recommended_action": "Eliminación física del depósito"
+        "reported_at": "2026-09-02T04:31:10.884842Z",
+        "recommended_action": "Intervencion prioritaria: drenaje inmediato, aplicacion de larvicida biologico (Bacillus thuringiensis israelensis) y reporte a autoridad sanitaria.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
       }
     },
     {
@@ -95,25 +296,61 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -79.846219,
-          -2.171932
+          -79.933131,
+          -2.145898
         ]
       },
       "properties": {
-        "id": "foco-003",
-        "sector": "Durán (Zona Centro)",
+        "id": "foco-038",
+        "sector": "Mapasingue",
+        "container_type": "tire",
+        "container_name": "Llanta en desuso",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "estimated_volume_liters": 15.0,
+        "water_present": true,
+        "organic_matter_present": false,
+        "temperature_c": 27.3,
+        "humidity_pct": 89.2,
+        "ire_score": 70.5,
+        "risk_level": "CRITICAL",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-01T23:31:10.884842Z",
+        "recommended_action": "Intervencion prioritaria: drenaje inmediato, aplicacion de larvicida biologico (Bacillus thuringiensis israelensis) y reporte a autoridad sanitaria.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.931349,
+          -2.11465
+        ]
+      },
+      "properties": {
+        "id": "foco-029",
+        "sector": "Bastión Popular / Pascuales",
         "container_type": "clogged_drain",
         "container_name": "Canaleta obstruida",
-        "estimated_volume_l": 10,
-        "water_detected": true,
-        "temperature_c": 27.9,
-        "humidity_pct": 89.8,
-        "ire_score": 60.7,
+        "container_category": "artificial",
+        "container_size": "medium",
+        "estimated_volume_liters": 10.0,
+        "water_present": true,
+        "organic_matter_present": true,
+        "temperature_c": 29.2,
+        "humidity_pct": 75.3,
+        "ire_score": 65.0,
         "risk_level": "MEDIUM",
-        "days_to_emergence": 6,
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
         "status": "PENDING",
-        "reported_at": "2026-08-31T16:05:21.498428Z",
-        "recommended_action": "Eliminación física del depósito"
+        "reported_at": "2026-09-02T23:31:10.884842Z",
+        "recommended_action": "Eliminacion fisica del deposito o vaciado completo. Educacion comunitaria sobre manejo de recipientes en el predio.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
       }
     },
     {
@@ -121,207 +358,30 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -79.930077,
-          -2.193941
-        ]
-      },
-      "properties": {
-        "id": "foco-031",
-        "sector": "Suburbio Oeste",
-        "container_type": "tire",
-        "container_name": "Llanta en desuso",
-        "estimated_volume_l": 15,
-        "water_detected": true,
-        "temperature_c": 27.4,
-        "humidity_pct": 85.1,
-        "ire_score": 59.5,
-        "risk_level": "MEDIUM",
-        "days_to_emergence": 6,
-        "status": "PENDING",
-        "reported_at": "2026-09-01T11:05:21.498428Z",
-        "recommended_action": "Eliminación física del depósito"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.93446,
-          -2.150927
-        ]
-      },
-      "properties": {
-        "id": "foco-033",
-        "sector": "Mapasingue",
-        "container_type": "open_tank",
-        "container_name": "Tanque / Cisterna sin tapa",
-        "estimated_volume_l": 200,
-        "water_detected": true,
-        "temperature_c": 27.8,
-        "humidity_pct": 77.2,
-        "ire_score": 58.8,
-        "risk_level": "MEDIUM",
-        "days_to_emergence": 7,
-        "status": "PENDING",
-        "reported_at": "2026-09-01T16:05:21.498428Z",
-        "recommended_action": "Eliminación física del depósito"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.898497,
-          -2.251184
-        ]
-      },
-      "properties": {
-        "id": "foco-024",
-        "sector": "Guasmo Sur",
-        "container_type": "tire",
-        "container_name": "Llanta en desuso",
-        "estimated_volume_l": 15,
-        "water_detected": true,
-        "temperature_c": 28.6,
-        "humidity_pct": 89.7,
-        "ire_score": 56.4,
-        "risk_level": "MEDIUM",
-        "days_to_emergence": 8,
-        "status": "PENDING",
-        "reported_at": "2026-08-31T19:05:21.498428Z",
-        "recommended_action": "Eliminación física del depósito"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.941005,
-          -2.110315
-        ]
-      },
-      "properties": {
-        "id": "foco-026",
-        "sector": "Bastión Popular / Pascuales",
-        "container_type": "open_tank",
-        "container_name": "Tanque / Cisterna sin tapa",
-        "estimated_volume_l": 200,
-        "water_detected": true,
-        "temperature_c": 31.1,
-        "humidity_pct": 82.5,
-        "ire_score": 55.9,
-        "risk_level": "MEDIUM",
-        "days_to_emergence": 8,
-        "status": "PENDING",
-        "reported_at": "2026-09-02T06:05:21.498428Z",
-        "recommended_action": "Eliminación física del depósito"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.935713,
-          -2.151709
-        ]
-      },
-      "properties": {
-        "id": "foco-039",
-        "sector": "Mapasingue",
-        "container_type": "open_tank",
-        "container_name": "Tanque / Cisterna sin tapa",
-        "estimated_volume_l": 200,
-        "water_detected": true,
-        "temperature_c": 30.2,
-        "humidity_pct": 84.4,
-        "ire_score": 55.6,
-        "risk_level": "MEDIUM",
-        "days_to_emergence": 6,
-        "status": "PENDING",
-        "reported_at": "2026-09-02T05:05:21.498428Z",
-        "recommended_action": "Eliminación física del depósito"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.904251,
-          -2.130673
-        ]
-      },
-      "properties": {
-        "id": "foco-014",
-        "sector": "Samanes / Sauces",
-        "container_type": "tire",
-        "container_name": "Llanta en desuso",
-        "estimated_volume_l": 15,
-        "water_detected": true,
-        "temperature_c": 30.9,
-        "humidity_pct": 87.8,
-        "ire_score": 55.2,
-        "risk_level": "MEDIUM",
-        "days_to_emergence": 7,
-        "status": "PENDING",
-        "reported_at": "2026-09-02T05:05:21.498428Z",
-        "recommended_action": "Eliminación física del depósito"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.884273,
-          -2.245928
-        ]
-      },
-      "properties": {
-        "id": "foco-018",
-        "sector": "Guasmo Sur",
-        "container_type": "open_tank",
-        "container_name": "Tanque / Cisterna sin tapa",
-        "estimated_volume_l": 200,
-        "water_detected": true,
-        "temperature_c": 26.9,
-        "humidity_pct": 83.3,
-        "ire_score": 54.7,
-        "risk_level": "MEDIUM",
-        "days_to_emergence": 8,
-        "status": "PENDING",
-        "reported_at": "2026-09-02T04:05:21.498428Z",
-        "recommended_action": "Eliminación física del depósito"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.909548,
-          -2.213825
+          -79.945463,
+          -2.11105
         ]
       },
       "properties": {
         "id": "foco-023",
-        "sector": "Suburbio Oeste",
-        "container_type": "clogged_drain",
-        "container_name": "Canaleta obstruida",
-        "estimated_volume_l": 10,
-        "water_detected": true,
-        "temperature_c": 29.4,
-        "humidity_pct": 83.0,
-        "ire_score": 53.0,
+        "sector": "Bastión Popular / Pascuales",
+        "container_type": "tire",
+        "container_name": "Llanta en desuso",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "estimated_volume_liters": 15.0,
+        "water_present": true,
+        "organic_matter_present": false,
+        "temperature_c": 26.6,
+        "humidity_pct": 84.4,
+        "ire_score": 63.8,
         "risk_level": "MEDIUM",
-        "days_to_emergence": 7,
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 10,
         "status": "PENDING",
-        "reported_at": "2026-09-02T00:05:21.498428Z",
-        "recommended_action": "Eliminación física del depósito"
+        "reported_at": "2026-09-03T14:31:10.884842Z",
+        "recommended_action": "Eliminacion fisica del deposito o vaciado completo. Educacion comunitaria sobre manejo de recipientes en el predio.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
       }
     },
     {
@@ -329,181 +389,30 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -79.906533,
-          -2.25922
+          -79.896939,
+          -2.132135
         ]
       },
       "properties": {
-        "id": "foco-017",
-        "sector": "Guasmo Sur",
-        "container_type": "clogged_drain",
-        "container_name": "Canaleta obstruida",
-        "estimated_volume_l": 10,
-        "water_detected": true,
-        "temperature_c": 31.1,
-        "humidity_pct": 89.9,
-        "ire_score": 52.7,
-        "risk_level": "MEDIUM",
-        "days_to_emergence": 7,
-        "status": "PENDING",
-        "reported_at": "2026-09-01T21:05:21.498428Z",
-        "recommended_action": "Eliminación física del depósito"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.898886,
-          -2.261607
-        ]
-      },
-      "properties": {
-        "id": "foco-021",
-        "sector": "Guasmo Sur",
-        "container_type": "open_tank",
-        "container_name": "Tanque / Cisterna sin tapa",
-        "estimated_volume_l": 200,
-        "water_detected": true,
-        "temperature_c": 29.4,
-        "humidity_pct": 78.9,
-        "ire_score": 52.2,
-        "risk_level": "MEDIUM",
-        "days_to_emergence": 6,
-        "status": "PENDING",
-        "reported_at": "2026-08-31T15:05:21.498428Z",
-        "recommended_action": "Eliminación física del depósito"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.889486,
-          -2.127629
-        ]
-      },
-      "properties": {
-        "id": "foco-005",
-        "sector": "Samanes / Sauces",
-        "container_type": "bucket",
-        "container_name": "Balde con agua recolectada",
-        "estimated_volume_l": 20,
-        "water_detected": true,
-        "temperature_c": 29.2,
-        "humidity_pct": 91.5,
-        "ire_score": 50.4,
-        "risk_level": "MEDIUM",
-        "days_to_emergence": 8,
-        "status": "PENDING",
-        "reported_at": "2026-09-01T18:05:21.498428Z",
-        "recommended_action": "Eliminación física del depósito"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.848321,
-          -2.160749
-        ]
-      },
-      "properties": {
-        "id": "foco-006",
-        "sector": "Durán (Zona Centro)",
-        "container_type": "clogged_drain",
-        "container_name": "Canaleta obstruida",
-        "estimated_volume_l": 10,
-        "water_detected": true,
-        "temperature_c": 27.5,
-        "humidity_pct": 76.2,
-        "ire_score": 49.9,
-        "risk_level": "MEDIUM",
-        "days_to_emergence": 7,
-        "status": "PENDING",
-        "reported_at": "2026-09-02T07:05:21.498428Z",
-        "recommended_action": "Eliminación física del depósito"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.892732,
-          -2.261091
-        ]
-      },
-      "properties": {
-        "id": "foco-032",
-        "sector": "Guasmo Sur",
-        "container_type": "clogged_drain",
-        "container_name": "Canaleta obstruida",
-        "estimated_volume_l": 10,
-        "water_detected": true,
-        "temperature_c": 29.6,
-        "humidity_pct": 82.1,
-        "ire_score": 49.9,
-        "risk_level": "MEDIUM",
-        "days_to_emergence": 8,
-        "status": "PENDING",
-        "reported_at": "2026-09-01T16:05:21.498428Z",
-        "recommended_action": "Eliminación física del depósito"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.89369,
-          -2.130971
-        ]
-      },
-      "properties": {
-        "id": "foco-036",
+        "id": "foco-035",
         "sector": "Samanes / Sauces",
         "container_type": "tire",
         "container_name": "Llanta en desuso",
-        "estimated_volume_l": 15,
-        "water_detected": true,
-        "temperature_c": 31.2,
-        "humidity_pct": 76.8,
-        "ire_score": 48.9,
+        "container_category": "artificial",
+        "container_size": "medium",
+        "estimated_volume_liters": 15.0,
+        "water_present": true,
+        "organic_matter_present": false,
+        "temperature_c": 29.4,
+        "humidity_pct": 83.9,
+        "ire_score": 63.4,
         "risk_level": "MEDIUM",
-        "days_to_emergence": 7,
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
         "status": "PENDING",
-        "reported_at": "2026-09-02T05:05:21.498428Z",
-        "recommended_action": "Eliminación física del depósito"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.918987,
-          -2.2031
-        ]
-      },
-      "properties": {
-        "id": "foco-030",
-        "sector": "Suburbio Oeste",
-        "container_type": "tire",
-        "container_name": "Llanta en desuso",
-        "estimated_volume_l": 15,
-        "water_detected": true,
-        "temperature_c": 30.2,
-        "humidity_pct": 76.0,
-        "ire_score": 48.2,
-        "risk_level": "MEDIUM",
-        "days_to_emergence": 8,
-        "status": "PENDING",
-        "reported_at": "2026-09-01T03:05:21.498428Z",
-        "recommended_action": "Eliminación física del depósito"
+        "reported_at": "2026-09-03T01:31:10.884842Z",
+        "recommended_action": "Eliminacion fisica del deposito o vaciado completo. Educacion comunitaria sobre manejo de recipientes en el predio.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
       }
     },
     {
@@ -516,20 +425,25 @@
         ]
       },
       "properties": {
-        "id": "foco-010",
+        "id": "foco-011",
         "sector": "Bastión Popular / Pascuales",
         "container_type": "bucket",
         "container_name": "Balde con agua recolectada",
-        "estimated_volume_l": 20,
-        "water_detected": true,
+        "container_category": "artificial",
+        "container_size": "medium",
+        "estimated_volume_liters": 20.0,
+        "water_present": true,
+        "organic_matter_present": true,
         "temperature_c": 29.3,
         "humidity_pct": 87.2,
-        "ire_score": 46.0,
+        "ire_score": 63.2,
         "risk_level": "MEDIUM",
-        "days_to_emergence": 7,
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
         "status": "PENDING",
-        "reported_at": "2026-09-01T11:05:21.498428Z",
-        "recommended_action": "Eliminación física del depósito"
+        "reported_at": "2026-09-02T07:31:10.884842Z",
+        "recommended_action": "Eliminacion fisica del deposito o vaciado completo. Educacion comunitaria sobre manejo de recipientes en el predio.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
       }
     },
     {
@@ -537,103 +451,30 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -79.921118,
-          -2.207877
-        ]
-      },
-      "properties": {
-        "id": "foco-007",
-        "sector": "Suburbio Oeste",
-        "container_type": "tire",
-        "container_name": "Llanta en desuso",
-        "estimated_volume_l": 15,
-        "water_detected": true,
-        "temperature_c": 30.7,
-        "humidity_pct": 77.8,
-        "ire_score": 45.7,
-        "risk_level": "MEDIUM",
-        "days_to_emergence": 8,
-        "status": "PENDING",
-        "reported_at": "2026-09-01T19:05:21.498428Z",
-        "recommended_action": "Eliminación física del depósito"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.898857,
-          -2.257337
-        ]
-      },
-      "properties": {
-        "id": "foco-025",
-        "sector": "Guasmo Sur",
-        "container_type": "tire",
-        "container_name": "Llanta en desuso",
-        "estimated_volume_l": 15,
-        "water_detected": true,
-        "temperature_c": 30.8,
-        "humidity_pct": 79.2,
-        "ire_score": 44.6,
-        "risk_level": "MEDIUM",
-        "days_to_emergence": 7,
-        "status": "PENDING",
-        "reported_at": "2026-09-02T04:05:21.498428Z",
-        "recommended_action": "Eliminación física del depósito"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.83527,
-          -2.176505
-        ]
-      },
-      "properties": {
-        "id": "foco-022",
-        "sector": "Durán (Zona Centro)",
-        "container_type": "tire",
-        "container_name": "Llanta en desuso",
-        "estimated_volume_l": 15,
-        "water_detected": true,
-        "temperature_c": 30.8,
-        "humidity_pct": 76.2,
-        "ire_score": 43.3,
-        "risk_level": "MEDIUM",
-        "days_to_emergence": 8,
-        "status": "PENDING",
-        "reported_at": "2026-09-01T05:05:21.498428Z",
-        "recommended_action": "Eliminación física del depósito"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.883037,
-          -2.256001
+          -79.886316,
+          -2.265369
         ]
       },
       "properties": {
         "id": "foco-034",
         "sector": "Guasmo Sur",
-        "container_type": "tire",
-        "container_name": "Llanta en desuso",
-        "estimated_volume_l": 15,
-        "water_detected": true,
-        "temperature_c": 31.5,
-        "humidity_pct": 76.2,
-        "ire_score": 41.1,
+        "container_type": "clogged_drain",
+        "container_name": "Canaleta obstruida",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "estimated_volume_liters": 10.0,
+        "water_present": true,
+        "organic_matter_present": false,
+        "temperature_c": 28.5,
+        "humidity_pct": 91.0,
+        "ire_score": 63.1,
         "risk_level": "MEDIUM",
-        "days_to_emergence": 7,
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
         "status": "PENDING",
-        "reported_at": "2026-09-02T04:05:21.498428Z",
-        "recommended_action": "Eliminación física del depósito"
+        "reported_at": "2026-09-02T01:31:10.884842Z",
+        "recommended_action": "Eliminacion fisica del deposito o vaciado completo. Educacion comunitaria sobre manejo de recipientes en el predio.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
       }
     },
     {
@@ -641,25 +482,340 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -79.941832,
-          -2.110331
+          -79.891913,
+          -2.259964
+        ]
+      },
+      "properties": {
+        "id": "foco-006",
+        "sector": "Guasmo Sur",
+        "container_type": "clogged_drain",
+        "container_name": "Canaleta obstruida",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "estimated_volume_liters": 10.0,
+        "water_present": true,
+        "organic_matter_present": true,
+        "temperature_c": 30.9,
+        "humidity_pct": 81.1,
+        "ire_score": 62.3,
+        "risk_level": "MEDIUM",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T10:31:10.884842Z",
+        "recommended_action": "Eliminacion fisica del deposito o vaciado completo. Educacion comunitaria sobre manejo de recipientes en el predio.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.83739,
+          -2.181812
+        ]
+      },
+      "properties": {
+        "id": "foco-039",
+        "sector": "Durán (Zona Centro)",
+        "container_type": "clogged_drain",
+        "container_name": "Canaleta obstruida",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "estimated_volume_liters": 10.0,
+        "water_present": true,
+        "organic_matter_present": false,
+        "temperature_c": 28.0,
+        "humidity_pct": 86.3,
+        "ire_score": 61.7,
+        "risk_level": "MEDIUM",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T06:31:10.884842Z",
+        "recommended_action": "Eliminacion fisica del deposito o vaciado completo. Educacion comunitaria sobre manejo de recipientes en el predio.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.941736,
+          -2.107414
+        ]
+      },
+      "properties": {
+        "id": "foco-013",
+        "sector": "Bastión Popular / Pascuales",
+        "container_type": "clogged_drain",
+        "container_name": "Canaleta obstruida",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "estimated_volume_liters": 10.0,
+        "water_present": true,
+        "organic_matter_present": true,
+        "temperature_c": 31.5,
+        "humidity_pct": 83.7,
+        "ire_score": 61.5,
+        "risk_level": "MEDIUM",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T11:31:10.884842Z",
+        "recommended_action": "Eliminacion fisica del deposito o vaciado completo. Educacion comunitaria sobre manejo de recipientes en el predio.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.929816,
+          -2.148713
+        ]
+      },
+      "properties": {
+        "id": "foco-017",
+        "sector": "Mapasingue",
+        "container_type": "clogged_drain",
+        "container_name": "Canaleta obstruida",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "estimated_volume_liters": 10.0,
+        "water_present": true,
+        "organic_matter_present": false,
+        "temperature_c": 27.0,
+        "humidity_pct": 85.6,
+        "ire_score": 57.5,
+        "risk_level": "MEDIUM",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-02T06:31:10.884842Z",
+        "recommended_action": "Eliminacion fisica del deposito o vaciado completo. Educacion comunitaria sobre manejo de recipientes en el predio.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.852893,
+          -2.167381
+        ]
+      },
+      "properties": {
+        "id": "foco-009",
+        "sector": "Durán (Zona Centro)",
+        "container_type": "tire",
+        "container_name": "Llanta en desuso",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "estimated_volume_liters": 15.0,
+        "water_present": true,
+        "organic_matter_present": false,
+        "temperature_c": 30.1,
+        "humidity_pct": 77.8,
+        "ire_score": 56.1,
+        "risk_level": "MEDIUM",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-01T22:31:10.884842Z",
+        "recommended_action": "Eliminacion fisica del deposito o vaciado completo. Educacion comunitaria sobre manejo de recipientes en el predio.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.904315,
+          -2.135273
+        ]
+      },
+      "properties": {
+        "id": "foco-019",
+        "sector": "Samanes / Sauces",
+        "container_type": "bucket",
+        "container_name": "Balde con agua recolectada",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "estimated_volume_liters": 20.0,
+        "water_present": true,
+        "organic_matter_present": false,
+        "temperature_c": 28.3,
+        "humidity_pct": 91.8,
+        "ire_score": 54.5,
+        "risk_level": "MEDIUM",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-02T23:31:10.884842Z",
+        "recommended_action": "Eliminacion fisica del deposito o vaciado completo. Educacion comunitaria sobre manejo de recipientes en el predio.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.884935,
+          -2.255557
+        ]
+      },
+      "properties": {
+        "id": "foco-033",
+        "sector": "Guasmo Sur",
+        "container_type": "clogged_drain",
+        "container_name": "Canaleta obstruida",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "estimated_volume_liters": 10.0,
+        "water_present": true,
+        "organic_matter_present": false,
+        "temperature_c": 29.2,
+        "humidity_pct": 76.0,
+        "ire_score": 50.4,
+        "risk_level": "MEDIUM",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T03:31:10.884842Z",
+        "recommended_action": "Eliminacion fisica del deposito o vaciado completo. Educacion comunitaria sobre manejo de recipientes en el predio.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.886341,
+          -2.123694
+        ]
+      },
+      "properties": {
+        "id": "foco-015",
+        "sector": "Samanes / Sauces",
+        "container_type": "bucket",
+        "container_name": "Balde con agua recolectada",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "estimated_volume_liters": 20.0,
+        "water_present": true,
+        "organic_matter_present": false,
+        "temperature_c": 26.6,
+        "humidity_pct": 87.3,
+        "ire_score": 48.4,
+        "risk_level": "MEDIUM",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 10,
+        "status": "PENDING",
+        "reported_at": "2026-09-02T04:31:10.884842Z",
+        "recommended_action": "Eliminacion fisica del deposito o vaciado completo. Educacion comunitaria sobre manejo de recipientes en el predio.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.849217,
+          -2.176729
+        ]
+      },
+      "properties": {
+        "id": "foco-010",
+        "sector": "Durán (Zona Centro)",
+        "container_type": "clogged_drain",
+        "container_name": "Canaleta obstruida",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "estimated_volume_liters": 10.0,
+        "water_present": true,
+        "organic_matter_present": false,
+        "temperature_c": 30.3,
+        "humidity_pct": 76.0,
+        "ire_score": 46.8,
+        "risk_level": "MEDIUM",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-02T18:31:10.884842Z",
+        "recommended_action": "Eliminacion fisica del deposito o vaciado completo. Educacion comunitaria sobre manejo de recipientes en el predio.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.922629,
+          -2.152511
+        ]
+      },
+      "properties": {
+        "id": "foco-005",
+        "sector": "Mapasingue",
+        "container_type": "bucket",
+        "container_name": "Balde con agua recolectada",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "estimated_volume_liters": 20.0,
+        "water_present": true,
+        "organic_matter_present": false,
+        "temperature_c": 30.1,
+        "humidity_pct": 84.1,
+        "ire_score": 44.5,
+        "risk_level": "MEDIUM",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-02T14:31:10.884842Z",
+        "recommended_action": "Eliminacion fisica del deposito o vaciado completo. Educacion comunitaria sobre manejo de recipientes en el predio.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.853268,
+          -2.173834
         ]
       },
       "properties": {
         "id": "foco-004",
-        "sector": "Bastión Popular / Pascuales",
-        "container_type": "bucket",
-        "container_name": "Balde con agua recolectada",
-        "estimated_volume_l": 20,
-        "water_detected": true,
-        "temperature_c": 30.3,
-        "humidity_pct": 76.7,
-        "ire_score": 39.5,
+        "sector": "Durán (Zona Centro)",
+        "container_type": "flowerpot",
+        "container_name": "Maceta / Plato con agua",
+        "container_category": "artificial",
+        "container_size": "small",
+        "estimated_volume_liters": 2.0,
+        "water_present": true,
+        "organic_matter_present": true,
+        "temperature_c": 31.3,
+        "humidity_pct": 80.7,
+        "ire_score": 31.5,
         "risk_level": "LOW",
-        "days_to_emergence": 11,
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
         "status": "PENDING",
-        "reported_at": "2026-09-01T14:05:21.498428Z",
-        "recommended_action": "Monitoreo preventivo y volteo de recipiente"
+        "reported_at": "2026-09-03T08:31:10.884842Z",
+        "recommended_action": "Monitoreo preventivo. Voltear o cubrir recipientes descubiertos. Revisitar en 7 dias si hay lluvia prevista.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
       }
     },
     {
@@ -667,25 +823,30 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -79.923059,
-          -2.111736
+          -79.940643,
+          -2.105988
         ]
       },
       "properties": {
         "id": "foco-012",
         "sector": "Bastión Popular / Pascuales",
-        "container_type": "bucket",
-        "container_name": "Balde con agua recolectada",
-        "estimated_volume_l": 20,
-        "water_detected": true,
-        "temperature_c": 29.0,
-        "humidity_pct": 76.5,
-        "ire_score": 39.1,
+        "container_type": "litter_plastic",
+        "container_name": "Basura / Botellas plasticas",
+        "container_category": "artificial",
+        "container_size": "small",
+        "estimated_volume_liters": 1.0,
+        "water_present": true,
+        "organic_matter_present": true,
+        "temperature_c": 27.7,
+        "humidity_pct": 84.5,
+        "ire_score": 30.3,
         "risk_level": "LOW",
-        "days_to_emergence": 9,
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
         "status": "PENDING",
-        "reported_at": "2026-09-02T03:05:21.498428Z",
-        "recommended_action": "Monitoreo preventivo y volteo de recipiente"
+        "reported_at": "2026-09-02T01:31:10.884842Z",
+        "recommended_action": "Monitoreo preventivo. Voltear o cubrir recipientes descubiertos. Revisitar en 7 dias si hay lluvia prevista.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
       }
     },
     {
@@ -693,25 +854,30 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -79.941922,
-          -2.163204
+          -79.893488,
+          -2.252092
         ]
       },
       "properties": {
-        "id": "foco-015",
-        "sector": "Mapasingue",
+        "id": "foco-037",
+        "sector": "Guasmo Sur",
         "container_type": "flowerpot",
         "container_name": "Maceta / Plato con agua",
-        "estimated_volume_l": 2,
-        "water_detected": true,
-        "temperature_c": 30.1,
-        "humidity_pct": 87.2,
-        "ire_score": 35.9,
+        "container_category": "artificial",
+        "container_size": "small",
+        "estimated_volume_liters": 2.0,
+        "water_present": true,
+        "organic_matter_present": false,
+        "temperature_c": 27.0,
+        "humidity_pct": 84.1,
+        "ire_score": 29.6,
         "risk_level": "LOW",
-        "days_to_emergence": 10,
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
         "status": "PENDING",
-        "reported_at": "2026-09-01T04:05:21.498428Z",
-        "recommended_action": "Monitoreo preventivo y volteo de recipiente"
+        "reported_at": "2026-09-03T06:31:10.884842Z",
+        "recommended_action": "Monitoreo preventivo. Voltear o cubrir recipientes descubiertos. Revisitar en 7 dias si hay lluvia prevista.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
       }
     },
     {
@@ -719,51 +885,30 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -79.885204,
-          -2.140973
+          -79.944674,
+          -2.11243
         ]
       },
       "properties": {
-        "id": "foco-038",
-        "sector": "Samanes / Sauces",
-        "container_type": "flowerpot",
-        "container_name": "Maceta / Plato con agua",
-        "estimated_volume_l": 2,
-        "water_detected": true,
-        "temperature_c": 26.8,
-        "humidity_pct": 85.8,
-        "ire_score": 35.6,
-        "risk_level": "LOW",
-        "days_to_emergence": 9,
-        "status": "PENDING",
-        "reported_at": "2026-09-02T12:05:21.498428Z",
-        "recommended_action": "Monitoreo preventivo y volteo de recipiente"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.937375,
-          -2.11187
-        ]
-      },
-      "properties": {
-        "id": "foco-028",
+        "id": "foco-026",
         "sector": "Bastión Popular / Pascuales",
         "container_type": "flowerpot",
         "container_name": "Maceta / Plato con agua",
-        "estimated_volume_l": 2,
-        "water_detected": true,
-        "temperature_c": 26.8,
-        "humidity_pct": 81.4,
-        "ire_score": 35.5,
+        "container_category": "artificial",
+        "container_size": "small",
+        "estimated_volume_liters": 2.0,
+        "water_present": true,
+        "organic_matter_present": false,
+        "temperature_c": 28.7,
+        "humidity_pct": 82.2,
+        "ire_score": 29.5,
         "risk_level": "LOW",
-        "days_to_emergence": 11,
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
         "status": "PENDING",
-        "reported_at": "2026-09-01T07:05:21.498428Z",
-        "recommended_action": "Monitoreo preventivo y volteo de recipiente"
+        "reported_at": "2026-09-01T16:31:10.884842Z",
+        "recommended_action": "Monitoreo preventivo. Voltear o cubrir recipientes descubiertos. Revisitar en 7 dias si hay lluvia prevista.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
       }
     },
     {
@@ -771,103 +916,30 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -79.904751,
-          -2.146237
+          -79.925282,
+          -2.160154
         ]
       },
       "properties": {
-        "id": "foco-002",
-        "sector": "Samanes / Sauces",
-        "container_type": "flowerpot",
-        "container_name": "Maceta / Plato con agua",
-        "estimated_volume_l": 2,
-        "water_detected": true,
-        "temperature_c": 27.7,
-        "humidity_pct": 85.2,
-        "ire_score": 34.2,
-        "risk_level": "LOW",
-        "days_to_emergence": 14,
-        "status": "PENDING",
-        "reported_at": "2026-08-31T19:05:21.498428Z",
-        "recommended_action": "Monitoreo preventivo y volteo de recipiente"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.853649,
-          -2.178571
-        ]
-      },
-      "properties": {
-        "id": "foco-011",
-        "sector": "Durán (Zona Centro)",
-        "container_type": "flowerpot",
-        "container_name": "Maceta / Plato con agua",
-        "estimated_volume_l": 2,
-        "water_detected": true,
-        "temperature_c": 30.2,
-        "humidity_pct": 84.2,
-        "ire_score": 32.4,
-        "risk_level": "LOW",
-        "days_to_emergence": 12,
-        "status": "PENDING",
-        "reported_at": "2026-08-31T23:05:21.498428Z",
-        "recommended_action": "Monitoreo preventivo y volteo de recipiente"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.918805,
-          -2.205593
-        ]
-      },
-      "properties": {
-        "id": "foco-019",
-        "sector": "Suburbio Oeste",
-        "container_type": "litter_plastic",
-        "container_name": "Basura / Botellas plásticas",
-        "estimated_volume_l": 1,
-        "water_detected": true,
-        "temperature_c": 27.8,
-        "humidity_pct": 89.8,
-        "ire_score": 30.3,
-        "risk_level": "LOW",
-        "days_to_emergence": 10,
-        "status": "PENDING",
-        "reported_at": "2026-09-01T02:05:21.498428Z",
-        "recommended_action": "Monitoreo preventivo y volteo de recipiente"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.924468,
-          -2.150282
-        ]
-      },
-      "properties": {
-        "id": "foco-029",
+        "id": "foco-031",
         "sector": "Mapasingue",
         "container_type": "flowerpot",
         "container_name": "Maceta / Plato con agua",
-        "estimated_volume_l": 2,
-        "water_detected": true,
-        "temperature_c": 30.4,
-        "humidity_pct": 86.3,
-        "ire_score": 30.2,
+        "container_category": "artificial",
+        "container_size": "small",
+        "estimated_volume_liters": 2.0,
+        "water_present": true,
+        "organic_matter_present": false,
+        "temperature_c": 30.2,
+        "humidity_pct": 88.3,
+        "ire_score": 28.7,
         "risk_level": "LOW",
-        "days_to_emergence": 10,
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
         "status": "PENDING",
-        "reported_at": "2026-09-01T18:05:21.498428Z",
-        "recommended_action": "Monitoreo preventivo y volteo de recipiente"
+        "reported_at": "2026-09-02T07:31:10.884842Z",
+        "recommended_action": "Monitoreo preventivo. Voltear o cubrir recipientes descubiertos. Revisitar en 7 dias si hay lluvia prevista.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
       }
     },
     {
@@ -875,25 +947,216 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -79.886935,
-          -2.243017
+          -79.92687,
+          -2.205345
+        ]
+      },
+      "properties": {
+        "id": "foco-030",
+        "sector": "Suburbio Oeste",
+        "container_type": "flowerpot",
+        "container_name": "Maceta / Plato con agua",
+        "container_category": "artificial",
+        "container_size": "small",
+        "estimated_volume_liters": 2.0,
+        "water_present": true,
+        "organic_matter_present": false,
+        "temperature_c": 28.5,
+        "humidity_pct": 76.0,
+        "ire_score": 27.6,
+        "risk_level": "LOW",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-02T14:31:10.884842Z",
+        "recommended_action": "Monitoreo preventivo. Voltear o cubrir recipientes descubiertos. Revisitar en 7 dias si hay lluvia prevista.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.900055,
+          -2.26153
+        ]
+      },
+      "properties": {
+        "id": "foco-007",
+        "sector": "Guasmo Sur",
+        "container_type": "litter_plastic",
+        "container_name": "Basura / Botellas plasticas",
+        "container_category": "artificial",
+        "container_size": "small",
+        "estimated_volume_liters": 1.0,
+        "water_present": true,
+        "organic_matter_present": true,
+        "temperature_c": 26.9,
+        "humidity_pct": 79.0,
+        "ire_score": 26.9,
+        "risk_level": "LOW",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 10,
+        "status": "PENDING",
+        "reported_at": "2026-09-02T21:31:10.884842Z",
+        "recommended_action": "Monitoreo preventivo. Voltear o cubrir recipientes descubiertos. Revisitar en 7 dias si hay lluvia prevista.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.901505,
+          -2.251854
+        ]
+      },
+      "properties": {
+        "id": "foco-024",
+        "sector": "Guasmo Sur",
+        "container_type": "litter_plastic",
+        "container_name": "Basura / Botellas plasticas",
+        "container_category": "artificial",
+        "container_size": "small",
+        "estimated_volume_liters": 1.0,
+        "water_present": true,
+        "organic_matter_present": true,
+        "temperature_c": 31.0,
+        "humidity_pct": 89.6,
+        "ire_score": 26.8,
+        "risk_level": "LOW",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-02T23:31:10.884842Z",
+        "recommended_action": "Monitoreo preventivo. Voltear o cubrir recipientes descubiertos. Revisitar en 7 dias si hay lluvia prevista.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.943096,
+          -2.096981
+        ]
+      },
+      "properties": {
+        "id": "foco-008",
+        "sector": "Bastión Popular / Pascuales",
+        "container_type": "litter_plastic",
+        "container_name": "Basura / Botellas plasticas",
+        "container_category": "artificial",
+        "container_size": "small",
+        "estimated_volume_liters": 1.0,
+        "water_present": true,
+        "organic_matter_present": false,
+        "temperature_c": 28.3,
+        "humidity_pct": 86.4,
+        "ire_score": 23.8,
+        "risk_level": "LOW",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-01T19:31:10.884842Z",
+        "recommended_action": "Monitoreo preventivo. Voltear o cubrir recipientes descubiertos. Revisitar en 7 dias si hay lluvia prevista.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.889889,
+          -2.130443
+        ]
+      },
+      "properties": {
+        "id": "foco-022",
+        "sector": "Samanes / Sauces",
+        "container_type": "litter_plastic",
+        "container_name": "Basura / Botellas plasticas",
+        "container_category": "artificial",
+        "container_size": "small",
+        "estimated_volume_liters": 1.0,
+        "water_present": true,
+        "organic_matter_present": false,
+        "temperature_c": 28.5,
+        "humidity_pct": 86.4,
+        "ire_score": 23.5,
+        "risk_level": "LOW",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-02T05:31:10.884842Z",
+        "recommended_action": "Monitoreo preventivo. Voltear o cubrir recipientes descubiertos. Revisitar en 7 dias si hay lluvia prevista.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.850625,
+          -2.17446
+        ]
+      },
+      "properties": {
+        "id": "foco-036",
+        "sector": "Durán (Zona Centro)",
+        "container_type": "litter_plastic",
+        "container_name": "Basura / Botellas plasticas",
+        "container_category": "artificial",
+        "container_size": "small",
+        "estimated_volume_liters": 1.0,
+        "water_present": true,
+        "organic_matter_present": false,
+        "temperature_c": 27.2,
+        "humidity_pct": 86.0,
+        "ire_score": 23.0,
+        "risk_level": "LOW",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T10:31:10.884842Z",
+        "recommended_action": "Monitoreo preventivo. Voltear o cubrir recipientes descubiertos. Revisitar en 7 dias si hay lluvia prevista.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.891492,
+          -2.251317
         ]
       },
       "properties": {
         "id": "foco-027",
         "sector": "Guasmo Sur",
         "container_type": "litter_plastic",
-        "container_name": "Basura / Botellas plásticas",
-        "estimated_volume_l": 1,
-        "water_detected": true,
-        "temperature_c": 31.3,
-        "humidity_pct": 90.7,
-        "ire_score": 30.0,
+        "container_name": "Basura / Botellas plasticas",
+        "container_category": "artificial",
+        "container_size": "small",
+        "estimated_volume_liters": 1.0,
+        "water_present": true,
+        "organic_matter_present": false,
+        "temperature_c": 26.8,
+        "humidity_pct": 87.4,
+        "ire_score": 22.8,
         "risk_level": "LOW",
-        "days_to_emergence": 10,
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 10,
         "status": "PENDING",
-        "reported_at": "2026-09-01T10:05:21.498428Z",
-        "recommended_action": "Monitoreo preventivo y volteo de recipiente"
+        "reported_at": "2026-09-03T08:31:10.884842Z",
+        "recommended_action": "Monitoreo preventivo. Voltear o cubrir recipientes descubiertos. Revisitar en 7 dias si hay lluvia prevista.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
       }
     },
     {
@@ -901,155 +1164,92 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -79.891665,
-          -2.259837
+          -79.929058,
+          -2.15535
+        ]
+      },
+      "properties": {
+        "id": "foco-025",
+        "sector": "Mapasingue",
+        "container_type": "litter_plastic",
+        "container_name": "Basura / Botellas plasticas",
+        "container_category": "artificial",
+        "container_size": "small",
+        "estimated_volume_liters": 1.0,
+        "water_present": true,
+        "organic_matter_present": false,
+        "temperature_c": 30.1,
+        "humidity_pct": 90.0,
+        "ire_score": 22.1,
+        "risk_level": "LOW",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-02T23:31:10.884842Z",
+        "recommended_action": "Monitoreo preventivo. Voltear o cubrir recipientes descubiertos. Revisitar en 7 dias si hay lluvia prevista.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.846932,
+          -2.165168
+        ]
+      },
+      "properties": {
+        "id": "foco-003",
+        "sector": "Durán (Zona Centro)",
+        "container_type": "litter_plastic",
+        "container_name": "Basura / Botellas plasticas",
+        "container_category": "artificial",
+        "container_size": "small",
+        "estimated_volume_liters": 1.0,
+        "water_present": true,
+        "organic_matter_present": false,
+        "temperature_c": 28.7,
+        "humidity_pct": 79.7,
+        "ire_score": 21.4,
+        "risk_level": "LOW",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T04:31:10.884842Z",
+        "recommended_action": "Monitoreo preventivo. Voltear o cubrir recipientes descubiertos. Revisitar en 7 dias si hay lluvia prevista.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.934956,
+          -2.158836
         ]
       },
       "properties": {
         "id": "foco-016",
-        "sector": "Guasmo Sur",
+        "sector": "Mapasingue",
         "container_type": "litter_plastic",
-        "container_name": "Basura / Botellas plásticas",
-        "estimated_volume_l": 1,
-        "water_detected": true,
-        "temperature_c": 29.5,
-        "humidity_pct": 77.6,
-        "ire_score": 27.7,
+        "container_name": "Basura / Botellas plasticas",
+        "container_category": "artificial",
+        "container_size": "small",
+        "estimated_volume_liters": 1.0,
+        "water_present": true,
+        "organic_matter_present": false,
+        "temperature_c": 27.3,
+        "humidity_pct": 75.1,
+        "ire_score": 20.2,
         "risk_level": "LOW",
-        "days_to_emergence": 13,
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
         "status": "PENDING",
-        "reported_at": "2026-09-01T03:05:21.498428Z",
-        "recommended_action": "Monitoreo preventivo y volteo de recipiente"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.842381,
-          -2.166447
-        ]
-      },
-      "properties": {
-        "id": "foco-008",
-        "sector": "Durán (Zona Centro)",
-        "container_type": "litter_plastic",
-        "container_name": "Basura / Botellas plásticas",
-        "estimated_volume_l": 1,
-        "water_detected": true,
-        "temperature_c": 27.4,
-        "humidity_pct": 87.4,
-        "ire_score": 26.3,
-        "risk_level": "LOW",
-        "days_to_emergence": 12,
-        "status": "PENDING",
-        "reported_at": "2026-09-01T19:05:21.498428Z",
-        "recommended_action": "Monitoreo preventivo y volteo de recipiente"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.900464,
-          -2.253723
-        ]
-      },
-      "properties": {
-        "id": "foco-037",
-        "sector": "Guasmo Sur",
-        "container_type": "litter_plastic",
-        "container_name": "Basura / Botellas plásticas",
-        "estimated_volume_l": 1,
-        "water_detected": true,
-        "temperature_c": 29.5,
-        "humidity_pct": 87.2,
-        "ire_score": 25.3,
-        "risk_level": "LOW",
-        "days_to_emergence": 14,
-        "status": "PENDING",
-        "reported_at": "2026-09-01T20:05:21.498428Z",
-        "recommended_action": "Monitoreo preventivo y volteo de recipiente"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.849519,
-          -2.177172
-        ]
-      },
-      "properties": {
-        "id": "foco-020",
-        "sector": "Durán (Zona Centro)",
-        "container_type": "litter_plastic",
-        "container_name": "Basura / Botellas plásticas",
-        "estimated_volume_l": 1,
-        "water_detected": true,
-        "temperature_c": 31.5,
-        "humidity_pct": 86.0,
-        "ire_score": 24.2,
-        "risk_level": "LOW",
-        "days_to_emergence": 13,
-        "status": "PENDING",
-        "reported_at": "2026-09-01T08:05:21.498428Z",
-        "recommended_action": "Monitoreo preventivo y volteo de recipiente"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.840569,
-          -2.168633
-        ]
-      },
-      "properties": {
-        "id": "foco-009",
-        "sector": "Durán (Zona Centro)",
-        "container_type": "litter_plastic",
-        "container_name": "Basura / Botellas plásticas",
-        "estimated_volume_l": 1,
-        "water_detected": true,
-        "temperature_c": 30.7,
-        "humidity_pct": 88.2,
-        "ire_score": 24.0,
-        "risk_level": "LOW",
-        "days_to_emergence": 9,
-        "status": "PENDING",
-        "reported_at": "2026-09-01T16:05:21.498428Z",
-        "recommended_action": "Monitoreo preventivo y volteo de recipiente"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.893906,
-          -2.245306
-        ]
-      },
-      "properties": {
-        "id": "foco-040",
-        "sector": "Guasmo Sur",
-        "container_type": "litter_plastic",
-        "container_name": "Basura / Botellas plásticas",
-        "estimated_volume_l": 1,
-        "water_detected": true,
-        "temperature_c": 30.7,
-        "humidity_pct": 84.9,
-        "ire_score": 22.2,
-        "risk_level": "LOW",
-        "days_to_emergence": 10,
-        "status": "PENDING",
-        "reported_at": "2026-09-02T10:05:21.498428Z",
-        "recommended_action": "Monitoreo preventivo y volteo de recipiente"
+        "reported_at": "2026-09-01T16:31:10.884842Z",
+        "recommended_action": "Monitoreo preventivo. Voltear o cubrir recipientes descubiertos. Revisitar en 7 dias si hay lluvia prevista.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica."
       }
     }
   ]

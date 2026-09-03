@@ -5,7 +5,12 @@ Simula 40 focos epidemiológicos realistas en sectores críticos de Guayaquil y 
 
 import json
 import random
+import sys
+import os
 from datetime import datetime, timedelta
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+from core.bio_engine.ire_calculator import calculate_ire
 
 # Sectores y coordenadas centrales de Guayaquil para clustering realista
 SECTORES = [
@@ -18,33 +23,13 @@ SECTORES = [
 ]
 
 TIPOS_CRIADEROS = [
-    {"tipo": "tire", "nombre_es": "Llanta en desuso", "peso_riesgo": 1.4, "volumen_l": 15},
-    {"tipo": "open_tank", "nombre_es": "Tanque / Cisterna sin tapa", "peso_riesgo": 1.5, "volumen_l": 200},
-    {"tipo": "bucket", "nombre_es": "Balde con agua recolectada", "peso_riesgo": 1.2, "volumen_l": 20},
-    {"tipo": "flowerpot", "nombre_es": "Maceta / Plato con agua", "peso_riesgo": 0.8, "volumen_l": 2},
-    {"tipo": "clogged_drain", "nombre_es": "Canaleta obstruida", "peso_riesgo": 1.3, "volumen_l": 10},
-    {"tipo": "litter_plastic", "nombre_es": "Basura / Botellas plásticas", "peso_riesgo": 0.7, "volumen_l": 1},
+    {"tipo": "tire",          "nombre_es": "Llanta en desuso",           "volumen_l": 15,  "size": "medium"},
+    {"tipo": "open_tank",     "nombre_es": "Tanque / Cisterna sin tapa", "volumen_l": 200, "size": "large"},
+    {"tipo": "bucket",        "nombre_es": "Balde con agua recolectada", "volumen_l": 20,  "size": "medium"},
+    {"tipo": "flowerpot",     "nombre_es": "Maceta / Plato con agua",    "volumen_l": 2,   "size": "small"},
+    {"tipo": "clogged_drain", "nombre_es": "Canaleta obstruida",         "volumen_l": 10,  "size": "medium"},
+    {"tipo": "litter_plastic","nombre_es": "Basura / Botellas plasticas","volumen_l": 1,   "size": "small"},
 ]
-
-def calculate_mock_ire(tipo_info: dict, temp_c: float, humedad_pct: float) -> tuple[float, str, int]:
-    # Factor térmico óptimo para Aedes aegypti: 26-30°C
-    factor_temp = max(0.5, 1.0 - abs(28.0 - temp_c) * 0.05)
-    factor_hum = humedad_pct / 100.0
-    
-    ire_raw = 50.0 * tipo_info["peso_riesgo"] * factor_temp * factor_hum + random.uniform(-5, 5)
-    ire_score = round(max(10.0, min(99.0, ire_raw)), 1)
-    
-    if ire_score >= 70.0:
-        nivel = "CRITICAL"
-        dias_eclosion = random.randint(3, 5)
-    elif ire_score >= 40.0:
-        nivel = "MEDIUM"
-        dias_eclosion = random.randint(6, 8)
-    else:
-        nivel = "LOW"
-        dias_eclosion = random.randint(9, 14)
-        
-    return ire_score, nivel, dias_eclosion
 
 def generate_mock_geojson(total_points: int = 40) -> dict:
     random.seed(42)  # Para reproducibilidad exacta
@@ -63,9 +48,18 @@ def generate_mock_geojson(total_points: int = 40) -> dict:
         temp_c = round(random.uniform(26.5, 31.5), 1)
         hum_pct = round(random.uniform(75.0, 92.0), 1)
         
-        ire_score, nivel_riesgo, dias_eclosion = calculate_mock_ire(tipo, temp_c, hum_pct)
+        organic = random.random() < 0.35
+        bio = calculate_ire(
+            container_type=tipo["tipo"],
+            temperature_c=temp_c,
+            humidity_pct=hum_pct,
+            container_size=tipo["size"],
+            organic_matter=organic,
+            water_present=True,
+            estimated_volume_liters=float(tipo["volumen_l"]),
+        )
         report_time = (now - timedelta(hours=random.randint(1, 48))).isoformat() + "Z"
-        
+
         feature = {
             "type": "Feature",
             "geometry": {
@@ -77,20 +71,21 @@ def generate_mock_geojson(total_points: int = 40) -> dict:
                 "sector": sector["nombre"],
                 "container_type": tipo["tipo"],
                 "container_name": tipo["nombre_es"],
-                "estimated_volume_l": tipo["volumen_l"],
-                "water_detected": True,
+                "container_category": bio["container_category"],
+                "container_size": tipo["size"],
+                "estimated_volume_liters": float(tipo["volumen_l"]),
+                "water_present": True,
+                "organic_matter_present": organic,
                 "temperature_c": temp_c,
                 "humidity_pct": hum_pct,
-                "ire_score": ire_score,
-                "risk_level": nivel_riesgo,
-                "days_to_emergence": dias_eclosion,
+                "ire_score": bio["ire_score"],
+                "risk_level": bio["risk_level"],
+                "risk_type": bio["risk_type"],
+                "days_to_emergence_estimate": bio["days_to_emergence_estimate"],
                 "status": "PENDING",
                 "reported_at": report_time,
-                "recommended_action": (
-                    "Drenaje y larvicida biológico prioritario" if nivel_riesgo == "CRITICAL"
-                    else "Eliminación física del depósito" if nivel_riesgo == "MEDIUM"
-                    else "Monitoreo preventivo y volteo de recipiente"
-                )
+                "recommended_action": bio["recommended_action"],
+                "scientific_note": bio["scientific_note"],
             }
         }
         features.append(feature)
