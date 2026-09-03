@@ -15,6 +15,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))   # backend/
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
 from core.bio_engine.ire_calculator import calculate_ire
