@@ -30,6 +30,7 @@
 
 ### 1.2 Vision Service — Gemini Flash
 - [x] Archivo creado: `backend/app/services/vision_service.py`
+- [x] Prompt actualizado con clasificacion cientifica de Naty (tamano, materia organica, agua, natural/artificial)
 - [ ] Probar con imagen de prueba (llanta con agua)
 - [ ] Verificar que el JSON de respuesta tiene todos los campos del contrato
 
@@ -38,13 +39,21 @@
 - [ ] Probar con coordenadas de Guayaquil: lat=-2.19, lng=-79.89
 - [ ] Verificar respuesta: temperatura y humedad reales
 
-### 1.4 Backend integrado
-- [x] `main.py` actualizado con servicios reales
+### 1.4 IRE Calculator mejorado (aporte de Biotecnologia)
+- [x] Tamano del deposito como factor (small/medium/large)
+- [x] Materia organica como multiplicador de riesgo (+20%)
+- [x] Distincion ACTIVE (con agua) vs POTENTIAL (sin agua, riesgo potencial)
+- [x] Clasificacion natural (charco) vs artificial (llanta, balde)
+- [x] Nota cientifica honesta: IRE es indice de riesgo, no certeza de eclosion
+- [x] Estimacion de dias calibrada por temperatura (no solo por score)
+
+### 1.5 Backend integrado
+- [x] `main.py` actualizado con servicios reales y campos biologicos completos
 - [ ] Correr servidor: `cd backend && python app/main.py`
 - [ ] Verificar `/health` → `{"status": "healthy"}`
 - [ ] Probar `GET /api/foci` → devuelve 40 focos GeoJSON
 - [ ] Probar `POST /api/reports` con imagen base64 real → IRE calculado con datos reales
-- [ ] Probar `POST /api/routes/dispatch` → ruta óptima calculada
+- [ ] Probar `POST /api/routes/dispatch` → ruta optima calculada
 
 ### 1.5 Smoke test completo
 - [ ] Correr script de prueba: `python backend/tests/smoke_test.py`
@@ -131,13 +140,15 @@
 
 | Componente | Estado | Responsable |
 |---|---|---|
-| IRE Calculator | ✅ Completo | Biotecnología |
+| IRE Calculator (mejorado con aportes Naty) | ✅ Completo | Biotecnología |
 | Route Optimizer | ✅ Completo | Mecatrónica |
 | Mock Data (40 focos GBQ) | ✅ Generado | Mecatrónica |
 | API Contract | ✅ Definido | Software |
-| Backend FastAPI (skeleton) | ✅ Funcional | Backend |
-| Vision Service (Gemini) | ⏳ Pendiente | Backend |
-| Climate Service (Open-Meteo) | ⏳ Pendiente | Backend |
+| Backend FastAPI con servicios reales | ✅ Listo para probar | Backend |
+| Vision Service — Gemini Flash | ✅ Creado | Backend |
+| Climate Service — Open-Meteo | ✅ Creado | Backend |
+| Smoke test de endpoints | ✅ Creado | Backend |
+| Setup Python + API key | ⏳ En progreso | Backend |
 | Frontend Dashboard | ✅ Funcional | Frontend |
 | Captura móvil PWA | ⏳ Pendiente | Frontend |
 | Panel de impacto | ⏳ Pendiente | Frontend |
