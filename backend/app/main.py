@@ -101,12 +101,14 @@ def create_report(report: ReportRequest):
     else:
         vision_result = {
             "is_potential_breeding_site": True,
-            "container_type": "bucket",
-            "water_detected": True,
-            "estimated_volume_liters": 5.0,
-            "organic_matter_present": False,
+            "container_type": "tire",
+            "container_category": "artificial",
+            "container_size": "medium",
+            "water_present": True,
+            "estimated_volume_liters": 15.0,
+            "organic_matter_present": True,
             "confidence": 0.70,
-            "biological_justification": "Reporte sin imagen — clasificacion por defecto.",
+            "biological_justification": "Reporte sin imagen — criadero típico de alto riesgo.",
             "source": "no_image",
         }
 

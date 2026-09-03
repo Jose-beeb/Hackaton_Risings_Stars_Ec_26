@@ -484,7 +484,6 @@ function setupEventListeners() {
     const payload = {
       latitude: randomLat,
       longitude: randomLng,
-      image_base64: "data:mock",
       notes: "Reporte en vivo durante presentación"
     };
 
