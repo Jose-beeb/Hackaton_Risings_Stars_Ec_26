@@ -1,29 +1,35 @@
 """
-Servidor Orquestador de AedesGuard (FastAPI)
-Asignado al Rol: Software 1 (Backend & Integración)
+AedesGuard — API Orquestadora (FastAPI)
+Integra Vision AI, datos climaticos en tiempo real y el motor bio-matematico IRE.
 """
 
 import os
 import sys
 import json
+import logging
 from typing import Optional
 from datetime import datetime
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-# Asegurar importación de módulos core
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+
 from core.bio_engine.ire_calculator import calculate_ire
 from core.logistics.route_optimizer import optimize_brigade_route
+from app.services.vision_service import classify_image
+from app.services.climate_service import get_climate
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = FastAPI(
     title="AedesGuard Epidemiological API",
     version="1.0.0",
-    description="Backend orquestador para vigilancia y control vectorial de arbovirosis"
+    description="Plataforma de inteligencia vectorial para prevencion de arbovirosis",
 )
 
-# Habilitar CORS para desarrollo ágil con el frontend
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -32,8 +38,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Cargar dataset de focos inicial (Mock Data)
-DATA_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../data/mock_foci_guayaquil.geojson"))
+DATA_PATH = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "../../data/mock_foci_guayaquil.geojson")
+)
+
 
 def load_foci_store() -> dict:
     if os.path.exists(DATA_PATH):
@@ -41,90 +49,145 @@ def load_foci_store() -> dict:
             return json.load(f)
     return {"type": "FeatureCollection", "features": []}
 
+
 foci_store = load_foci_store()
 
-# --- Modelos Pydantic ---
+
 class ReportRequest(BaseModel):
     latitude: float = Field(..., example=-2.1894)
     longitude: float = Field(..., example=-79.8891)
-    image_base64: Optional[str] = None
+    image_base64: Optional[str] = Field(None, description="Imagen en base64 (JPEG/PNG)")
     notes: Optional[str] = None
 
+
 class DispatchRequest(BaseModel):
-    depot_coordinates: list[float] = Field(default=[-79.8950, -2.1800], example=[-79.8950, -2.1800])
+    depot_coordinates: list[float] = Field(default=[-79.8950, -2.1800])
     max_foci: int = Field(default=8, ge=1, le=25)
 
-# --- Endpoints ---
+
 @app.get("/health")
 def health_check():
-    return {"status": "healthy", "service": "AedesGuard API", "features_loaded": len(foci_store.get("features", []))}
+    return {
+        "status": "healthy",
+        "service": "AedesGuard API",
+        "version": "1.0.0",
+        "features_loaded": len(foci_store.get("features", [])),
+    }
+
 
 @app.get("/api/foci")
 def get_foci():
-    """Devuelve la colección completa de focos en formato GeoJSON para el dashboard."""
+    """Devuelve todos los focos activos en formato GeoJSON."""
     return foci_store
+
 
 @app.post("/api/reports", status_code=201)
 def create_report(report: ReportRequest):
-    """Procesa un nuevo reporte ciudadano o de brigada."""
-    # Simulación de extracción de clima y visión (o llamada real)
-    mock_container = "tire"
-    temp_c = 29.0
-    hum_pct = 84.0
-    
-    bio_result = calculate_ire(mock_container, temp_c, hum_pct)
-    
+    """
+    Procesa un reporte ciudadano o de brigada.
+    Ejecuta clasificacion de imagen con Gemini, obtiene clima real y calcula IRE.
+    """
+    # 1. Clasificacion visual (Gemini Flash o fallback)
+    if report.image_base64:
+        vision_result = classify_image(report.image_base64)
+    else:
+        vision_result = {
+            "is_potential_breeding_site": True,
+            "container_type": "bucket",
+            "water_detected": True,
+            "estimated_volume_liters": 5.0,
+            "organic_matter_present": False,
+            "confidence": 0.70,
+            "biological_justification": "Reporte sin imagen — clasificacion por defecto.",
+            "source": "no_image",
+        }
+
+    # 2. Clima en tiempo real (Open-Meteo o fallback)
+    climate = get_climate(report.latitude, report.longitude)
+
+    # 3. Calculo del Indice de Riesgo Entomologico
+    container_type = vision_result.get("container_type", "bucket")
+    bio_result = calculate_ire(
+        container_type=container_type,
+        temperature_c=climate["temperature_c"],
+        humidity_pct=climate["humidity_pct"],
+    )
+
     report_id = f"foco-{len(foci_store.get('features', [])) + 1:03d}"
     now_iso = datetime.utcnow().isoformat() + "Z"
-    
+
+    container_names = {
+        "tire": "Llanta",
+        "open_tank": "Tanque abierto",
+        "bucket": "Balde / recipiente",
+        "flowerpot": "Maceta",
+        "clogged_drain": "Canaleta obstruida",
+        "litter_plastic": "Plastico en desecho",
+        "other": "Otro recipiente",
+        "none": "Sin criadero detectado",
+    }
+
     new_feature = {
         "type": "Feature",
         "geometry": {
             "type": "Point",
-            "coordinates": [report.longitude, report.latitude]
+            "coordinates": [report.longitude, report.latitude],
         },
         "properties": {
             "id": report_id,
             "sector": "Reporte en Vivo",
-            "container_type": mock_container,
-            "container_name": "Llanta detectada por IA",
-            "water_detected": True,
-            "temperature_c": temp_c,
-            "humidity_pct": hum_pct,
+            "container_type": container_type,
+            "container_name": container_names.get(container_type, "Recipiente"),
+            "water_detected": vision_result.get("water_detected", True),
+            "temperature_c": climate["temperature_c"],
+            "humidity_pct": climate["humidity_pct"],
             "ire_score": bio_result["ire_score"],
             "risk_level": bio_result["risk_level"],
             "days_to_emergence": bio_result["days_to_emergence"],
             "status": "PENDING",
             "reported_at": now_iso,
-            "recommended_action": bio_result["recommended_action"]
-        }
+            "recommended_action": bio_result["recommended_action"],
+            "notes": report.notes,
+        },
     }
-    
-    # Agregar a memoria y persistir
+
     foci_store.setdefault("features", []).insert(0, new_feature)
-    
+
+    logger.info(
+        "Nuevo reporte: %s | IRE %.1f (%s) | Fuente vision: %s",
+        report_id,
+        bio_result["ire_score"],
+        bio_result["risk_level"],
+        vision_result.get("source", "unknown"),
+    )
+
     return {
         "id": report_id,
         "timestamp": now_iso,
         "coordinates": [report.longitude, report.latitude],
         "classification": {
-            "container_type": mock_container,
-            "water_detected": True,
-            "confidence": 0.95
+            "container_type": container_type,
+            "container_name": container_names.get(container_type, "Recipiente"),
+            "water_detected": vision_result.get("water_detected", True),
+            "confidence": vision_result.get("confidence", 0.0),
+            "source": vision_result.get("source", "unknown"),
         },
         "climate": {
-            "temperature_c": temp_c,
-            "humidity_pct": hum_pct
+            "temperature_c": climate["temperature_c"],
+            "humidity_pct": climate["humidity_pct"],
+            "source": climate.get("source", "unknown"),
         },
-        "risk_assessment": bio_result
+        "risk_assessment": bio_result,
     }
+
 
 @app.post("/api/routes/dispatch")
 def dispatch_routes(req: DispatchRequest):
-    """Calcula la ruta óptima de intervención para las cuadrillas sanitarias."""
+    """Calcula la ruta optima de intervencion para las cuadrillas sanitarias."""
     depot_tuple = (req.depot_coordinates[0], req.depot_coordinates[1])
     return optimize_brigade_route(depot_tuple, foci_store, max_stops=req.max_foci)
 
+
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
