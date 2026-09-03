@@ -374,10 +374,41 @@ function showReportResult(container, data) {
   container.classList.remove('hidden');
 }
 
+let isCitizenMode = false;
+
+function toggleView() {
+  isCitizenMode = !isCitizenMode;
+  const btn = document.getElementById('btn-view-toggle');
+  const brigadeEls = document.querySelectorAll('.brigade-only');
+  const citizenPanel = document.querySelector('.citizen-panel');
+
+  if (isCitizenMode) {
+    brigadeEls.forEach(el => el.classList.add('hidden'));
+    citizenPanel.classList.remove('hidden');
+    btn.textContent = '🧭 Vista Brigada';
+    document.getElementById('citizen-critical').textContent =
+      document.getElementById('kpi-critical-count').textContent;
+    document.getElementById('citizen-protected').textContent =
+      document.getElementById('kpi-protected').textContent;
+  } else {
+    brigadeEls.forEach(el => el.classList.remove('hidden'));
+    citizenPanel.classList.add('hidden');
+    btn.textContent = '📱 Vista Ciudadana';
+  }
+}
+
 function setupEventListeners() {
+  // Toggle vista ciudadana / brigada
+  document.getElementById('btn-view-toggle').addEventListener('click', toggleView);
+
   // Demo mode: doble click en brand-title
   document.querySelector('.brand-title').addEventListener('dblclick', () => {
     activateDemoMode();
+  });
+
+  // Botón Reportar Criadero (ciudadano)
+  document.getElementById('btn-report-citizen').addEventListener('click', () => {
+    openReportModal();
   });
 
   // Botón Reportar Criadero

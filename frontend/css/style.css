@@ -486,6 +486,84 @@ body {
   border: 1px solid #10b981;
 }
 
+/* ---- Citizen Panel ---- */
+.citizen-panel {
+  background: var(--bg-card);
+  border-radius: 8px;
+  padding: 16px;
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.citizen-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.citizen-title {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.citizen-desc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.citizen-report-btn {
+  padding: 14px;
+  font-size: 1rem;
+  margin-top: 4px;
+}
+
+.citizen-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.citizen-stat-item {
+  background: #0f172a;
+  border-radius: 6px;
+  padding: 12px 8px;
+  text-align: center;
+}
+
+.citizen-stat-value {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 700;
+  font-family: var(--font-heading);
+  color: var(--risk-critical);
+}
+
+.citizen-stat-item:last-child .citizen-stat-value {
+  color: var(--risk-low);
+}
+
+.citizen-stat-label {
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  margin-top: 2px;
+  display: block;
+}
+
+.citizen-note {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  padding: 8px;
+  background: #0f172a;
+  border-radius: 6px;
+}
+
 /* ---- Animations ---- */
 @keyframes fadeInUp {
   from {

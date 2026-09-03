@@ -58,8 +58,28 @@
         </div>
       </section>
 
+      <!-- Panel Ciudadano (visible solo en modo ciudadano) -->
+      <section class="citizen-panel hidden">
+        <div class="citizen-hero">
+          <p class="citizen-title">¿Encontraste un criadero de mosquitos?</p>
+          <p class="citizen-desc">Reportalo en segundos. Tu reporte ayuda a proteger tu barrio del dengue.</p>
+          <button id="btn-report-citizen" class="btn btn-primary full-width citizen-report-btn">📷 Reportar Criadero Ahora</button>
+        </div>
+        <div class="citizen-stats">
+          <div class="citizen-stat-item">
+            <span class="citizen-stat-value" id="citizen-critical">--</span>
+            <span class="citizen-stat-label">Focos críticos cerca</span>
+          </div>
+          <div class="citizen-stat-item">
+            <span class="citizen-stat-value" id="citizen-protected">--</span>
+            <span class="citizen-stat-label">Personas protegidas</span>
+          </div>
+        </div>
+        <p class="citizen-note">📍 Los puntos en el mapa muestran criaderos activos en tu zona. Rojo = urgente.</p>
+      </section>
+
       <!-- Dispatch Controls -->
-      <section class="dispatch-panel">
+      <section class="dispatch-panel brigade-only">
         <h3>🧭 Despacho de Cuadrillas</h3>
         <p class="dispatch-desc">Optimización heurística (TSP + Ponderación IRE) para máximo impacto sanitario.</p>
         <button id="btn-calc-route" class="btn btn-accent full-width">⚡ Trazar Ruta Óptima de Brigada</button>
@@ -71,7 +91,7 @@
       </section>
 
       <!-- Impact Panel -->
-      <section class="impact-panel">
+      <section class="impact-panel brigade-only">
         <h3>📊 Impacto Cuantificado</h3>
         <div class="impact-grid">
           <div class="impact-stat">
@@ -86,7 +106,7 @@
       </section>
 
       <!-- Priority Foci Feed -->
-      <section class="foci-feed">
+      <section class="foci-feed brigade-only">
         <h3>🔥 Focos de Mayor Riesgo</h3>
         <div id="foci-list" class="foci-list">
           <div class="loading-state">Cargando datos epidemiológicos...</div>
