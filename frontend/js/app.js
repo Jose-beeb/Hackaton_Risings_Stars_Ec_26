@@ -501,7 +501,7 @@ function setupEventListeners() {
 
     fociData.unshift(newFeature);
     renderDashboard(fociData, true);
-    map.flyTo([randomLat, randomLng], 14);
+    map.setView([randomLat, randomLng], 14);
     showToast('Nuevo reporte crítico recibido', 'success');
 
     // Intentar persistir en backend (sin bloquear la demo si falla)
