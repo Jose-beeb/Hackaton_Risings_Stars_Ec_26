@@ -1,177 +1,153 @@
-# AedesGuard — Requisitos y Setup del Entorno
+# AedesGuard — Guia de Setup
 
-Lee esto antes de tocar cualquier archivo del proyecto.
+Lee esto antes de tocar cualquier archivo. Tiempo estimado: 10 minutos.
 
 ---
 
-## Lo que necesitas tener instalado
+## Requisitos previos
 
-### 1. Python 3.11 o superior (obligatorio para Backend)
+| Herramienta | Version minima | Como verificar |
+|---|---|---|
+| Python | 3.11+ | `py --version` |
+| Git | cualquiera | `git --version` |
+| Chrome / Edge | actualizado | — |
 
-Verificar si ya lo tenes:
-```bash
-python --version
-```
+### Instalar Python (si no lo tenes)
 
-Si no esta instalado o la version es menor a 3.11:
 1. Ir a **https://www.python.org/downloads**
-2. Descargar la version mas reciente (boton amarillo grande)
-3. Ejecutar el instalador
-4. IMPORTANTE: marcar la casilla **"Add python.exe to PATH"** antes de instalar
-5. Cerrar y reabrir la terminal
-6. Verificar: `python --version`
+2. Descargar la version mas reciente
+3. Ejecutar el instalador — marcar **"Add python.exe to PATH"** antes de instalar
+4. Abrir una terminal **nueva** y verificar: `py --version`
 
-### 2. Git (obligatorio para todos)
-
-Verificar si ya lo tenes:
-```bash
-git --version
-```
-
-Si no esta instalado:
-1. Ir a **https://git-scm.com/downloads**
-2. Descargar para tu sistema operativo
-3. Instalar con las opciones por defecto
-4. Verificar: `git --version`
-
-### 3. Navegador moderno (obligatorio para Frontend)
-
-Chrome, Firefox o Edge actualizado. El dashboard usa APIs modernas del navegador (geolocalización, cámara).
-
-### 4. Visual Studio Code (recomendado, no obligatorio)
-
-Descarga: **https://code.visualstudio.com**
-
-Extensiones utiles para este proyecto:
-- Python (Microsoft)
-- Prettier
-- GitLens
+> En Windows el comando es `py`, no `python`. Usa `py` en todos los pasos.
 
 ---
 
-## Setup del proyecto (orden importante)
+## Setup del proyecto
 
 ### Paso 1 — Clonar el repositorio
 
-```bash
+```powershell
 git clone https://github.com/Jose-beeb/Hackaton_Risings_Stars_Ec_26.git
 cd Hackaton_Risings_Stars_Ec_26
 ```
 
-### Paso 2 — Ir a tu rama de trabajo
+### Paso 2 — Crear entorno virtual e instalar dependencias
 
-```bash
-git checkout feat/bio-engine        # Biotecnologia
-git checkout feat/gis-logistics     # Mecatronica
-git checkout feat/backend-api       # Backend
-git checkout feat/frontend-dashboard # Frontend
+```powershell
+py -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r backend\requirements.txt
 ```
 
-### Paso 3 — Crear entorno virtual Python (Backend y quien corra el servidor)
+Vas a ver `(.venv)` al inicio de tu terminal — eso confirma que esta activo.
 
-```bash
-# Crear el entorno
-python -m venv venv
-
-# Activar en Windows (PowerShell o CMD)
-venv\Scripts\activate
-
-# Activar en Mac / Linux
-source venv/bin/activate
-
-# Vas a ver (venv) al inicio de tu terminal — eso confirma que esta activo
-
-# Instalar dependencias
-pip install -r backend/requirements.txt
-```
-
-### Paso 4 — Obtener API Key de Gemini (solo Backend)
+### Paso 3 — Configurar la API Key de Gemini
 
 1. Ir a **https://aistudio.google.com**
 2. Iniciar sesion con cuenta Google
-3. Click en **"Get API key"** en el menu izquierdo
-4. Click en **"Create API key in new project"**
-5. Copiar la clave (empieza con `AIza...`)
+3. Click en **"Get API key"** → **"Create API key"**
+4. Copiar la clave (empieza con `AIza...`)
+5. En la raiz del proyecto ya existe un archivo `.env.example` — copiarlo como `.env`:
 
-### Paso 5 — Crear el archivo .env (solo Backend)
+```powershell
+copy .env.example .env
+```
 
-En la raiz del proyecto (donde esta el README.md), crear un archivo llamado `.env`:
+6. Abrir `.env` con cualquier editor y pegar tu clave:
 
 ```
 GEMINI_API_KEY=AIza...tu_clave_aqui
-ENVIRONMENT=development
-PORT=8000
 ```
 
-> El archivo `.env` nunca aparece en git — esta en `.gitignore` por seguridad.
-> Cada integrante crea su propio `.env` localmente, no se comparte.
+> El archivo `.env` nunca sube al repo (esta en `.gitignore`). Cada integrante crea el suyo.
 
-### Paso 6 — Verificar que todo funciona
+### Paso 4 — Verificar que el backend funciona
 
-```bash
-# Terminal 1: levantar el servidor
-python backend/app/main.py
+Necesitas **dos terminales** abiertas al mismo tiempo.
 
-# Terminal 2: correr el smoke test
-python backend/tests/smoke_test.py
+**Terminal 1 — Levantar el servidor:**
+```powershell
+.venv\Scripts\Activate.ps1
+py -m uvicorn backend.app.main:app --reload --port 8000
 ```
+Debes ver: `Application startup complete.`
 
+**Terminal 2 — Correr el smoke test:**
+```powershell
+.venv\Scripts\Activate.ps1
+py backend/tests/smoke_test.py
+```
 Resultado esperado: `4/4 tests pasaron`
 
-Para el frontend, abrir `frontend/index.html` en el navegador.
+### Paso 5 — Levantar el frontend
+
+Con el backend corriendo, abri una **tercera terminal**:
+
+```powershell
+cd frontend
+py -m http.server 3000
+```
+
+Luego abri Chrome en: **http://localhost:3000**
 
 ---
 
-## Dependencias Python (backend/requirements.txt)
+## Correr los tests unitarios
 
-| Paquete | Version | Para que sirve |
-|---|---|---|
-| fastapi | >=0.110.0 | Framework web del servidor |
-| uvicorn | >=0.28.0 | Servidor ASGI para correr FastAPI |
-| pydantic | >=2.6.0 | Validacion de datos de entrada/salida |
-| pydantic-settings | >=2.2.0 | Carga de variables de entorno (.env) |
-| httpx | >=0.27.0 | Cliente HTTP para llamar a Open-Meteo |
-| google-generativeai | >=0.7.0 | SDK oficial de Gemini (Vision AI) |
-| python-dotenv | >=1.0.0 | Lee el archivo .env automaticamente |
-| python-multipart | >=0.0.9 | Soporte para subida de imagenes |
+```powershell
+.venv\Scripts\Activate.ps1
+pytest backend/tests/test_ire_calculator.py -v
+```
+
+Resultado esperado: `20 passed`
 
 ---
 
-## Dependencias Frontend
+## Dependencias Python
 
-El frontend no requiere instalacion. Usa librerias via CDN:
+| Paquete | Para que sirve |
+|---|---|
+| fastapi | Framework web del servidor |
+| uvicorn | Servidor ASGI para correr FastAPI |
+| pydantic + pydantic-settings | Validacion de datos y variables de entorno |
+| httpx | Cliente HTTP para Open-Meteo |
+| google-generativeai | SDK de Gemini Vision AI |
+| python-dotenv | Lee el archivo .env |
+| python-multipart | Soporte para subida de imagenes |
+| pytest | Tests unitarios del motor IRE |
 
-| Libreria | Version | Para que sirve |
-|---|---|---|
-| Leaflet | 1.9.4 | Mapas interactivos |
-| leaflet-heat | 0.2.0 | Capa de mapa de calor |
-| Google Fonts | — | Tipografia (Outfit, Inter) |
+## APIs externas
 
----
-
-## APIs externas utilizadas
-
-| API | Requiere key | Costo | Uso |
+| API | Key requerida | Costo | Uso |
 |---|---|---|---|
-| Google Gemini Flash | SI | Gratis (tier gratuito) | Clasificacion de imagenes |
-| Open-Meteo | NO | Gratis y abierta | Temperatura y humedad en tiempo real |
+| Google Gemini Flash | SI | Gratis (tier gratuito) | Clasificacion de imagenes con IA |
+| Open-Meteo | NO | Gratis | Temperatura y humedad en tiempo real |
+| OpenStreetMap | NO | Gratis | Tiles del mapa |
 
 ---
 
 ## Problemas frecuentes
 
-**"python no se reconoce como comando"**
-Reinstalar Python marcando la casilla "Add python.exe to PATH".
+**`py` no se reconoce**
+Reinstalar Python marcando "Add python.exe to PATH". Abrir terminal nueva despues.
 
-**"pip no se reconoce"**
-Correr: `python -m pip install -r backend/requirements.txt`
+**`Activate.ps1` no se puede ejecutar (error de politica)**
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
 
-**"ModuleNotFoundError: No module named 'fastapi'"**
-El entorno virtual no esta activado. Correr `venv\Scripts\activate` primero.
+**`ModuleNotFoundError: No module named 'fastapi'`**
+El entorno virtual no esta activo. Correr `.venv\Scripts\Activate.ps1` primero.
 
-**"El mapa no carga"**
-Verificar que el backend esta corriendo en `http://localhost:8000`.
-El frontend hace fallback automatico al archivo local si el backend no responde.
+**`ModuleNotFoundError: No module named 'app'`**
+Asegurate de correr uvicorn desde la raiz del proyecto, no desde dentro de `backend/`.
 
-**"GEMINI_API_KEY not set"**
-Crear el archivo `.env` en la raiz del proyecto con la clave. Ver Paso 5.
+**El mapa carga pero sale "API KEY REQUIRED"**
+Ya esta corregido en la version actual. Hacer `git pull` para obtener el fix.
+
+**El frontend muestra el listado del directorio en vez del mapa**
+Correr `py -m http.server 3000` desde dentro de la carpeta `frontend/`, no desde la raiz.
+
+**Vision Service usa "fallback" en vez de Gemini**
+La API key no esta configurada. Verificar el archivo `.env` en la raiz del proyecto.
