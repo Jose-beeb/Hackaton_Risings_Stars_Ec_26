@@ -16,6 +16,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="css/style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#ef4444">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
 </head>
 <body class="dark-theme">
   <!-- Header / Navigation Bar -->
@@ -27,6 +31,7 @@
     </div>
     <div class="header-actions">
       <button id="btn-view-toggle" class="btn btn-secondary">📱 Vista Ciudadana / Brigada</button>
+      <button id="btn-report" class="btn btn-secondary">📷 Reportar Criadero</button>
       <button id="btn-simulate-report" class="btn btn-primary">🚨 Simular Reporte en Vivo</button>
     </div>
   </header>
@@ -47,9 +52,9 @@
           <span class="kpi-trend">📍 Piloto Guayaquil</span>
         </div>
         <div class="kpi-card success">
-          <span class="kpi-label">Ahorro Estimado B2G</span>
-          <span class="kpi-value">42%</span>
-          <span class="kpi-trend">🌱 Fumigación Focalizada</span>
+          <span class="kpi-label">Personas Protegidas</span>
+          <span id="kpi-protected" class="kpi-value">--</span>
+          <span class="kpi-trend">🌱 Radio ~200m/foco</span>
         </div>
       </section>
 
@@ -62,6 +67,21 @@
           <div class="summary-stat"><strong>Distancia:</strong> <span id="route-dist">--</span> km</div>
           <div class="summary-stat"><strong>Tiempo Est.:</strong> <span id="route-time">--</span> min</div>
           <div class="summary-stat"><strong>Focos a tratar:</strong> <span id="route-stops">--</span></div>
+        </div>
+      </section>
+
+      <!-- Impact Panel -->
+      <section class="impact-panel">
+        <h3>📊 Impacto Cuantificado</h3>
+        <div class="impact-grid">
+          <div class="impact-stat">
+            <span class="impact-value" id="impact-liters">--</span>
+            <span class="impact-label">Litros pesticida ahorrado</span>
+          </div>
+          <div class="impact-stat">
+            <span class="impact-value" id="impact-km">--</span>
+            <span class="impact-label">km optimizados vs ruta ciega</span>
+          </div>
         </div>
       </section>
 
@@ -85,6 +105,27 @@
       </div>
     </section>
   </main>
+
+  <div id="report-modal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Reportar Criadero</h2>
+        <button id="btn-close-modal" class="btn-icon">✕</button>
+      </div>
+      <div id="modal-status" class="modal-status">Iniciando cámara...</div>
+      <div class="camera-wrapper">
+        <video id="camera-preview" autoplay playsinline muted></video>
+        <img id="photo-preview" class="hidden" alt="Foto capturada">
+        <canvas id="photo-canvas" class="hidden"></canvas>
+      </div>
+      <div class="modal-actions">
+        <button id="btn-capture" class="btn btn-primary full-width">📸 Capturar Foto</button>
+        <button id="btn-retake" class="btn btn-secondary hidden">↺ Retomar</button>
+        <button id="btn-send-report" class="btn btn-accent hidden">Enviar Reporte</button>
+      </div>
+      <div id="report-result" class="report-result hidden"></div>
+    </div>
+  </div>
 
   <script src="js/app.js"></script>
 </body>

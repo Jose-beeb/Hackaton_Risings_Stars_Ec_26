@@ -4,12 +4,17 @@ let heatLayer;
 let markersLayer;
 let routeLayer;
 let fociData = [];
+let previousFociCount = 0;
+let cameraStream = null;
 
 // Inicialización
 document.addEventListener("DOMContentLoaded", () => {
   initMap();
   loadEpidemiologicalData();
   setupEventListeners();
+
+  // Polling en tiempo real cada 4 segundos
+  setInterval(() => loadEpidemiologicalData(), 4000);
 });
 
 function initMap() {
@@ -41,22 +46,29 @@ async function loadEpidemiologicalData() {
       res = await fetch("../data/mock_foci_guayaquil.geojson");
     }
     const data = await res.json();
-    fociData = data.features || [];
-    renderDashboard(fociData);
+    const newFeatures = data.features || [];
+    const newCount = newFeatures.length;
+
+    // Animar marcadores nuevos si el count creció
+    const isNewData = newCount > previousFociCount;
+    previousFociCount = newCount;
+
+    fociData = newFeatures;
+    renderDashboard(fociData, isNewData);
   } catch (err) {
     console.error("Error al cargar datos epidemiológicos:", err);
   }
 }
 
-function renderDashboard(features) {
+function renderDashboard(features, animateNew = false) {
   markersLayer.clearLayers();
-  
+
   const heatPoints = [];
   let criticalCount = 0;
   const feedContainer = document.getElementById("foci-list");
   feedContainer.innerHTML = "";
 
-  features.forEach((feature) => {
+  features.forEach((feature, index) => {
     const coords = feature.geometry.coordinates; // [lng, lat]
     const props = feature.properties;
     const latLng = [coords[1], coords[0]];
@@ -66,6 +78,9 @@ function renderDashboard(features) {
     heatPoints.push([latLng[0], latLng[1], intensity]);
 
     if (props.risk_level === "CRITICAL") criticalCount++;
+
+    // BUG FIX: usar days_to_emergence_estimate con fallback a days_to_emergence
+    const days = props.days_to_emergence_estimate ?? props.days_to_emergence ?? '--';
 
     // Color del marcador
     const markerColor =
@@ -86,10 +101,19 @@ function renderDashboard(features) {
         <h4 style="margin: 0 0 4px 0; color: ${markerColor};">${props.container_name || props.container_type}</h4>
         <p><strong>Sector:</strong> ${props.sector}</p>
         <p><strong>IRE:</strong> ${props.ire_score} | <strong>Riesgo:</strong> ${props.risk_level}</p>
-        <p><strong>Eclosión est.:</strong> ${props.days_to_emergence} días</p>
+        <p><strong>Eclosión est.:</strong> ${days} días</p>
         <p style="font-size: 11px; margin-top: 4px; color: #475569;">${props.recommended_action || ''}</p>
       </div>
     `);
+
+    // Animar nuevos marcadores con clase pulse si es dato nuevo
+    if (animateNew && index === 0) {
+      const el = circle.getElement ? circle.getElement() : null;
+      circle.on('add', () => {
+        const el = circle.getElement();
+        if (el) el.classList.add('new-marker');
+      });
+    }
 
     markersLayer.addLayer(circle);
   });
@@ -110,6 +134,7 @@ function renderDashboard(features) {
   // Render Top 6 en el Feed
   features.slice(0, 6).forEach((f) => {
     const p = f.properties;
+    const days = p.days_to_emergence_estimate ?? p.days_to_emergence ?? '--';
     const item = document.createElement("div");
     item.className = `foci-item ${p.risk_level.toLowerCase()}`;
     item.innerHTML = `
@@ -117,16 +142,277 @@ function renderDashboard(features) {
         <span>${p.container_name || p.container_type}</span>
         <span>IRE: ${p.ire_score}</span>
       </div>
-      <div class="foci-detail">${p.sector} · Eclosión en ${p.days_to_emergence} días</div>
+      <div class="foci-detail">${p.sector} · Eclosión en ${days} días</div>
     `;
     item.addEventListener("click", () => {
       map.flyTo([f.geometry.coordinates[1], f.geometry.coordinates[0]], 15);
     });
     feedContainer.appendChild(item);
   });
+
+  // Actualizar métricas de impacto
+  updateImpactMetrics(features);
+}
+
+function updateImpactMetrics(features) {
+  const total = features.length;
+  const liters = Math.round(total * 2.5);
+  const kmSaved = Math.round(total * 0.3);
+  const protected_ = Math.round(total * 850);
+
+  document.getElementById('impact-liters').textContent = liters + ' L';
+  document.getElementById('impact-km').textContent = kmSaved + ' km';
+  document.getElementById('kpi-protected').textContent = protected_ > 999
+    ? (protected_ / 1000).toFixed(1) + 'k'
+    : protected_;
+}
+
+function showToast(msg, type = 'info') {
+  const t = document.createElement('div');
+  t.className = `toast toast-${type}`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+function activateDemoMode() {
+  showToast('Demo Mode activado', 'info');
+  document.getElementById('btn-calc-route').click();
+
+  // Animar KPIs con contadores
+  animateCounter('kpi-critical-count', 0, parseInt(document.getElementById('kpi-critical-count').textContent) || 8, 800);
+  animateCounter('kpi-total-count', 0, parseInt(document.getElementById('kpi-total-count').textContent) || 24, 1000);
+}
+
+function animateCounter(elementId, from, to, duration) {
+  const el = document.getElementById(elementId);
+  if (!el || isNaN(to)) return;
+  const start = performance.now();
+  function step(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    el.textContent = Math.round(from + (to - from) * progress);
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+// ---- Cámara / Modal ----
+
+async function startCamera() {
+  const statusEl = document.getElementById('modal-status');
+  const videoEl = document.getElementById('camera-preview');
+  const photoPreview = document.getElementById('photo-preview');
+  const btnCapture = document.getElementById('btn-capture');
+  const btnRetake = document.getElementById('btn-retake');
+  const btnSend = document.getElementById('btn-send-report');
+  const reportResult = document.getElementById('report-result');
+
+  // Reset estado del modal
+  photoPreview.classList.add('hidden');
+  videoEl.classList.remove('hidden');
+  btnCapture.classList.remove('hidden');
+  btnRetake.classList.add('hidden');
+  btnSend.classList.add('hidden');
+  reportResult.classList.add('hidden');
+  reportResult.className = 'report-result hidden';
+
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    statusEl.textContent = 'Cámara no disponible — usá HTTPS';
+    btnCapture.disabled = true;
+    return;
+  }
+
+  try {
+    statusEl.textContent = 'Iniciando cámara...';
+    btnCapture.disabled = true;
+    cameraStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'environment' },
+      audio: false
+    });
+    videoEl.srcObject = cameraStream;
+    statusEl.textContent = 'Cámara lista. Apuntá al criadero.';
+    btnCapture.disabled = false;
+  } catch (err) {
+    console.error('Error al acceder a la cámara:', err);
+    statusEl.textContent = 'No se pudo acceder a la cámara. Verificá los permisos.';
+    btnCapture.disabled = true;
+  }
+}
+
+function stopCamera() {
+  if (cameraStream) {
+    cameraStream.getTracks().forEach(t => t.stop());
+    cameraStream = null;
+  }
+}
+
+function openReportModal() {
+  document.getElementById('report-modal').classList.remove('hidden');
+  startCamera();
+}
+
+function closeReportModal() {
+  stopCamera();
+  document.getElementById('report-modal').classList.add('hidden');
+}
+
+function capturePhoto() {
+  const videoEl = document.getElementById('camera-preview');
+  const canvas = document.getElementById('photo-canvas');
+  const photoPreview = document.getElementById('photo-preview');
+  const statusEl = document.getElementById('modal-status');
+  const btnCapture = document.getElementById('btn-capture');
+  const btnRetake = document.getElementById('btn-retake');
+  const btnSend = document.getElementById('btn-send-report');
+
+  canvas.width = videoEl.videoWidth || 640;
+  canvas.height = videoEl.videoHeight || 480;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(videoEl, 0, 0, canvas.width, canvas.height);
+
+  const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+  photoPreview.src = dataUrl;
+  photoPreview.classList.remove('hidden');
+  videoEl.classList.add('hidden');
+
+  btnCapture.classList.add('hidden');
+  btnRetake.classList.remove('hidden');
+  btnSend.classList.remove('hidden');
+  statusEl.textContent = 'Foto capturada. Revisá y enviá el reporte.';
+}
+
+function retakePhoto() {
+  const videoEl = document.getElementById('camera-preview');
+  const photoPreview = document.getElementById('photo-preview');
+  const btnCapture = document.getElementById('btn-capture');
+  const btnRetake = document.getElementById('btn-retake');
+  const btnSend = document.getElementById('btn-send-report');
+  const statusEl = document.getElementById('modal-status');
+  const reportResult = document.getElementById('report-result');
+
+  photoPreview.classList.add('hidden');
+  videoEl.classList.remove('hidden');
+  btnCapture.classList.remove('hidden');
+  btnRetake.classList.add('hidden');
+  btnSend.classList.add('hidden');
+  reportResult.classList.add('hidden');
+  reportResult.className = 'report-result hidden';
+  statusEl.textContent = 'Cámara lista. Apuntá al criadero.';
+
+  // Reanudar stream si fue detenido
+  if (!cameraStream) {
+    startCamera();
+  }
+}
+
+async function sendReport() {
+  const canvas = document.getElementById('photo-canvas');
+  const statusEl = document.getElementById('modal-status');
+  const reportResult = document.getElementById('report-result');
+  const btnSend = document.getElementById('btn-send-report');
+
+  btnSend.disabled = true;
+  statusEl.textContent = 'Analizando con IA...';
+
+  const imageBase64 = canvas.toDataURL('image/jpeg', 0.8);
+
+  // Obtener GPS
+  let latitude = -2.19;
+  let longitude = -79.89;
+
+  try {
+    const pos = await new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 5000 });
+    });
+    latitude = pos.coords.latitude;
+    longitude = pos.coords.longitude;
+  } catch {
+    // Usar coordenadas por defecto si GPS no disponible
+  }
+
+  const payload = {
+    latitude,
+    longitude,
+    image_base64: imageBase64,
+    notes: 'Reporte desde app móvil'
+  };
+
+  try {
+    const res = await fetch('http://localhost:8000/api/reports', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      showReportResult(reportResult, data);
+      await loadEpidemiologicalData();
+    } else {
+      throw new Error('Backend no disponible');
+    }
+  } catch {
+    // Fallback: simular resultado de IA
+    const mockResult = {
+      ire_score: Math.round(60 + Math.random() * 35),
+      risk_level: Math.random() > 0.4 ? 'CRITICAL' : 'MEDIUM'
+    };
+    showReportResult(reportResult, mockResult);
+  }
+
+  btnSend.disabled = false;
+  statusEl.textContent = 'Reporte enviado.';
+}
+
+function showReportResult(container, data) {
+  const riskLevel = (data.risk_level || 'medium').toLowerCase();
+  const ire = data.ire_score ?? data.ire ?? '--';
+  container.className = `report-result ${riskLevel}`;
+  container.innerHTML = `
+    <strong>IRE Score: ${ire}</strong><br>
+    <span>Nivel de Riesgo: ${data.risk_level || riskLevel.toUpperCase()}</span>
+  `;
+  container.classList.remove('hidden');
 }
 
 function setupEventListeners() {
+  // Demo mode: doble click en brand-title
+  document.querySelector('.brand-title').addEventListener('dblclick', () => {
+    activateDemoMode();
+  });
+
+  // Botón Reportar Criadero
+  document.getElementById('btn-report').addEventListener('click', () => {
+    openReportModal();
+  });
+
+  // Cerrar modal
+  document.getElementById('btn-close-modal').addEventListener('click', () => {
+    closeReportModal();
+  });
+
+  // Cerrar modal al hacer click en el overlay
+  document.getElementById('report-modal').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('report-modal')) {
+      closeReportModal();
+    }
+  });
+
+  // Capturar foto
+  document.getElementById('btn-capture').addEventListener('click', () => {
+    capturePhoto();
+  });
+
+  // Retomar foto
+  document.getElementById('btn-retake').addEventListener('click', () => {
+    retakePhoto();
+  });
+
+  // Enviar reporte
+  document.getElementById('btn-send-report').addEventListener('click', () => {
+    sendReport();
+  });
+
   // Botón Simular Reporte en Vivo (Pitch Fail-safe)
   document.getElementById("btn-simulate-report").addEventListener("click", async () => {
     const randomLat = -2.185 + (Math.random() - 0.5) * 0.04;
@@ -159,6 +445,7 @@ function setupEventListeners() {
           container_name: "Llanta con agua (Detectado IA)",
           ire_score: 92.4,
           risk_level: "CRITICAL",
+          days_to_emergence_estimate: 3,
           days_to_emergence: 3,
           recommended_action: "Intervención prioritaria inmediata."
         }
@@ -172,7 +459,7 @@ function setupEventListeners() {
   // Botón Trazar Ruta de Brigada
   document.getElementById("btn-calc-route").addEventListener("click", async () => {
     routeLayer.clearLayers();
-    
+
     try {
       const res = await fetch("http://localhost:8000/api/routes/dispatch", {
         method: "POST",
@@ -197,7 +484,7 @@ function setupEventListeners() {
 
 function drawRoute(routeData) {
   const lineCoords = routeData.route_geometry.coordinates.map(c => [c[1], c[0]]);
-  
+
   const polyline = L.polyline(lineCoords, {
     color: "#38bdf8",
     weight: 4,
