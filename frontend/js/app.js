@@ -95,15 +95,23 @@ function renderDashboard(features, animateNew = false) {
       fillOpacity: 0.8
     });
 
-    circle.bindPopup(`
-      <div style="font-family: sans-serif; font-size: 13px; color: #1e293b;">
-        <h4 style="margin: 0 0 4px 0; color: ${markerColor};">${props.container_name || props.container_type}</h4>
-        <p><strong>Sector:</strong> ${props.sector}</p>
-        <p><strong>IRE:</strong> ${props.ire_score} | <strong>Riesgo:</strong> ${props.risk_level}</p>
-        <p><strong>Eclosión est.:</strong> ${days} días</p>
-        <p style="font-size: 11px; margin-top: 4px; color: #475569;">${props.recommended_action || ''}</p>
-      </div>
-    `);
+    const riskLabel = { CRITICAL: 'Alto', MEDIUM: 'Medio', LOW: 'Bajo' }[props.risk_level] || props.risk_level;
+    const popupContent = isCitizenMode
+      ? `<div style="font-family: sans-serif; font-size: 13px; color: #1e293b;">
+          <h4 style="margin: 0 0 4px 0; color: ${markerColor};">${props.container_name || 'Punto sospechoso'}</h4>
+          <p><strong>Zona:</strong> ${props.sector}</p>
+          <p><strong>Nivel de riesgo:</strong> ${riskLabel}</p>
+          <p><strong>Mosquitos pueden aparecer en:</strong> ~${days} días</p>
+          <p style="font-size: 11px; margin-top: 4px; color: #475569;">Reportá si ves agua acumulada cerca.</p>
+        </div>`
+      : `<div style="font-family: sans-serif; font-size: 13px; color: #1e293b;">
+          <h4 style="margin: 0 0 4px 0; color: ${markerColor};">${props.container_name || props.container_type}</h4>
+          <p><strong>Sector:</strong> ${props.sector}</p>
+          <p><strong>IRE:</strong> ${props.ire_score} | <strong>Riesgo:</strong> ${props.risk_level}</p>
+          <p><strong>Eclosión est.:</strong> ${days} días</p>
+          <p style="font-size: 11px; margin-top: 4px; color: #475569;">${props.recommended_action || ''}</p>
+        </div>`;
+    circle.bindPopup(popupContent);
 
     // Animar nuevos marcadores con clase pulse si es dato nuevo
     if (animateNew && index === 0) {
@@ -134,15 +142,20 @@ function renderDashboard(features, animateNew = false) {
   features.slice(0, 6).forEach((f) => {
     const p = f.properties;
     const days = p.days_to_emergence_estimate ?? p.days_to_emergence ?? '--';
+    const riskLabel = { CRITICAL: 'Alto', MEDIUM: 'Medio', LOW: 'Bajo' }[p.risk_level] || p.risk_level;
     const item = document.createElement("div");
     item.className = `foci-item ${p.risk_level.toLowerCase()}`;
-    item.innerHTML = `
-      <div class="foci-header">
-        <span>${p.container_name || p.container_type}</span>
-        <span>IRE: ${p.ire_score}</span>
-      </div>
-      <div class="foci-detail">${p.sector} · Eclosión en ${days} días</div>
-    `;
+    item.innerHTML = isCitizenMode
+      ? `<div class="foci-header">
+          <span>${p.container_name || 'Punto sospechoso'}</span>
+          <span>Riesgo: ${riskLabel}</span>
+        </div>
+        <div class="foci-detail">${p.sector} · Mosquitos en ~${days} días</div>`
+      : `<div class="foci-header">
+          <span>${p.container_name || p.container_type}</span>
+          <span>IRE: ${p.ire_score}</span>
+        </div>
+        <div class="foci-detail">${p.sector} · Eclosión en ${days} días</div>`;
     item.addEventListener("click", () => {
       map.flyTo([f.geometry.coordinates[1], f.geometry.coordinates[0]], 15);
     });
@@ -366,11 +379,15 @@ async function sendReport() {
 function showReportResult(container, data) {
   const riskLevel = (data.risk_level || 'medium').toLowerCase();
   const ire = data.ire_score ?? data.ire ?? '--';
+  const citizenMessages = {
+    critical: '¡Zona de riesgo alto! Las brigadas sanitarias serán notificadas.',
+    medium: 'Riesgo moderado detectado. Gracias por reportar.',
+    low: 'Riesgo bajo. Te avisamos si la situación cambia.'
+  };
   container.className = `report-result ${riskLevel}`;
-  container.innerHTML = `
-    <strong>IRE Score: ${ire}</strong><br>
-    <span>Nivel de Riesgo: ${data.risk_level || riskLevel.toUpperCase()}</span>
-  `;
+  container.innerHTML = isCitizenMode
+    ? `<strong>✅ Reporte recibido</strong><br><span>${citizenMessages[riskLevel] || 'Gracias por tu reporte.'}</span>`
+    : `<strong>IRE Score: ${ire}</strong><br><span>Nivel de Riesgo: ${data.risk_level || riskLevel.toUpperCase()}</span>`;
   container.classList.remove('hidden');
 }
 
@@ -390,11 +407,20 @@ function toggleView() {
       document.getElementById('kpi-critical-count').textContent;
     document.getElementById('citizen-protected').textContent =
       document.getElementById('kpi-protected').textContent;
+    // KPI labels — lenguaje ciudadano
+    document.querySelector('#kpi-critical-count').closest('.kpi-card').querySelector('.kpi-label').textContent = 'Zonas de riesgo';
+    document.querySelector('#kpi-total-count').closest('.kpi-card').querySelector('.kpi-label').textContent = 'Puntos reportados';
+    document.querySelector('#kpi-protected').closest('.kpi-card').querySelector('.kpi-label').textContent = 'Vecinos protegidos';
   } else {
     brigadeEls.forEach(el => el.classList.remove('hidden'));
     citizenPanel.classList.add('hidden');
     btn.textContent = '📱 Vista Ciudadana';
+    // KPI labels — lenguaje brigada
+    document.querySelector('#kpi-critical-count').closest('.kpi-card').querySelector('.kpi-label').textContent = 'Focos Críticos';
+    document.querySelector('#kpi-total-count').closest('.kpi-card').querySelector('.kpi-label').textContent = 'Total Monitoreados';
+    document.querySelector('#kpi-protected').closest('.kpi-card').querySelector('.kpi-label').textContent = 'Personas Protegidas';
   }
+  renderDashboard(fociData);
 }
 
 function setupEventListeners() {
