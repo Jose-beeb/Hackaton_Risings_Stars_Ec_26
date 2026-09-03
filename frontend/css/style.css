@@ -589,4 +589,6 @@ body {
 
 .new-marker {
   animation: pulse 0.6s ease 3;
+  transform-box: fill-box;
+  transform-origin: center;
 }
