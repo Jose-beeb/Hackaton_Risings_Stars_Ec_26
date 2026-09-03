@@ -516,7 +516,7 @@ function setupEventListeners() {
       const res = await fetch("http://localhost:8000/api/routes/dispatch", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ depot_coordinates: [-79.895, -2.18], max_foci: 8 })
+        body: JSON.stringify({ depot_coordinates: [-79.895, -2.18], max_foci: 16 })
       });
       const data = await res.json();
       drawRoute(data);
@@ -534,33 +534,64 @@ function setupEventListeners() {
   });
 }
 
+const BRIGADE_COLORS = ['#38bdf8', '#a855f7', '#f97316', '#84cc16', '#ec4899'];
+
 function drawRoute(routeData) {
   lastRouteData = routeData;
+  routeLayer.clearLayers();
 
-  const lineCoords = routeData.route_geometry.coordinates.map(c => [c[1], c[0]]);
-  const polyline = L.polyline(lineCoords, {
-    color: "#38bdf8",
-    weight: 4,
-    dashArray: "8, 8",
-    opacity: 0.9
-  }).addTo(routeLayer);
+  const brigades = routeData.brigades;
+  let firstPolyline = null;
 
-  map.fitBounds(polyline.getBounds(), { padding: [40, 40] });
+  if (brigades && brigades.length > 0) {
+    brigades.forEach((brigade, idx) => {
+      const color = BRIGADE_COLORS[idx % BRIGADE_COLORS.length];
+      const lineCoords = brigade.route_geometry.coordinates.map(c => [c[1], c[0]]);
+      const polyline = L.polyline(lineCoords, {
+        color,
+        weight: 4,
+        dashArray: "8, 8",
+        opacity: 0.9
+      }).addTo(routeLayer);
 
-  // Mostrar estadísticas de ruta
+      polyline.bindTooltip(
+        `${brigade.brigade_id} · ${brigade.stops_count} focos · ${brigade.distance_km} km`,
+        { sticky: true }
+      );
+
+      if (idx === 0) firstPolyline = polyline;
+    });
+  } else {
+    // Fallback: ruta única sin datos de brigadas
+    const lineCoords = routeData.route_geometry.coordinates.map(c => [c[1], c[0]]);
+    firstPolyline = L.polyline(lineCoords, {
+      color: BRIGADE_COLORS[0],
+      weight: 4,
+      dashArray: "8, 8",
+      opacity: 0.9
+    }).addTo(routeLayer);
+  }
+
+  if (firstPolyline) {
+    map.fitBounds(firstPolyline.getBounds(), { padding: [40, 40] });
+  }
+
+  // Resumen de ruta
   const summaryBox = document.getElementById("route-summary");
   summaryBox.classList.remove("hidden");
   document.getElementById("route-dist").textContent = routeData.total_distance_km;
   document.getElementById("route-time").textContent = routeData.estimated_duration_min;
 
-  const brigades = routeData.savings?.brigades_required ?? 1;
+  const brigadeCount = routeData.savings?.brigades_required ?? 1;
   document.getElementById("route-stops").textContent =
-    routeData.priority_foci_count + (brigades > 1 ? ` (${brigades} cuadrillas)` : '');
+    routeData.priority_foci_count + (brigadeCount > 1 ? ` (${brigadeCount} cuadrillas)` : '');
 
-  // Actualizar panel de impacto con datos reales
   updateImpactMetrics(fociData, lastRouteData);
 
   if (routeData.savings) {
-    showToast(`Ruta optimizada: ${routeData.savings.efficiency_pct}% más eficiente que ruta ciega`, 'success');
+    const msg = brigadeCount > 1
+      ? `${brigadeCount} cuadrillas · ${routeData.savings.efficiency_pct}% más eficiente que ruta ciega`
+      : `Ruta optimizada: ${routeData.savings.efficiency_pct}% más eficiente que ruta ciega`;
+    showToast(msg, 'success');
   }
 }
