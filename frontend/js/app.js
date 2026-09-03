@@ -1,4 +1,4 @@
-// AedesGuard Frontend Application
+// Alerta Mosquitos Frontend Application
 let map;
 let heatLayer;
 let markersLayer;
@@ -6,6 +6,7 @@ let routeLayer;
 let fociData = [];
 let previousFociCount = 0;
 let cameraStream = null;
+let lastRouteData = null;
 
 // Inicialización
 document.addEventListener("DOMContentLoaded", () => {
@@ -162,18 +163,24 @@ function renderDashboard(features, animateNew = false) {
     feedContainer.appendChild(item);
   });
 
-  // Actualizar métricas de impacto
-  updateImpactMetrics(features);
+  // Actualizar métricas de impacto (con datos de ruta si están disponibles)
+  updateImpactMetrics(features, lastRouteData);
 }
 
-function updateImpactMetrics(features) {
+function updateImpactMetrics(features, routeData = null) {
   const total = features.length;
-  const liters = Math.round(total * 2.5);
-  const kmSaved = Math.round(total * 0.3);
   const protected_ = Math.round(total * 850);
 
-  document.getElementById('impact-liters').textContent = liters + ' L';
-  document.getElementById('impact-km').textContent = kmSaved + ' km';
+  // Usar datos reales del optimizador si están disponibles
+  const liters = routeData?.savings
+    ? routeData.savings.pesticide_liters_used + ' L'
+    : Math.round(total * 2.5) + ' L';
+  const kmSaved = routeData?.savings
+    ? routeData.savings.km_saved + ' km (' + routeData.savings.efficiency_pct + '%)'
+    : '--';
+
+  document.getElementById('impact-liters').textContent = liters;
+  document.getElementById('impact-km').textContent = kmSaved;
   document.getElementById('kpi-protected').textContent = protected_ > 999
     ? (protected_ / 1000).toFixed(1) + 'k'
     : protected_;
@@ -539,8 +546,9 @@ function setupEventListeners() {
 }
 
 function drawRoute(routeData) {
-  const lineCoords = routeData.route_geometry.coordinates.map(c => [c[1], c[0]]);
+  lastRouteData = routeData;
 
+  const lineCoords = routeData.route_geometry.coordinates.map(c => [c[1], c[0]]);
   const polyline = L.polyline(lineCoords, {
     color: "#38bdf8",
     weight: 4,
@@ -550,10 +558,20 @@ function drawRoute(routeData) {
 
   map.fitBounds(polyline.getBounds(), { padding: [40, 40] });
 
-  // Mostrar estadísticas
+  // Mostrar estadísticas de ruta
   const summaryBox = document.getElementById("route-summary");
   summaryBox.classList.remove("hidden");
   document.getElementById("route-dist").textContent = routeData.total_distance_km;
   document.getElementById("route-time").textContent = routeData.estimated_duration_min;
-  document.getElementById("route-stops").textContent = routeData.priority_foci_count;
+
+  const brigades = routeData.savings?.brigades_required ?? 1;
+  document.getElementById("route-stops").textContent =
+    routeData.priority_foci_count + (brigades > 1 ? ` (${brigades} cuadrillas)` : '');
+
+  // Actualizar panel de impacto con datos reales
+  updateImpactMetrics(fociData, lastRouteData);
+
+  if (routeData.savings) {
+    showToast(`Ruta optimizada: ${routeData.savings.efficiency_pct}% más eficiente que ruta ciega`, 'success');
+  }
 }
