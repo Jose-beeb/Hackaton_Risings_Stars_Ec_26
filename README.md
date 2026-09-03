@@ -11,6 +11,12 @@ El ciudadano toma una foto, la IA la clasifica, calcula el riesgo entomologico y
 
 ---
 
+## Antes de empezar — leer primero
+
+> Nuevo en el proyecto? Lee **[SETUP.md](SETUP.md)** — tiene todo lo que necesitas instalar y configurar antes de tocar codigo.
+
+---
+
 ## Configuracion inicial (hacer una vez por integrante)
 
 ### Paso 1 — Clonar el repositorio
