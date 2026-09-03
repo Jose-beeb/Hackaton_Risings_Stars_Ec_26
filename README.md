@@ -136,3 +136,41 @@ El Indice de Riesgo Entomologico esta calibrado con datos empiricos de laborator
 - **Tun-Lin et al. (2000)** — Umbral minimo de desarrollo: 8.3°C. Materia organica aumenta el potencial vectorial del adulto emergente.
 
 Papers disponibles en `docs/research/`.
+
+---
+
+## Contribuir al proyecto
+
+**Regla de equipo: cada cambio que hagas, actualiza el README.**
+
+Esto nos ahorra tiempo al preparar el pitch — si el README está al día, el resumen ejecutivo ya está listo.
+
+### Qué actualizar según lo que hiciste
+
+| Tipo de cambio | Qué tocar en el README |
+|---|---|
+| Nueva feature | Agregar fila en tabla **Funcionalidades** con ✅ |
+| Nuevo endpoint | Agregar fila en tabla **Endpoints** |
+| Cambio en el modelo IRE | Actualizar sección **Base científica** |
+| Bug fix importante | No es necesario (va en el commit message) |
+
+### Flujo de trabajo con ramas
+
+```powershell
+# Siempre partir de main actualizado
+git checkout main
+git pull origin main
+git checkout -b feat/tu-area   # ej: feat/bio-engine, feat/gis-logistics
+
+# Trabajar, commitear con conventional commits
+git commit -m "feat(bio): descripcion del cambio"
+
+# Subir y abrir Pull Request a main
+git push -u origin feat/tu-area
+```
+
+**Ramas sugeridas por rol:**
+- `feat/bio-engine` — Biotecnología (modelo IRE, papers)
+- `feat/gis-logistics` — Mecatrónica (rutas, optimización)
+- `feat/backend-api` — Software Backend
+- `feat/frontend-dashboard` — Software Frontend
