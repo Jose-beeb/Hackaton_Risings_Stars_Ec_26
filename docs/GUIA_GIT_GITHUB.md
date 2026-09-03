@@ -72,18 +72,46 @@ source venv/bin/activate
 pip install -r backend/requirements.txt
 ```
 
-### 4. Configurar variables de entorno (solo Backend)
+### 4. Obtener y configurar la API Key de Gemini
 
-Crear el archivo `.env` en la raiz del proyecto (mismo nivel que README.md):
+> Solo el integrante de Backend necesita esto para correr el servidor.
+> El sistema funciona con fallback automatico si no hay clave.
+
+**Como obtener la clave (5 minutos):**
+
+1. Abrir **https://aistudio.google.com** en el navegador
+2. Iniciar sesion con tu cuenta Google
+3. En el menu izquierdo, click en **"Get API key"**
+4. Click en el boton **"Create API key in new project"**
+5. Copiar la clave — empieza con `AIza...` y tiene unos 39 caracteres
+
+**Donde ponerla:**
+
+Crear un archivo llamado `.env` en la raiz del proyecto
+(mismo nivel que el `README.md`, NO dentro de ninguna carpeta):
 
 ```
-GEMINI_API_KEY=AIza...tu_clave_aqui
+GEMINI_API_KEY=AIzaSy...tu_clave_completa_aqui
 ENVIRONMENT=development
 PORT=8000
 ```
 
-> IMPORTANTE: `.env` ya esta en `.gitignore`. Nunca hacer `git add .env`.
-> Para obtener la clave: https://aistudio.google.com -> "Get API key"
+**Verificar que funciona:**
+
+```bash
+# Activar entorno virtual y correr el servidor
+venv\Scripts\activate
+python backend/app/main.py
+
+# En otra terminal, probar que Gemini responde
+python backend/tests/smoke_test.py
+```
+
+**Reglas de seguridad de la clave:**
+- Nunca hacer `git add .env` — esta en `.gitignore` por una razon
+- Nunca pegar la clave en el chat del equipo, WhatsApp o GitHub
+- Si la filtraste por accidente: ir a aistudio.google.com y revocarla de inmediato, generar una nueva
+- Cada integrante puede generar su propia clave gratuita si necesita correr el backend localmente
 
 ---
 
