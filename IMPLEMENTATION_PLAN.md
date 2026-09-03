@@ -30,6 +30,21 @@
 
 ---
 
+## TAREA PENDIENTE — Parámetros operativos reales de brigadas (Mecatrónica)
+
+> Estos valores están hardcodeados con estimaciones arbitrarias. Deben validarse con datos reales
+> antes del pitch para que las métricas de impacto sean defendibles ante el jurado.
+
+- [ ] ¿Cuántos focos puede tratar una cuadrilla sanitaria en un turno? → ajustar `max_stops`
+- [ ] ¿Cuántas horas dura un turno de brigada en Ecuador? → ajustar `max_hours_per_brigade`
+- [ ] ¿Cuántos litros carga una mochila fumigadora real? → ajustar `max_liters_per_brigade`
+- [ ] ¿Cuántos minutos toma tratar un criadero en campo? → ajustar `MINUTES_PER_STOP`
+- [ ] ¿Se desplazan en moto, vehículo o a pie? → ajustar `SPEED_KMH`
+
+**Dónde cambiar los valores:** `core/logistics/route_optimizer.py` líneas 10-14
+
+---
+
 ## DÍA 4 — Pitch y Ensayo (PENDIENTE)
 
 ### 4.1 Métricas financieras para el pitch
