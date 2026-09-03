@@ -16,14 +16,20 @@ class TestTemperatureFactor:
     def test_optimal_temperature_returns_max(self):
         assert _temperature_factor(28.0) == pytest.approx(1.0)
 
-    def test_below_threshold_returns_minimum(self):
-        assert _temperature_factor(15.0) == pytest.approx(0.1)
+    def test_below_minimum_threshold_returns_zero(self):
+        # Tun-Lin et al. (2000): umbral minimo de desarrollo es 8.3°C
+        assert _temperature_factor(8.0) == pytest.approx(0.0)
 
-    def test_above_threshold_returns_minimum(self):
-        assert _temperature_factor(35.0) == pytest.approx(0.1)
+    def test_above_34c_returns_minimal(self):
+        # Rueda et al. (1990): supervivencia cae drasticamente por encima de 34°C
+        assert _temperature_factor(35.0) == pytest.approx(0.05)
+
+    def test_15c_returns_very_low_factor(self):
+        # Rueda et al. (1990): supervivencia de Ae. aegypti a 15°C es solo 3%
+        assert _temperature_factor(15.0) < 0.10
 
     def test_boundary_low_is_valid(self):
-        assert _temperature_factor(16.0) > 0.1
+        assert _temperature_factor(16.0) > 0.0
 
     def test_boundary_high_is_valid(self):
         assert _temperature_factor(34.0) > 0.1
@@ -76,5 +82,26 @@ class TestCalculateIre:
         assert result["days_to_emergence_estimate"] > 0
 
     def test_cold_temperature_yields_low_risk(self):
+        # A 10°C el desarrollo es marginal (cerca del umbral minimo de 8.3°C)
         result = calculate_ire("tire", 10.0, 80.0)
         assert result["risk_level"] == "LOW"
+
+    def test_days_to_emergence_calibrated_at_27c(self):
+        # Rueda et al. (1990): ~7 dias a 27°C
+        result = calculate_ire("tire", 27.0, 80.0)
+        assert result["days_to_emergence_estimate"] == 7
+
+    def test_days_to_emergence_calibrated_at_25c(self):
+        # Rueda et al. (1990): ~10.5 dias a 25°C
+        result = calculate_ire("tire", 25.0, 80.0)
+        assert result["days_to_emergence_estimate"] == 10
+
+    def test_days_to_emergence_calibrated_at_20c(self):
+        # Rueda et al. (1990): ~12 dias a 20°C
+        result = calculate_ire("bucket", 20.0, 80.0)
+        assert result["days_to_emergence_estimate"] == 12
+
+    def test_days_to_emergence_calibrated_at_15c(self):
+        # Rueda et al. (1990): ~31 dias a 15°C
+        result = calculate_ire("bucket", 15.0, 80.0)
+        assert result["days_to_emergence_estimate"] == 31

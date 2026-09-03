@@ -41,11 +41,16 @@
 
 ### 1.4 IRE Calculator mejorado (aporte de Biotecnologia)
 - [x] Tamano del deposito como factor (small/medium/large)
-- [x] Materia organica como multiplicador de riesgo (+20%)
+- [x] Materia organica como multiplicador de riesgo (+30%, calibrado con Tun-Lin 2000)
 - [x] Distincion ACTIVE (con agua) vs POTENTIAL (sin agua, riesgo potencial)
 - [x] Clasificacion natural (charco) vs artificial (llanta, balde)
 - [x] Nota cientifica honesta: IRE es indice de riesgo, no certeza de eclosion
-- [x] Estimacion de dias calibrada por temperatura (no solo por score)
+- [x] Estimacion de dias calibrada con datos empiricos de laboratorio:
+  - Fuente 1: Rueda et al. (1990) — desarrollo Ae. aegypti a 6 temperaturas (15-34°C)
+  - Fuente 2: Tun-Lin et al. (2000) — umbral minimo 8.3°C, supervivencia 88-93% entre 20-30°C
+  - Umbral minimo de desarrollo corregido: 8.3°C (antes: 16°C)
+  - Dias a emergencia calibrados: 27°C→7d, 25°C→10d, 20°C→12d, 15°C→31d
+  - Factor materia organica ajustado a 1.30 (Tun-Lin: recipientes con MO producen adultos mas grandes con mayor potencial vectorial)
 
 ### 1.5 Backend integrado
 - [x] `main.py` actualizado con servicios reales y campos biologicos completos
@@ -140,7 +145,7 @@
 
 | Componente | Estado | Responsable |
 |---|---|---|
-| IRE Calculator (mejorado con aportes Naty) | ✅ Completo | Biotecnología |
+| IRE Calculator (calibrado con literatura peer-reviewed) | ✅ Completo | Biotecnología |
 | Route Optimizer | ✅ Completo | Mecatrónica |
 | Mock Data (40 focos GBQ) | ✅ Generado | Mecatrónica |
 | API Contract | ✅ Definido | Software |

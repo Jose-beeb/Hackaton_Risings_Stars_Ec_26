@@ -49,37 +49,42 @@ CONTAINER_CATEGORIES = {
 
 def _temperature_factor(temperature_c: float) -> float:
     """
-    Factor metabolico basado en la temperatura.
-    Rango optimo del Aedes aegypti: 26-30 C (pico en 28 C).
-    Por debajo de 16 C o sobre 34 C el desarrollo se detiene.
+    Factor metabolico basado en temperatura. Calibrado con datos empiricos:
+    - Umbral minimo de desarrollo: 8.3°C (Tun-Lin et al., 2000)
+    - Supervivencia a 15°C: solo 3% para Ae. aegypti (Rueda et al., 1990)
+    - Rango optimo: 27-30°C; pico en 28°C (ambos estudios)
+    - Por encima de 34°C la supervivencia cae drasticamente (Rueda et al., 1990)
     """
-    if temperature_c < 16.0 or temperature_c > 34.0:
-        return 0.1
+    if temperature_c < 8.3:
+        return 0.0
+    if temperature_c > 34.0:
+        return 0.05
+    if temperature_c < 16.0:
+        # Zona de desarrollo marginal: supervivencia ~3% a 15°C (Rueda 1990)
+        return max(0.0, (temperature_c - 8.3) / (16.0 - 8.3) * 0.10)
     return max(0.3, 1.0 - abs(28.0 - temperature_c) * 0.06)
 
 
 def _days_to_emergence(ire_score: float, temperature_c: float) -> int:
     """
-    Estimacion de dias para emergencia del adulto basada en temperatura y IRE.
-    A 28 C el ciclo completo (huevo a adulto) es de ~7-8 dias.
-    Esta estimacion asume que hay larvas presentes — no puede confirmarse
-    sin inspeccion directa del criadero.
+    Estimacion de dias para emergencia del adulto.
+    Calibrado con datos de laboratorio de Rueda et al. (1990) Tabla 2
+    y Tun-Lin et al. (2000) para Ae. aegypti:
+      >=27°C → 7 dias  | 25°C → 10.5 dias | 20°C → 12 dias
+      15°C  → 31 dias  | <15°C → >39 dias (Tun-Lin 2000)
     """
-    if temperature_c >= 28.0:
-        base_days = 5
-    elif temperature_c >= 25.0:
+    if temperature_c >= 27.0:
         base_days = 7
-    elif temperature_c >= 22.0:
+    elif temperature_c >= 25.0:
         base_days = 10
+    elif temperature_c >= 20.0:
+        base_days = 12
+    elif temperature_c >= 15.0:
+        base_days = 31
     else:
-        base_days = 14
+        base_days = 45
 
-    if ire_score >= 70.0:
-        return base_days
-    elif ire_score >= 40.0:
-        return base_days + 2
-    else:
-        return base_days + 5
+    return base_days
 
 
 def calculate_ire(
@@ -114,7 +119,8 @@ def calculate_ire(
     size_factor = SIZE_FACTORS.get(container_size, 1.0)
     temp_factor = _temperature_factor(temperature_c)
     hum_factor = max(0.5, humidity_pct / 100.0)
-    organic_factor = 1.20 if organic_matter else 1.0
+    # Tun-Lin et al. (2000): materia organica acelera desarrollo y aumenta tamano del adulto
+    organic_factor = 1.30 if organic_matter else 1.0
 
     # Puntuacion base
     raw_score = 55.0 * container_weight * size_factor * temp_factor * hum_factor * organic_factor
