@@ -116,6 +116,9 @@ MosquitoAlert/
 | Simular Reporte en Vivo (marcador CRITICAL instantaneo para el pitch) | ✅ |
 | Persistencia de reportes en GeoJSON | ✅ |
 | PWA instalable en movil | ✅ |
+| Parametros operativos reales de brigadas (stops, horas, litros, velocidad) | 🔍 Investigar |
+| Metricas financieras: costo brote dengue Ecuador, ROI a 12 meses | 🔍 Investigar |
+| PITCH.md — narrativa, problema, impacto, ROI | ⏳ Pendiente |
 
 ---
 

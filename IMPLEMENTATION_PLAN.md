@@ -45,6 +45,17 @@
 
 ---
 
+## TAREA PENDIENTE — Métricas financieras para el pitch (Todos)
+
+> Necesarias para defender el impacto económico ante el jurado.
+
+- [ ] Costo promedio de un brote de dengue en Ecuador (USD) — buscar en MSP, OPS/OMS
+- [ ] Costo de despliegue de Alerta Mosquitos en un municipio (infraestructura cloud + operación)
+- [ ] ROI proyectado a 12 meses para un municipio de 500k habitantes
+- [ ] Añadir cifras a `PITCH.md` cuando esté disponible
+
+---
+
 ## DÍA 4 — Pitch y Ensayo (PENDIENTE)
 
 ### 4.1 Métricas financieras para el pitch
