@@ -105,12 +105,15 @@ MosquitoAlert/
 | Motor IRE calibrado con literatura peer-reviewed | ✅ |
 | Clima en tiempo real (Open-Meteo) | ✅ |
 | Mapa de focos con heatmap (Leaflet) | ✅ |
-| Optimizacion de ruta de brigadas (TSP) | ✅ |
-| Vista Ciudadana / Vista Brigada | ✅ |
+| Optimizacion de ruta de brigadas (TSP ponderado por IRE) | ✅ |
+| Division automatica en multiples cuadrillas por capacidad operativa | ✅ |
+| Calculo real de ahorro vs ruta ciega (km + combustible) | ✅ |
+| Vista Ciudadana (lenguaje simple) / Vista Brigada (tecnico) | ✅ |
 | Captura movil con camara y GPS | ✅ |
-| Polling en tiempo real (cada 4s) | ✅ |
-| Panel de impacto cuantificado | ✅ |
-| Demo Mode (doble click en logo) | ✅ |
+| Polling en tiempo real (sin flicker, solo redibuja si hay cambios) | ✅ |
+| Panel de impacto con datos reales de la ruta | ✅ |
+| Demo Mode (doble click en logo — ruta automatica + KPIs animados) | ✅ |
+| Simular Reporte en Vivo (marcador CRITICAL instantaneo para el pitch) | ✅ |
 | Persistencia de reportes en GeoJSON | ✅ |
 | PWA instalable en movil | ✅ |
 

@@ -17,6 +17,806 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
+          -79.87626458846081,
+          -2.194982420826325
+        ]
+      },
+      "properties": {
+        "id": "foco-069",
+        "sector": "Reporte en Vivo",
+        "container_type": "tire",
+        "container_name": "Llanta",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "water_present": true,
+        "organic_matter_present": true,
+        "estimated_volume_liters": 15.0,
+        "temperature_c": 31.4,
+        "humidity_pct": 52,
+        "ire_score": 44.4,
+        "risk_level": "MEDIUM",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T17:41:18.212430Z",
+        "recommended_action": "Eliminacion fisica del deposito o vaciado completo. Educacion comunitaria sobre manejo de recipientes en el predio.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica.",
+        "notes": "Demo en vivo"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.90935167602632,
+          -2.192997429535561
+        ]
+      },
+      "properties": {
+        "id": "foco-068",
+        "sector": "Reporte en Vivo",
+        "container_type": "tire",
+        "container_name": "Llanta",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "water_present": true,
+        "organic_matter_present": true,
+        "estimated_volume_liters": 15.0,
+        "temperature_c": 30.6,
+        "humidity_pct": 58,
+        "ire_score": 52.5,
+        "risk_level": "MEDIUM",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T17:41:12.772641Z",
+        "recommended_action": "Eliminacion fisica del deposito o vaciado completo. Educacion comunitaria sobre manejo de recipientes en el predio.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica.",
+        "notes": "Demo en vivo"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.88330626875214,
+          -2.171909080006353
+        ]
+      },
+      "properties": {
+        "id": "foco-067",
+        "sector": "Reporte en Vivo",
+        "container_type": "tire",
+        "container_name": "Llanta",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "water_present": true,
+        "organic_matter_present": true,
+        "estimated_volume_liters": 15.0,
+        "temperature_c": 31.9,
+        "humidity_pct": 52,
+        "ire_score": 42.7,
+        "risk_level": "MEDIUM",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T17:40:16.322586Z",
+        "recommended_action": "Eliminacion fisica del deposito o vaciado completo. Educacion comunitaria sobre manejo de recipientes en el predio.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica.",
+        "notes": "Demo en vivo"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.89455695408424,
+          -2.1753664797125563
+        ]
+      },
+      "properties": {
+        "id": "foco-066",
+        "sector": "Reporte en Vivo",
+        "container_type": "tire",
+        "container_name": "Llanta",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "water_present": true,
+        "organic_matter_present": true,
+        "estimated_volume_liters": 15.0,
+        "temperature_c": 31.1,
+        "humidity_pct": 54,
+        "ire_score": 47.1,
+        "risk_level": "MEDIUM",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T17:40:14.599014Z",
+        "recommended_action": "Eliminacion fisica del deposito o vaciado completo. Educacion comunitaria sobre manejo de recipientes en el predio.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica.",
+        "notes": "Demo en vivo"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.8975611406801,
+          -2.1918170666328867
+        ]
+      },
+      "properties": {
+        "id": "foco-065",
+        "sector": "Reporte en Vivo",
+        "container_type": "tire",
+        "container_name": "Llanta",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "water_present": true,
+        "organic_matter_present": true,
+        "estimated_volume_liters": 15.0,
+        "temperature_c": 29.0,
+        "humidity_pct": 84.0,
+        "ire_score": 84.7,
+        "risk_level": "CRITICAL",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T17:38:56.906506Z",
+        "recommended_action": "Intervencion prioritaria: drenaje inmediato, aplicacion de larvicida biologico (Bacillus thuringiensis israelensis) y reporte a autoridad sanitaria.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica.",
+        "notes": "Demo en vivo"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.89538635050589,
+          -2.1884392341557617
+        ]
+      },
+      "properties": {
+        "id": "foco-064",
+        "sector": "Reporte en Vivo",
+        "container_type": "tire",
+        "container_name": "Llanta",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "water_present": true,
+        "organic_matter_present": true,
+        "estimated_volume_liters": 15.0,
+        "temperature_c": 29.0,
+        "humidity_pct": 84.0,
+        "ire_score": 84.7,
+        "risk_level": "CRITICAL",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T17:38:49.014417Z",
+        "recommended_action": "Intervencion prioritaria: drenaje inmediato, aplicacion de larvicida biologico (Bacillus thuringiensis israelensis) y reporte a autoridad sanitaria.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica.",
+        "notes": "Demo en vivo"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.89200479236727,
+          -2.1991732078137285
+        ]
+      },
+      "properties": {
+        "id": "foco-063",
+        "sector": "Reporte en Vivo",
+        "container_type": "tire",
+        "container_name": "Llanta",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "water_present": true,
+        "organic_matter_present": true,
+        "estimated_volume_liters": 15.0,
+        "temperature_c": 31.3,
+        "humidity_pct": 52,
+        "ire_score": 44.7,
+        "risk_level": "MEDIUM",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T17:38:45.470886Z",
+        "recommended_action": "Eliminacion fisica del deposito o vaciado completo. Educacion comunitaria sobre manejo de recipientes en el predio.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica.",
+        "notes": "Demo en vivo"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.89359851598307,
+          -2.1830223140844014
+        ]
+      },
+      "properties": {
+        "id": "foco-062",
+        "sector": "Reporte en Vivo",
+        "container_type": "tire",
+        "container_name": "Llanta",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "water_present": true,
+        "organic_matter_present": true,
+        "estimated_volume_liters": 15.0,
+        "temperature_c": 31.1,
+        "humidity_pct": 54,
+        "ire_score": 47.1,
+        "risk_level": "MEDIUM",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T17:14:06.989580Z",
+        "recommended_action": "Eliminacion fisica del deposito o vaciado completo. Educacion comunitaria sobre manejo de recipientes en el predio.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica.",
+        "notes": "Reporte en vivo durante presentación"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.89350983964815,
+          -2.19474306763662
+        ]
+      },
+      "properties": {
+        "id": "foco-061",
+        "sector": "Reporte en Vivo",
+        "container_type": "tire",
+        "container_name": "Llanta",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "water_present": true,
+        "organic_matter_present": true,
+        "estimated_volume_liters": 15.0,
+        "temperature_c": 31.3,
+        "humidity_pct": 52,
+        "ire_score": 44.7,
+        "risk_level": "MEDIUM",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T17:14:04.676029Z",
+        "recommended_action": "Eliminacion fisica del deposito o vaciado completo. Educacion comunitaria sobre manejo de recipientes en el predio.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica.",
+        "notes": "Reporte en vivo durante presentación"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.88790751550893,
+          -2.177490904253256
+        ]
+      },
+      "properties": {
+        "id": "foco-060",
+        "sector": "Reporte en Vivo",
+        "container_type": "tire",
+        "container_name": "Llanta",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "water_present": true,
+        "organic_matter_present": true,
+        "estimated_volume_liters": 15.0,
+        "temperature_c": 31.1,
+        "humidity_pct": 54,
+        "ire_score": 47.1,
+        "risk_level": "MEDIUM",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T17:13:59.035677Z",
+        "recommended_action": "Eliminacion fisica del deposito o vaciado completo. Educacion comunitaria sobre manejo de recipientes en el predio.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica.",
+        "notes": "Reporte en vivo durante presentación"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.89159691190544,
+          -2.204958544475571
+        ]
+      },
+      "properties": {
+        "id": "foco-059",
+        "sector": "Reporte en Vivo",
+        "container_type": "tire",
+        "container_name": "Llanta",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "water_present": true,
+        "organic_matter_present": true,
+        "estimated_volume_liters": 15.0,
+        "temperature_c": 31.3,
+        "humidity_pct": 52,
+        "ire_score": 44.7,
+        "risk_level": "MEDIUM",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T17:13:53.828302Z",
+        "recommended_action": "Eliminacion fisica del deposito o vaciado completo. Educacion comunitaria sobre manejo de recipientes en el predio.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica.",
+        "notes": "Reporte en vivo durante presentación"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.8744894473307,
+          -2.1770630946996343
+        ]
+      },
+      "properties": {
+        "id": "foco-058",
+        "sector": "Reporte en Vivo",
+        "container_type": "tire",
+        "container_name": "Llanta",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "water_present": true,
+        "organic_matter_present": true,
+        "estimated_volume_liters": 15.0,
+        "temperature_c": 31.3,
+        "humidity_pct": 52,
+        "ire_score": 44.7,
+        "risk_level": "MEDIUM",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T17:13:48.556501Z",
+        "recommended_action": "Eliminacion fisica del deposito o vaciado completo. Educacion comunitaria sobre manejo de recipientes en el predio.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica.",
+        "notes": "Reporte en vivo durante presentación"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.90977266247974,
+          -2.1779327655873466
+        ]
+      },
+      "properties": {
+        "id": "foco-057",
+        "sector": "Reporte en Vivo",
+        "container_type": "bucket",
+        "container_name": "Balde / recipiente",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "water_present": true,
+        "organic_matter_present": false,
+        "estimated_volume_liters": 5.0,
+        "temperature_c": 31.1,
+        "humidity_pct": 54,
+        "ire_score": 26.6,
+        "risk_level": "LOW",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T17:12:55.680426Z",
+        "recommended_action": "Monitoreo preventivo. Voltear o cubrir recipientes descubiertos. Revisitar en 7 dias si hay lluvia prevista.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica.",
+        "notes": "Reporte en vivo durante presentación"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.88036837134061,
+          -2.170463059905466
+        ]
+      },
+      "properties": {
+        "id": "foco-056",
+        "sector": "Reporte en Vivo",
+        "container_type": "bucket",
+        "container_name": "Balde / recipiente",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "water_present": true,
+        "organic_matter_present": false,
+        "estimated_volume_liters": 5.0,
+        "temperature_c": 31.1,
+        "humidity_pct": 54,
+        "ire_score": 26.6,
+        "risk_level": "LOW",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T17:12:35.275899Z",
+        "recommended_action": "Monitoreo preventivo. Voltear o cubrir recipientes descubiertos. Revisitar en 7 dias si hay lluvia prevista.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica.",
+        "notes": "Reporte en vivo durante presentación"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.90751562741632,
+          -2.1781700293910964
+        ]
+      },
+      "properties": {
+        "id": "foco-055",
+        "sector": "Reporte en Vivo",
+        "container_type": "bucket",
+        "container_name": "Balde / recipiente",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "water_present": true,
+        "organic_matter_present": false,
+        "estimated_volume_liters": 5.0,
+        "temperature_c": 31.1,
+        "humidity_pct": 54,
+        "ire_score": 26.6,
+        "risk_level": "LOW",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T17:12:29.419490Z",
+        "recommended_action": "Monitoreo preventivo. Voltear o cubrir recipientes descubiertos. Revisitar en 7 dias si hay lluvia prevista.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica.",
+        "notes": "Reporte en vivo durante presentación"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.88696934743565,
+          -2.189619305147461
+        ]
+      },
+      "properties": {
+        "id": "foco-054",
+        "sector": "Reporte en Vivo",
+        "container_type": "bucket",
+        "container_name": "Balde / recipiente",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "water_present": true,
+        "organic_matter_present": false,
+        "estimated_volume_liters": 5.0,
+        "temperature_c": 31.3,
+        "humidity_pct": 52,
+        "ire_score": 25.2,
+        "risk_level": "LOW",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T17:12:22.112444Z",
+        "recommended_action": "Monitoreo preventivo. Voltear o cubrir recipientes descubiertos. Revisitar en 7 dias si hay lluvia prevista.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica.",
+        "notes": "Reporte en vivo durante presentación"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.90252375180238,
+          -2.1767619080713465
+        ]
+      },
+      "properties": {
+        "id": "foco-053",
+        "sector": "Reporte en Vivo",
+        "container_type": "bucket",
+        "container_name": "Balde / recipiente",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "water_present": true,
+        "organic_matter_present": false,
+        "estimated_volume_liters": 5.0,
+        "temperature_c": 31.1,
+        "humidity_pct": 54,
+        "ire_score": 26.6,
+        "risk_level": "LOW",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T17:12:13.817556Z",
+        "recommended_action": "Monitoreo preventivo. Voltear o cubrir recipientes descubiertos. Revisitar en 7 dias si hay lluvia prevista.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica.",
+        "notes": "Reporte en vivo durante presentación"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.89494287916472,
+          -2.204879990012853
+        ]
+      },
+      "properties": {
+        "id": "foco-052",
+        "sector": "Reporte en Vivo",
+        "container_type": "bucket",
+        "container_name": "Balde / recipiente",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "water_present": true,
+        "organic_matter_present": false,
+        "estimated_volume_liters": 5.0,
+        "temperature_c": 31.3,
+        "humidity_pct": 52,
+        "ire_score": 25.2,
+        "risk_level": "LOW",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T17:12:08.407321Z",
+        "recommended_action": "Monitoreo preventivo. Voltear o cubrir recipientes descubiertos. Revisitar en 7 dias si hay lluvia prevista.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica.",
+        "notes": "Reporte en vivo durante presentación"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.89176161683727,
+          -2.173148967438918
+        ]
+      },
+      "properties": {
+        "id": "foco-051",
+        "sector": "Reporte en Vivo",
+        "container_type": "bucket",
+        "container_name": "Balde / recipiente",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "water_present": true,
+        "organic_matter_present": false,
+        "estimated_volume_liters": 5.0,
+        "temperature_c": 31.1,
+        "humidity_pct": 54,
+        "ire_score": 26.6,
+        "risk_level": "LOW",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T17:11:48.042561Z",
+        "recommended_action": "Monitoreo preventivo. Voltear o cubrir recipientes descubiertos. Revisitar en 7 dias si hay lluvia prevista.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica.",
+        "notes": "Reporte en vivo durante presentación"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.88735655915312,
+          -2.196263177715573
+        ]
+      },
+      "properties": {
+        "id": "foco-050",
+        "sector": "Reporte en Vivo",
+        "container_type": "bucket",
+        "container_name": "Balde / recipiente",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "water_present": true,
+        "organic_matter_present": false,
+        "estimated_volume_liters": 5.0,
+        "temperature_c": 31.3,
+        "humidity_pct": 52,
+        "ire_score": 25.2,
+        "risk_level": "LOW",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T17:11:38.280974Z",
+        "recommended_action": "Monitoreo preventivo. Voltear o cubrir recipientes descubiertos. Revisitar en 7 dias si hay lluvia prevista.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica.",
+        "notes": "Reporte en vivo durante presentación"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.88691494038785,
+          -2.198366190002209
+        ]
+      },
+      "properties": {
+        "id": "foco-049",
+        "sector": "Reporte en Vivo",
+        "container_type": "bucket",
+        "container_name": "Balde / recipiente",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "water_present": true,
+        "organic_matter_present": false,
+        "estimated_volume_liters": 5.0,
+        "temperature_c": 31.3,
+        "humidity_pct": 52,
+        "ire_score": 25.2,
+        "risk_level": "LOW",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T17:11:34.922064Z",
+        "recommended_action": "Monitoreo preventivo. Voltear o cubrir recipientes descubiertos. Revisitar en 7 dias si hay lluvia prevista.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica.",
+        "notes": "Reporte en vivo durante presentación"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.90508144601633,
+          -2.190590588621183
+        ]
+      },
+      "properties": {
+        "id": "foco-048",
+        "sector": "Reporte en Vivo",
+        "container_type": "bucket",
+        "container_name": "Balde / recipiente",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "water_present": true,
+        "organic_matter_present": false,
+        "estimated_volume_liters": 5.0,
+        "temperature_c": 30.5,
+        "humidity_pct": 58,
+        "ire_score": 29.8,
+        "risk_level": "LOW",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T17:11:30.675987Z",
+        "recommended_action": "Monitoreo preventivo. Voltear o cubrir recipientes descubiertos. Revisitar en 7 dias si hay lluvia prevista.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica.",
+        "notes": "Reporte en vivo durante presentación"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.87713843281635,
+          -2.1827009679446165
+        ]
+      },
+      "properties": {
+        "id": "foco-047",
+        "sector": "Reporte en Vivo",
+        "container_type": "bucket",
+        "container_name": "Balde / recipiente",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "water_present": true,
+        "organic_matter_present": false,
+        "estimated_volume_liters": 5.0,
+        "temperature_c": 31.3,
+        "humidity_pct": 52,
+        "ire_score": 25.2,
+        "risk_level": "LOW",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T17:11:25.470460Z",
+        "recommended_action": "Monitoreo preventivo. Voltear o cubrir recipientes descubiertos. Revisitar en 7 dias si hay lluvia prevista.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica.",
+        "notes": "Reporte en vivo durante presentación"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.87179129705085,
+          -2.169729907588958
+        ]
+      },
+      "properties": {
+        "id": "foco-046",
+        "sector": "Reporte en Vivo",
+        "container_type": "bucket",
+        "container_name": "Balde / recipiente",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "water_present": true,
+        "organic_matter_present": false,
+        "estimated_volume_liters": 5.0,
+        "temperature_c": 31.1,
+        "humidity_pct": 54,
+        "ire_score": 26.6,
+        "risk_level": "LOW",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T17:11:19.862426Z",
+        "recommended_action": "Monitoreo preventivo. Voltear o cubrir recipientes descubiertos. Revisitar en 7 dias si hay lluvia prevista.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica.",
+        "notes": "Reporte en vivo durante presentación"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.8912393405079,
+          -2.203422390599922
+        ]
+      },
+      "properties": {
+        "id": "foco-045",
+        "sector": "Reporte en Vivo",
+        "container_type": "bucket",
+        "container_name": "Balde / recipiente",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "water_present": true,
+        "organic_matter_present": false,
+        "estimated_volume_liters": 5.0,
+        "temperature_c": 31.3,
+        "humidity_pct": 52,
+        "ire_score": 25.2,
+        "risk_level": "LOW",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-03T17:11:14.556753Z",
+        "recommended_action": "Monitoreo preventivo. Voltear o cubrir recipientes descubiertos. Revisitar en 7 dias si hay lluvia prevista.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica.",
+        "notes": "Reporte en vivo durante presentación"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           -79.87496358727006,
           -2.1782558832195353
         ]
