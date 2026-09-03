@@ -1,5 +1,4 @@
-# MosquitoAlert
-**_Ojo al mosquito_**
+# Alerta Mosquitos
 
 Sistema de deteccion de criaderos de mosquitos y optimizacion de brigadas sanitarias.
 IEEE Rising Stars 2026 — Track 2: Public Health

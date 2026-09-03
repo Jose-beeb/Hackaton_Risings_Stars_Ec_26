@@ -1,7 +1,7 @@
 {
-  "name": "MosquitoAlert",
-  "short_name": "MosquitoAlert",
-  "description": "Ojo al mosquito — Detecta y reporta criaderos para proteger tu comunidad",
+  "name": "Alerta Mosquitos",
+  "short_name": "AlertaMosquitos",
+  "description": "Detecta y reporta criaderos de mosquitos para proteger tu comunidad",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0f172a",
