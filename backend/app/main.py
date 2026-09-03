@@ -105,12 +105,16 @@ def create_report(report: ReportRequest):
     # 2. Clima en tiempo real (Open-Meteo o fallback)
     climate = get_climate(report.latitude, report.longitude)
 
-    # 3. Calculo del Indice de Riesgo Entomologico
+    # 3. Calculo del Indice de Riesgo Entomologico con todos los factores biologicos
     container_type = vision_result.get("container_type", "bucket")
     bio_result = calculate_ire(
         container_type=container_type,
         temperature_c=climate["temperature_c"],
         humidity_pct=climate["humidity_pct"],
+        container_size=vision_result.get("container_size", "medium"),
+        organic_matter=vision_result.get("organic_matter_present", False),
+        water_present=vision_result.get("water_present", True),
+        estimated_volume_liters=vision_result.get("estimated_volume_liters", 10.0),
     )
 
     report_id = f"foco-{len(foci_store.get('features', [])) + 1:03d}"
@@ -138,15 +142,21 @@ def create_report(report: ReportRequest):
             "sector": "Reporte en Vivo",
             "container_type": container_type,
             "container_name": container_names.get(container_type, "Recipiente"),
-            "water_detected": vision_result.get("water_detected", True),
+            "container_category": bio_result["container_category"],
+            "container_size": vision_result.get("container_size", "medium"),
+            "water_present": vision_result.get("water_present", True),
+            "organic_matter_present": vision_result.get("organic_matter_present", False),
+            "estimated_volume_liters": vision_result.get("estimated_volume_liters", 10.0),
             "temperature_c": climate["temperature_c"],
             "humidity_pct": climate["humidity_pct"],
             "ire_score": bio_result["ire_score"],
             "risk_level": bio_result["risk_level"],
-            "days_to_emergence": bio_result["days_to_emergence"],
+            "risk_type": bio_result["risk_type"],
+            "days_to_emergence_estimate": bio_result["days_to_emergence_estimate"],
             "status": "PENDING",
             "reported_at": now_iso,
             "recommended_action": bio_result["recommended_action"],
+            "scientific_note": bio_result["scientific_note"],
             "notes": report.notes,
         },
     }

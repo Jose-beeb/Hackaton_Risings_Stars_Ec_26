@@ -1,56 +1,173 @@
 """
-Motor Bio-Matemático: Cálculo del Índice de Riesgo Entomológico (IRE)
-Asignado al Rol: Biotecnología
+Motor Bio-Matematico: Calculo del Indice de Riesgo Entomologico (IRE)
+Autor cientifico: Biotecnologia (Naty)
+
+El IRE NO predice con certeza la eclosion del mosquito — es un indice de
+riesgo que cruza capacidad del criadero, temperatura y tasa metabolica del
+Aedes aegypti para estimar los dias en que podrian emerger adultos si hay
+larvas presentes. Sin inspeccion directa no es posible conocer la etapa
+biologica real (huevo, larva I-IV, pupa).
 """
 
 from typing import Dict, Any
 
-# Factores de ponderación de criaderos (capacidad de carga y retención de agua)
+# --- Pesos por tipo de contenedor (capacidad de retencion y aislamiento termico) ---
 CONTAINER_WEIGHTS = {
-    "tire": 1.5,            # Llantas: excelente aislante térmico y retención
-    "open_tank": 1.4,       # Tanques/cisternas abiertas: gran volumen
-    "clogged_drain": 1.3,   # Canaletas obstruidas: materia orgánica alta
-    "bucket": 1.1,          # Baldes/recipientes domésticos
-    "flowerpot": 0.8,       # Macetas y platos
-    "litter_plastic": 0.6,  # Basura menor
+    "tire":          1.5,   # Llanta: aislante termico excelente, retiene calor
+    "open_tank":     1.4,   # Tanque/cisterna abierta: gran volumen
+    "clogged_drain": 1.3,   # Canaleta obstruida: materia organica alta
+    "bucket":        1.1,   # Balde/recipiente domestico
+    "flowerpot":     0.8,   # Maceta o plato
+    "litter_plastic":0.6,   # Plastico de desecho menor
+    "puddle":        0.7,   # Charco natural: efimero pero frecuente en temporada
+    "other":         1.0,
 }
 
-def calculate_ire(container_type: str, temperature_c: float, humidity_pct: float) -> Dict[str, Any]:
+# --- Factor de tamano del deposito ---
+# Depositos pequenos se calientan mas rapido (mayor tasa metabolica),
+# pero depositos grandes acumulan mas volumen de cria.
+SIZE_FACTORS = {
+    "small":   0.85,  # < 5 litros: calentamiento rapido, volumen bajo
+    "medium":  1.00,  # 5 - 50 litros: condicion de referencia
+    "large":   1.25,  # > 50 litros: alto volumen de cria potencial
+    "unknown": 1.00,
+}
+
+# --- Categorias de contenedor ---
+CONTAINER_CATEGORIES = {
+    "tire": "artificial",
+    "open_tank": "artificial",
+    "clogged_drain": "artificial",
+    "bucket": "artificial",
+    "flowerpot": "artificial",
+    "litter_plastic": "artificial",
+    "puddle": "natural",
+    "other": "artificial",
+    "none": "none",
+}
+
+
+def _temperature_factor(temperature_c: float) -> float:
     """
-    Calcula el Índice de Riesgo Entomológico (0-100) y estima los días de eclosión
-    del vector Aedes aegypti cruzando el tipo de depósito con variables microclimáticas.
+    Factor metabolico basado en la temperatura.
+    Rango optimo del Aedes aegypti: 26-30 C (pico en 28 C).
+    Por debajo de 16 C o sobre 34 C el desarrollo se detiene.
     """
-    weight = CONTAINER_WEIGHTS.get(container_type.lower(), 1.0)
-    
-    # Rango térmico metabólico óptimo de Aedes aegypti: 26°C a 30°C
-    temp_factor = max(0.4, 1.0 - abs(28.0 - temperature_c) * 0.06)
+    if temperature_c < 16.0 or temperature_c > 34.0:
+        return 0.1
+    return max(0.3, 1.0 - abs(28.0 - temperature_c) * 0.06)
+
+
+def _days_to_emergence(ire_score: float, temperature_c: float) -> int:
+    """
+    Estimacion de dias para emergencia del adulto basada en temperatura y IRE.
+    A 28 C el ciclo completo (huevo a adulto) es de ~7-8 dias.
+    Esta estimacion asume que hay larvas presentes — no puede confirmarse
+    sin inspeccion directa del criadero.
+    """
+    if temperature_c >= 28.0:
+        base_days = 5
+    elif temperature_c >= 25.0:
+        base_days = 7
+    elif temperature_c >= 22.0:
+        base_days = 10
+    else:
+        base_days = 14
+
+    if ire_score >= 70.0:
+        return base_days
+    elif ire_score >= 40.0:
+        return base_days + 2
+    else:
+        return base_days + 5
+
+
+def calculate_ire(
+    container_type: str,
+    temperature_c: float,
+    humidity_pct: float,
+    container_size: str = "medium",
+    organic_matter: bool = False,
+    water_present: bool = True,
+    estimated_volume_liters: float = 10.0,
+) -> Dict[str, Any]:
+    """
+    Calcula el Indice de Riesgo Entomologico (0-100).
+
+    Parametros:
+        container_type: tipo de recipiente (ver CONTAINER_WEIGHTS)
+        temperature_c: temperatura ambiente en grados Celsius
+        humidity_pct: humedad relativa en porcentaje (0-100)
+        container_size: 'small' | 'medium' | 'large' | 'unknown'
+        organic_matter: True si hay materia organica visible (acelera desarrollo)
+        water_present: True si hay agua. False = riesgo potencial, no activo
+        estimated_volume_liters: volumen estimado de agua acumulada
+
+    Retorna:
+        dict con ire_score, risk_level, risk_type, dias estimados y recomendacion
+    """
+    container_type = container_type.lower()
+    container_size = container_size.lower()
+
+    # Factores del modelo
+    container_weight = CONTAINER_WEIGHTS.get(container_type, 1.0)
+    size_factor = SIZE_FACTORS.get(container_size, 1.0)
+    temp_factor = _temperature_factor(temperature_c)
     hum_factor = max(0.5, humidity_pct / 100.0)
-    
-    raw_score = 55.0 * weight * temp_factor * hum_factor
+    organic_factor = 1.20 if organic_matter else 1.0
+
+    # Puntuacion base
+    raw_score = 55.0 * container_weight * size_factor * temp_factor * hum_factor * organic_factor
     ire_score = round(max(5.0, min(99.0, raw_score)), 1)
-    
-    # Estimación de días para eclosión y pase a adulto
+
+    # Sin agua: riesgo potencial (score reducido — el recipiente puede acumular agua)
+    risk_type = "ACTIVE" if water_present else "POTENTIAL"
+    if not water_present:
+        ire_score = round(ire_score * 0.40, 1)
+
+    # Nivel de riesgo
     if ire_score >= 70.0:
         risk_level = "CRITICAL"
-        days_to_emergence = 4 if temperature_c >= 28.0 else 5
-        recommended_action = "Intervención prioritaria: drenaje inmediato y aplicación de larvicida biológico."
+        recommended_action = (
+            "Intervencion prioritaria: drenaje inmediato, aplicacion de larvicida "
+            "biologico (Bacillus thuringiensis israelensis) y reporte a autoridad sanitaria."
+        )
     elif ire_score >= 40.0:
         risk_level = "MEDIUM"
-        days_to_emergence = 7
-        recommended_action = "Eliminación física del depósito y educación comunitaria en el predio."
+        recommended_action = (
+            "Eliminacion fisica del deposito o vaciado completo. "
+            "Educacion comunitaria sobre manejo de recipientes en el predio."
+        )
     else:
         risk_level = "LOW"
-        days_to_emergence = 12
-        recommended_action = "Monitoreo preventivo y volteo de recipientes descubiertos."
-        
+        recommended_action = (
+            "Monitoreo preventivo. Voltear o cubrir recipientes descubiertos. "
+            "Revisitar en 7 dias si hay lluvia prevista."
+        )
+
+    days_est = _days_to_emergence(ire_score, temperature_c)
+    container_category = CONTAINER_CATEGORIES.get(container_type, "artificial")
+
     return {
         "ire_score": ire_score,
         "risk_level": risk_level,
-        "days_to_emergence": days_to_emergence,
+        "risk_type": risk_type,
+        "days_to_emergence_estimate": days_est,
+        "container_category": container_category,
         "recommended_action": recommended_action,
+        "scientific_note": (
+            "El IRE es un indice de riesgo basado en condiciones ambientales. "
+            "No confirma la presencia de larvas ni la etapa biologica del vector. "
+            "Se requiere inspeccion directa para confirmacion entomologica."
+        ),
         "parameters_used": {
             "container_type": container_type,
+            "container_size": container_size,
+            "container_category": container_category,
             "temperature_c": temperature_c,
-            "humidity_pct": humidity_pct
-        }
+            "humidity_pct": humidity_pct,
+            "organic_matter": organic_matter,
+            "water_present": water_present,
+            "estimated_volume_liters": estimated_volume_liters,
+        },
     }
