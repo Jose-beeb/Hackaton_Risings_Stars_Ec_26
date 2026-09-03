@@ -476,46 +476,40 @@ function setupEventListeners() {
     sendReport();
   });
 
-  // Botón Simular Reporte en Vivo (Pitch Fail-safe)
+  // Botón Simular Reporte en Vivo (Pitch Fail-safe — siempre CRITICAL para la demo)
   document.getElementById("btn-simulate-report").addEventListener("click", async () => {
     const randomLat = -2.185 + (Math.random() - 0.5) * 0.04;
     const randomLng = -79.89 + (Math.random() - 0.5) * 0.04;
 
-    const payload = {
-      latitude: randomLat,
-      longitude: randomLng,
-      notes: "Reporte en vivo durante presentación"
+    const newFeature = {
+      type: "Feature",
+      geometry: { type: "Point", coordinates: [randomLng, randomLat] },
+      properties: {
+        id: `foco-live-${Date.now()}`,
+        sector: "Reporte Ciudadano en Vivo",
+        container_name: "Llanta con agua",
+        container_category: "artificial",
+        ire_score: 91.4,
+        risk_level: "CRITICAL",
+        risk_type: "ACTIVE",
+        days_to_emergence_estimate: 7,
+        recommended_action: "Intervención prioritaria: drenaje inmediato y aplicación de larvicida.",
+        status: "PENDING",
+        reported_at: new Date().toISOString(),
+      }
     };
 
-    try {
-      const res = await fetch("http://localhost:8000/api/reports", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-      if (res.ok) {
-        await loadEpidemiologicalData();
-      }
-    } catch {
-      // Fallback local en frontend si backend no está corriendo
-      const newFeature = {
-        type: "Feature",
-        geometry: { type: "Point", coordinates: [randomLng, randomLat] },
-        properties: {
-          id: `foco-live-${Date.now()}`,
-          sector: "Demostración en Vivo",
-          container_name: "Llanta con agua (Detectado IA)",
-          ire_score: 92.4,
-          risk_level: "CRITICAL",
-          days_to_emergence_estimate: 3,
-          days_to_emergence: 3,
-          recommended_action: "Intervención prioritaria inmediata."
-        }
-      };
-      fociData.unshift(newFeature);
-      renderDashboard(fociData);
-    }
+    fociData.unshift(newFeature);
+    renderDashboard(fociData, true);
     map.flyTo([randomLat, randomLng], 14);
+    showToast('Nuevo reporte crítico recibido', 'success');
+
+    // Intentar persistir en backend (sin bloquear la demo si falla)
+    fetch("http://localhost:8000/api/reports", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ latitude: randomLat, longitude: randomLng, notes: "Demo en vivo" })
+    }).catch(() => null);
   });
 
   // Botón Trazar Ruta de Brigada
