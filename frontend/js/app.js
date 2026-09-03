@@ -504,7 +504,6 @@ function setupEventListeners() {
     demoFoci.unshift(newFeature);
     fociData = [...demoFoci, ...fociData.filter(f => !demoFoci.includes(f))];
     renderDashboard(fociData, true);
-    map.setView([randomLat, randomLng], 14);
     showToast('Nuevo reporte crítico recibido', 'success');
   });
 
