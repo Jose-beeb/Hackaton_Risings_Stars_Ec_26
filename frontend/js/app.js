@@ -4,7 +4,8 @@ let heatLayer;
 let markersLayer;
 let routeLayer;
 let fociData = [];
-let previousFociCount = 0;
+let demoFoci = [];        // focos agregados en demo mode — sobreviven el polling
+let previousFociHash = '';
 let cameraStream = null;
 let lastRouteData = null;
 
@@ -47,13 +48,14 @@ async function loadEpidemiologicalData() {
     }
     const data = await res.json();
     const newFeatures = data.features || [];
-    const newCount = newFeatures.length;
+    const hash = newFeatures.length + '_' + (newFeatures[0]?.properties?.id ?? '');
 
-    // Animar marcadores nuevos si el count creció
-    const isNewData = newCount > previousFociCount;
-    previousFociCount = newCount;
+    // Solo redibujar si los datos cambiaron — evita el flicker del polling
+    if (hash === previousFociHash) return;
+    const isNewData = newFeatures.length > (fociData.length - demoFoci.length);
+    previousFociHash = hash;
 
-    fociData = newFeatures;
+    fociData = [...demoFoci, ...newFeatures];
     renderDashboard(fociData, isNewData);
   } catch (err) {
     console.error("Error al cargar datos epidemiológicos:", err);
@@ -499,17 +501,11 @@ function setupEventListeners() {
       }
     };
 
-    fociData.unshift(newFeature);
+    demoFoci.unshift(newFeature);
+    fociData = [...demoFoci, ...fociData.filter(f => !demoFoci.includes(f))];
     renderDashboard(fociData, true);
     map.setView([randomLat, randomLng], 14);
     showToast('Nuevo reporte crítico recibido', 'success');
-
-    // Intentar persistir en backend (sin bloquear la demo si falla)
-    fetch("http://localhost:8000/api/reports", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ latitude: randomLat, longitude: randomLng, notes: "Demo en vivo" })
-    }).catch(() => null);
   });
 
   // Botón Trazar Ruta de Brigada
