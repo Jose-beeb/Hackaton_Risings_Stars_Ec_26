@@ -7,6 +7,7 @@ import os
 import sys
 import json
 import logging
+import threading
 from typing import Optional
 from datetime import datetime
 
@@ -51,6 +52,12 @@ def load_foci_store() -> dict:
 
 
 foci_store = load_foci_store()
+_store_lock = threading.Lock()
+
+
+def save_foci_store() -> None:
+    with open(DATA_PATH, "w", encoding="utf-8") as f:
+        json.dump(foci_store, f, ensure_ascii=False, indent=2)
 
 
 class ReportRequest(BaseModel):
@@ -161,7 +168,9 @@ def create_report(report: ReportRequest):
         },
     }
 
-    foci_store.setdefault("features", []).insert(0, new_feature)
+    with _store_lock:
+        foci_store.setdefault("features", []).insert(0, new_feature)
+        save_foci_store()
 
     logger.info(
         "Nuevo reporte: %s | IRE %.1f (%s) | Fuente vision: %s",
