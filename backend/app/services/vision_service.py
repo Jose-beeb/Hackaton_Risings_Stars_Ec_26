@@ -99,7 +99,13 @@ def classify_image(image_base64: str) -> dict:
 
     try:
         genai.configure(api_key=settings.gemini_api_key)
-        model = genai.GenerativeModel("gemini-1.5-flash")
+        model = genai.GenerativeModel("gemini-flash-lite-latest")
+
+        # El frontend manda el resultado crudo de canvas.toDataURL(), que
+        # incluye el prefijo "data:image/jpeg;base64," — hay que sacarlo o
+        # el decode produce bytes corruptos y Gemini rechaza la imagen.
+        if image_base64.startswith("data:"):
+            image_base64 = image_base64.split(",", 1)[1]
 
         image_data = base64.b64decode(image_base64)
         image_part = {"mime_type": "image/jpeg", "data": image_data}
@@ -108,7 +114,13 @@ def classify_image(image_base64: str) -> dict:
             [VISION_SYSTEM_PROMPT, image_part],
             generation_config=genai.types.GenerationConfig(
                 temperature=0.1,
-                max_output_tokens=512,
+                # 512 se quedaba corto con los modelos flash mas nuevos (mas
+                # verbosos) y el JSON llegaba cortado a la mitad ("Unterminated
+                # string"), cayendo siempre al fallback fijo.
+                max_output_tokens=2048,
+                # Forzar salida JSON pura evita que el modelo decida envolver
+                # la respuesta en texto/markdown por su cuenta.
+                response_mime_type="application/json",
             ),
         )
 
@@ -119,7 +131,7 @@ def classify_image(image_base64: str) -> dict:
                 raw_text = raw_text[4:]
 
         result = json.loads(raw_text.strip())
-        result["source"] = "gemini-1.5-flash"
+        result["source"] = "gemini-flash-lite-latest"
         return result
 
     except json.JSONDecodeError as e:
