@@ -1,5 +1,5 @@
 """
-AedesGuard — API Orquestadora (FastAPI)
+Ojito al Mosquito — API Orquestadora (FastAPI)
 Integra Vision AI, datos climaticos en tiempo real y el motor bio-matematico IRE.
 """
 
@@ -27,7 +27,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = FastAPI(
-    title="AedesGuard Epidemiological API",
+    title="Ojito al Mosquito Epidemiological API",
     version="1.0.0",
     description="Plataforma de inteligencia vectorial para prevencion de arbovirosis",
 )
@@ -68,16 +68,29 @@ class ReportRequest(BaseModel):
     notes: Optional[str] = None
 
 
+class BrigadeConfig(BaseModel):
+    fumigadores: int = Field(default=2, ge=1, le=10, description="Operarios/fumigadores en la brigada")
+    transport_mode: str = Field(
+        default="vehicle_spray",
+        description="'foot' | 'vehicle_spray' | 'vehicle_walk_attack'",
+    )
+
+
 class DispatchRequest(BaseModel):
     depot_coordinates: list[float] = Field(default=[-79.8950, -2.1800])
     max_foci: int = Field(default=8, ge=1, le=25)
+    max_brigades: int = Field(default=1, ge=1, le=10, description="Tope maximo de brigadas a usar")
+    brigade_configs: list[BrigadeConfig] = Field(
+        default_factory=list,
+        description="Config por brigada en orden de uso; se repite la ultima si faltan",
+    )
 
 
 @app.get("/health")
 def health_check():
     return {
         "status": "healthy",
-        "service": "AedesGuard API",
+        "service": "Ojito al Mosquito API",
         "version": "1.0.0",
         "features_loaded": len(foci_store.get("features", [])),
     }
@@ -85,8 +98,61 @@ def health_check():
 
 @app.get("/api/foci")
 def get_foci():
-    """Devuelve todos los focos activos en formato GeoJSON."""
-    return foci_store
+    """Devuelve los focos activos (no resueltos) en formato GeoJSON."""
+    active_features = [
+        f for f in foci_store.get("features", [])
+        if f.get("properties", {}).get("status") != "RESOLVED"
+    ]
+    return {**foci_store, "features": active_features}
+
+
+class ResolveFociRequest(BaseModel):
+    foco_ids: list[str] = Field(..., description="IDs de los focos que la brigada ya atendio")
+    brigade_id: Optional[str] = None
+    operator_name: Optional[str] = Field(
+        None, description="Nombre del operador que confirma. NO es una firma criptografica real."
+    )
+    after_photo_base64: Optional[str] = Field(
+        None, description="Foto de confirmacion (antes/despues), se guarda tal cual sin decodificar"
+    )
+
+
+@app.post("/api/foci/resolve")
+def resolve_foci(req: ResolveFociRequest):
+    """
+    Marca los focos indicados como RESOLVED (no se borran del archivo, solo
+    dejan de aparecer en /api/foci y de ser candidatos para futuros despachos
+    — ver el filtro de status en route_optimizer.optimize_brigade_route).
+
+    Canal de validacion de intervencion: guarda quien confirmo y, si la
+    mandaron, una foto de "despues" — evidencia de que la brigada fue al
+    lugar, no solo un click. "operator_name" es un campo de texto simple,
+    NO una firma digital criptografica; aclarar esa distincion si preguntan
+    en el pitch.
+    """
+    ids = set(req.foco_ids)
+    resolved = []
+    resolved_at = datetime.utcnow().isoformat() + "Z"
+    with _store_lock:
+        for feature in foci_store.get("features", []):
+            props = feature.get("properties", {})
+            if props.get("id") in ids and props.get("status") != "RESOLVED":
+                props["status"] = "RESOLVED"
+                props["resolved_at"] = resolved_at
+                if req.brigade_id:
+                    props["resolved_by_brigade"] = req.brigade_id
+                if req.operator_name:
+                    props["resolved_by_operator"] = req.operator_name
+                if req.after_photo_base64:
+                    props["after_photo_base64"] = req.after_photo_base64
+                resolved.append(props["id"])
+        save_foci_store()
+
+    logger.info(
+        "Focos resueltos: %s (brigada %s, operador %s, con foto: %s)",
+        resolved, req.brigade_id or "?", req.operator_name or "?", bool(req.after_photo_base64),
+    )
+    return {"resolved_count": len(resolved), "resolved_ids": resolved}
 
 
 @app.post("/api/reports", status_code=201)
@@ -207,7 +273,14 @@ def create_report(report: ReportRequest):
 def dispatch_routes(req: DispatchRequest):
     """Calcula la ruta optima de intervencion para las cuadrillas sanitarias."""
     depot_tuple = (req.depot_coordinates[0], req.depot_coordinates[1])
-    return optimize_brigade_route(depot_tuple, foci_store, max_stops=req.max_foci)
+    configs = [c.model_dump() for c in req.brigade_configs] or None
+    return optimize_brigade_route(
+        depot_tuple,
+        foci_store,
+        max_stops=req.max_foci,
+        max_brigades=req.max_brigades,
+        brigade_configs=configs,
+    )
 
 
 if __name__ == "__main__":
