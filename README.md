@@ -147,7 +147,7 @@ OjitoAlMosquito/
 ## Roadmap no implementado (investigado, con plan)
 
 - **Offline-first**: el GPS ya funciona sin internet hoy (usa el chip del telefono, no requiere red). Lo que falta es la cola local — IndexedDB para encolar reportes cuando falla el fetch, mas un listener de reconexion (`window.addEventListener('online', ...)`) o un Service Worker con Background Sync para disparar el envio diferido. Es la feature de mayor esfuerzo del roadmap.
-- **Deduplicacion espacio-temporal**: antes de crear un foco nuevo en `POST /api/reports`, buscar focos existentes a 10-15m (ya existe `haversine_distance` para esto) reportados en las ultimas 72h, y si hay uno, subirle un contador de validacion en vez de duplicar el punto. Pendiente: no hay almacenamiento de fotos secundarias hoy (la imagen se clasifica y se descarta) — adjuntar "fotos secundarias" real requeriria agregar eso primero.
+- **Deduplicacion espacio-temporal**: antes de crear un foco nuevo en `POST /api/reports`, buscar focos existentes a 10-15m (ya existe `haversine_distance` para esto) reportados en las ultimas 72h, y si hay uno, subirle un contador de validacion en vez de duplicar el punto. Pendiente: la imagen de un reporte ciudadano se clasifica y se descarta, no se guarda — adjuntar "fotos secundarias" real requeriria agregar eso primero. (Distinto del `after_photo_base64` de "Cumplimiento de rutas" — ese sí persiste, pero solo para la foto de confirmacion de la brigada, no para reportes ciudadanos).
 
 ---
 
@@ -174,6 +174,25 @@ Una revision cruzada contra la literatura detecto que el codigo original citaba 
 | Factor de humedad | Lineal estricto (`humedad% / 100`) | Rampa con piso 0.5, satura en 1.0 sobre 70% | La humedad ambiental no afecta directamente el metabolismo larvario (el agua estancada es su propio microambiente) — su efecto principal es sobre supervivencia del adulto y evaporacion del deposito. |
 
 Una llanta con agua limpia y sin materia organica ya no satura automaticamente en CRITICAL (ahora da MEDIUM) — hace falta tamaño grande y/o materia organica visible para llegar a CRITICAL, lo cual da mas margen de diferenciacion entre reportes reales. Tests actualizados y pasando: `pytest backend/tests/test_ire_calculator.py -v` → **22 passed**.
+
+---
+
+## Criterio de seleccion de rutas
+
+`optimize_brigade_route()` decide **que focos visitar y en que orden** con una heuristica Nearest Neighbor ponderada por riesgo, no solo por cercania:
+
+```
+score = distancia_km / (ire_score / 30.0)
+```
+
+Se elige en cada paso el foco con **menor score** (mas cerca gana, pero un IRE mas alto "acerca" al foco artificialmente). Con `ire_score = 30` el divisor da 1 y el criterio es distancia pura; un foco con `ire_score = 90` (3x) compite en igualdad de condiciones con uno 3 veces mas cerca pero de bajo riesgo — en la practica, la ruta prioriza los focos criticos aunque implique desviarse un poco, en vez de barrer ciegamente por cercania.
+
+Reglas adicionales:
+- Los focos con `status: RESOLVED` (ya atendidos, ver "Cumplimiento de rutas" abajo) quedan excluidos de los candidatos — nunca se les vuelve a asignar una brigada.
+- `max_foci` (parametro del request) tope la cantidad de paradas de la ruta completa; despues de eso, el reparto entre brigadas es el que se explica abajo.
+- Es una heuristica greedy de vecino mas cercano, no un TSP exacto — prioriza velocidad de calculo y explicabilidad (cada decision se puede justificar con un numero) sobre encontrar la ruta matematicamente optima, razonable para el tamaño de datos de un piloto municipal.
+
+Implementado en `core/logistics/route_optimizer.py`, dentro de `optimize_brigade_route()`.
 
 ---
 
@@ -216,6 +235,49 @@ Implementado en `core/logistics/route_optimizer.py` (`TRANSPORT_MODES`, `_effect
 - `vehicle_walk_attack` y la tabla de escalado por operarios: **estimacion interna del equipo**, derivada del rango informado de 8-10 viviendas/dia, sin cita primaria.
 - `vehicle_spray`: rango 8-12 km/h reportado para brigadas de fumigacion espacial continua.
 - `MAX_HOURS_PER_BRIGADE=6.0`: regla de negocio explicita del equipo, misma fuente MSP no verificada de forma independiente.
+
+---
+
+## Cumplimiento de rutas (modulo Antes/Despues)
+
+Cierra el ciclo operativo: no alcanza con *ver* el problema, hay que poder auditar que la brigada fue de verdad al lugar. Desde la lista de brigadas del panel de despacho, cada una tiene un boton **"✓ Cumplida"** que abre un modal pidiendo:
+
+- **Nombre del operador** (texto libre — ver aclaracion abajo).
+- **Foto de confirmacion** (opcional, `capture="environment"` abre la camara del celular directo si el navegador lo soporta, o el selector de archivos).
+
+Al confirmar, se llama a `POST /api/foci/resolve` con los `foco_ids` de esa brigada especifica (los que trajo en `secuencia_paradas`, ver seccion de arriba). El backend:
+
+1. Marca cada foco con `status: "RESOLVED"`, `resolved_at` (timestamp UTC), `resolved_by_brigade`, y si vinieron, `resolved_by_operator` y `after_photo_base64`. **No borra el registro** — queda como historial auditable.
+2. `GET /api/foci` deja de devolver esos focos — desaparecen del mapa y de la lista de focos criticos.
+3. Ese foco queda excluido de cualquier despacho futuro (ver "Criterio de seleccion de rutas" arriba).
+
+En el frontend, confirmar tambien saca la linea de esa brigada especifica del mapa (no las otras) y refresca los KPIs.
+
+**Aclaracion importante para el pitch**: "operator_name" es un campo de texto simple con timestamp del servidor — **no es una firma digital criptografica**. Si el jurado pregunta por trazabilidad legal/no-repudio, hay que ser honestos con esa distincion; la foto + nombre + timestamp sirven como evidencia operativa razonable para un MVP, no como firma electronica certificada.
+
+Implementado en `backend/app/main.py` (`ResolveFociRequest`, `resolve_foci()`) y `frontend/js/app.js` (`completeBrigade()`, `confirmCompleteBrigade()`).
+
+---
+
+## Sugerencias instantaneas al ciudadano
+
+Cierra el bucle comunitario: la persona que reporta recibe algo que puede hacer YA con sus manos, sin esperar a que llegue la brigada — reduce la tasa de abandono de herramientas de ciencia ciudadana (si reportás y no sentís una respuesta util, no volves a usar la app). En cuanto la IA clasifica el tipo de deposito, se muestra una tarjeta de accion fisica:
+
+| `container_type` detectado | Consejo mostrado |
+|---|---|
+| `tire` (llanta) | Perforá la llanta para que no vuelva a acumular agua, o guardala bajo techo seco. |
+| `open_tank` (tanque/cisterna) | Cepillá las paredes internas (los huevos se pegan al borde seco) y tapá herméticamente con malla o lona. |
+| `bucket` (balde) | Volteá el balde o vacialo por completo. Si no lo usás, guardalo bajo techo. |
+| `flowerpot` (maceta) | Vaciá el plato bajo la maceta cada 3 días, o rellenalo con arena para que no junte agua. |
+| `clogged_drain` (canaleta) | Sacá las hojas y la basura de la canaleta para que el agua no se estanque. |
+| `litter_plastic` (plastico suelto) | Juntá y desechá botellas, vasos o bolsas que puedan acumular agua de lluvia. |
+| `puddle` (charco natural) | Rellená el hueco con tierra o mejorá el drenaje de esa zona del patio. |
+| `other` | Eliminá o cubrí el recipiente para que no vuelva a acumular agua. |
+| `none` (sin criadero detectado) | No se detectó un criadero en esta foto. Igual, revisá el patio cada semana buscando agua estancada. |
+
+Se muestra en ambas vistas (Ciudadana y Brigada), inmediatamente despues del resultado del reporte — sin esperar el veredicto de la brigada. Consejos validados con criterio entomologico basico (los huevos de *Aedes* se adhieren a la pared seca del recipiente, por eso "cepillar" y no solo "vaciar").
+
+Implementado en `frontend/js/app.js` (`HOME_ACTION_TIPS`, dentro de `showReportResult()`).
 
 ---
 
