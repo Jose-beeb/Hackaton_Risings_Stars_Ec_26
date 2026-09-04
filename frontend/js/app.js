@@ -28,10 +28,20 @@ document.addEventListener("DOMContentLoaded", () => {
   // en desktop arranca visible, igual que siempre.
   if (window.innerWidth <= MOBILE_BREAKPOINT) {
     document.getElementById('sidebar').classList.add('hidden');
+    // Al ocultar el sidebar el mapa crece (flex:1 reclama el alto liberado),
+    // pero Leaflet ya midio el contenedor en initMap() con el tamaño viejo —
+    // sin avisarle, deja una franja gris sin tiles en el espacio nuevo.
+    requestAnimationFrame(() => map.invalidateSize());
   }
 
   updateHeaderHeightVar();
   window.addEventListener('resize', updateHeaderHeightVar);
+
+  // Google Fonts carga async: si el texto del header cambia de fuente
+  // despues de initMap() y eso lo hace envolver a 2 filas, el alto
+  // disponible para el mapa cambia y Leaflet queda con tiles de mas o
+  // de menos otra vez — mismo problema que el hide del sidebar de arriba.
+  window.addEventListener('load', () => map.invalidateSize());
 
   // Polling en tiempo real cada 4 segundos
   setInterval(() => loadEpidemiologicalData(), 4000);
