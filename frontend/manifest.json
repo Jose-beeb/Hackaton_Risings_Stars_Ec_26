@@ -1,6 +1,6 @@
 {
-  "name": "Alerta Mosquitos",
-  "short_name": "AlertaMosquitos",
+  "name": "Ojito al Mosquito",
+  "short_name": "OjitoMosquito",
   "description": "Detecta y reporta criaderos de mosquitos para proteger tu comunidad",
   "start_url": "/",
   "display": "standalone",

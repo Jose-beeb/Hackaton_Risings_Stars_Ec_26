@@ -38,6 +38,14 @@ body {
   padding: 12px 24px;
   background-color: #0b1120;
   border-bottom: 1px solid var(--border-color);
+  position: relative;
+  z-index: 1600; /* siempre por encima del drawer (1500) y su fondo (1400) */
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .brand {
@@ -66,9 +74,16 @@ body {
   font-family: var(--font-heading);
   font-size: 1.5rem;
   letter-spacing: -0.5px;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
 }
 
-.brand-title span {
+.brand-title .brand-line {
+  color: var(--text-primary);
+}
+
+.brand-title .brand-line:last-child {
   color: var(--accent-cyan);
 }
 
@@ -81,6 +96,29 @@ body {
 .header-actions {
   display: flex;
   gap: 12px;
+}
+
+.menu-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.menu-toggle:hover {
+  background: var(--bg-card-hover);
+}
+
+.sidebar-backdrop {
+  display: none;
 }
 
 /* Buttons */
@@ -203,6 +241,129 @@ body {
   font-size: 0.75rem;
   color: var(--text-secondary);
   margin-bottom: 12px;
+}
+
+.config-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+
+.config-label input[type="number"] {
+  width: 56px;
+  padding: 4px 6px;
+  background: #0f172a;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+}
+
+.brigade-config-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.brigade-config-row {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  background: #0f172a;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 0.75rem;
+}
+
+.brigade-config-row .brigade-row-label {
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.brigade-config-row input[type="number"],
+.brigade-config-row select {
+  width: 100%;
+  padding: 4px 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-primary);
+  font-size: 0.75rem;
+}
+
+.brigade-status-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.brigade-status-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: #0f172a;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 0.78rem;
+}
+
+.brigade-status-row.completed {
+  opacity: 0.5;
+}
+
+.brigade-status-row .brigade-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.brigade-status-row .brigade-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.brigade-status-row .brigade-info strong {
+  display: block;
+}
+
+.brigade-status-row .brigade-info .brigade-meta {
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+}
+
+.brigade-status-row .brigade-warning {
+  color: #f59e0b;
+}
+
+.btn-complete-brigade {
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--risk-low);
+  background: transparent;
+  color: var(--risk-low);
+  font-size: 0.72rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-complete-brigade:hover {
+  background: var(--risk-low);
+  color: #0f172a;
+}
+
+.btn-complete-brigade:disabled {
+  opacity: 0.5;
+  cursor: default;
 }
 
 .route-summary {
@@ -391,6 +552,14 @@ body {
   display: block;
 }
 
+/* Un selector por ID gana en especificidad a .hidden por clase, asi que sin
+   estos overrides el video/la foto nunca se ocultaban de verdad al capturar
+   o subir una imagen. */
+#camera-preview.hidden,
+#photo-preview.hidden {
+  display: none;
+}
+
 .modal-actions {
   display: flex;
   flex-direction: column;
@@ -405,6 +574,63 @@ body {
   margin: 0 16px 16px 16px;
   font-size: 0.9rem;
   line-height: 1.5;
+}
+
+.action-card {
+  margin-top: 10px;
+  padding: 10px 12px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid var(--risk-low);
+  border-radius: 8px;
+  text-align: left;
+  font-size: 0.82rem;
+  color: var(--text-primary);
+}
+
+.action-card strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--risk-low);
+}
+
+.action-card p {
+  margin: 0;
+  line-height: 1.4;
+}
+
+.modal-body-simple {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.modal-body-simple .config-label {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  margin-bottom: 0;
+}
+
+.modal-body-simple .config-label input[type="text"],
+.modal-body-simple .config-label input[type="file"] {
+  width: 100%;
+}
+
+.modal-body-simple .config-label input[type="text"] {
+  padding: 8px 10px;
+  background: #0f172a;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+}
+
+#after-photo-preview {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
 .report-result.critical {
@@ -490,6 +716,12 @@ body {
   background: rgba(16, 185, 129, 0.2);
   color: #10b981;
   border: 1px solid #10b981;
+}
+
+.toast-error {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  border: 1px solid #ef4444;
 }
 
 /* ---- Citizen Panel ---- */
@@ -591,4 +823,104 @@ body {
   animation: pulse 0.6s ease 3;
   transform-box: fill-box;
   transform-origin: center;
+}
+
+/* ============================================================
+   Responsive — el panel informativo (sidebar) se puede ocultar
+   con el boton hamburguesa en cualquier ancho de pantalla, y en
+   mobile se convierte en un drawer superpuesto al mapa en vez de
+   empujarlo (el sidebar de 380px fijo no entra en un celular).
+   Aplica igual a Vista Ciudadana y Vista Brigada — el toggle
+   opera sobre el contenedor #sidebar, no sobre su contenido.
+   ============================================================ */
+
+@media (max-width: 860px) {
+  .app-header {
+    flex-wrap: wrap;
+    row-gap: 8px;
+    padding: 10px 14px;
+  }
+
+  .header-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .header-actions .btn {
+    font-size: 0.78rem;
+    padding: 6px 10px;
+    flex: 1 1 auto;
+  }
+
+  .brand-title {
+    font-size: 1.2rem;
+  }
+
+  /* El sidebar deja de ser columna del flex y pasa a flotar sobre
+     el mapa — asi #map-container ya ocupa 100% del ancho sin
+     esperar a que el sidebar se oculte. Arranca debajo del header
+     (--header-height, medido en JS) para no tapar el logo ni los
+     botones de vista/reportar/simular. */
+  .sidebar {
+    position: fixed;
+    top: var(--header-height, 64px);
+    bottom: 0;
+    left: 0;
+    width: 85vw;
+    max-width: 340px;
+    z-index: 1500;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.6);
+  }
+
+  /* Tambien arranca debajo del header (no inset:0) — si no, el fondo
+     oscuro tapa el logo y los botones aunque el drawer en si ya no lo
+     haga, y ademas bloquearia los clicks sobre ellos. */
+  .sidebar-backdrop:not(.hidden) {
+    display: block;
+    position: fixed;
+    top: var(--header-height, 64px);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1400;
+  }
+
+  .kpi-panel {
+    gap: 6px;
+  }
+
+  .kpi-card {
+    padding: 8px;
+  }
+
+  .kpi-value {
+    font-size: 1.1rem;
+  }
+
+  .modal-content {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+}
+
+/* En desktop .sidebar es un item mas del flex de .app-layout, asi que la
+   clase .hidden (utilidad global, display:none) ya alcanza para sacarlo del
+   flujo y que el mapa (flex:1) reclame el espacio liberado — no hace falta
+   una regla aparte para ese caso. */
+
+@media (max-width: 420px) {
+  .header-actions .btn {
+    font-size: 0.7rem;
+    padding: 5px 8px;
+  }
+
+  .kpi-panel {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .kpi-panel .kpi-card:first-child {
+    grid-column: 1 / -1;
+  }
 }

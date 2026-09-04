@@ -1,4 +1,4 @@
-// Alerta Mosquitos Frontend Application
+// Ojito al Mosquito — Frontend Application
 let map;
 let heatLayer;
 let markersLayer;
@@ -8,6 +8,9 @@ let demoFoci = [];        // focos agregados en demo mode — sobreviven el poll
 let previousFociHash = '';
 let cameraStream = null;
 let lastRouteData = null;
+let brigadePolylines = {};   // brigade_id -> capa Leaflet, para poder sacar una sola al marcarla cumplida
+
+const MOBILE_BREAKPOINT = 860;
 
 // Inicialización
 document.addEventListener("DOMContentLoaded", () => {
@@ -15,9 +18,47 @@ document.addEventListener("DOMContentLoaded", () => {
   loadEpidemiologicalData();
   setupEventListeners();
 
+  // Vista Ciudadana por defecto al iniciar — se puede seguir alternando
+  // con el mismo boton de siempre. toggleView() ya deja todo consistente
+  // (paneles, labels de KPI, texto del boton), asi que se reusa en vez de
+  // duplicar esa logica.
+  toggleView();
+
+  // En mobile arranca oculto para que el mapa sea lo primero que se ve —
+  // en desktop arranca visible, igual que siempre.
+  if (window.innerWidth <= MOBILE_BREAKPOINT) {
+    document.getElementById('sidebar').classList.add('hidden');
+  }
+
+  updateHeaderHeightVar();
+  window.addEventListener('resize', updateHeaderHeightVar);
+
   // Polling en tiempo real cada 4 segundos
   setInterval(() => loadEpidemiologicalData(), 4000);
 });
+
+// El header tiene alto variable (los botones se acomodan en 1 o 2 filas
+// segun el ancho), asi que el drawer no puede asumir un top fijo o termina
+// tapando el logo y los botones de vista/reportar/simular — se mide la
+// altura real y se la pasa al CSS como variable.
+function updateHeaderHeightVar() {
+  const header = document.querySelector('.app-header');
+  document.documentElement.style.setProperty('--header-height', `${header.offsetHeight}px`);
+}
+
+// Aplica igual en Vista Ciudadana y Vista Brigada — opera sobre el
+// contenedor #sidebar, no sobre los paneles de adentro (esos los maneja
+// toggleView() por separado).
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const backdrop = document.getElementById('sidebar-backdrop');
+  const isHidden = sidebar.classList.toggle('hidden');
+  backdrop.classList.toggle('hidden', isHidden);
+
+  // El mapa cambia de ancho al mostrar/ocultar el sidebar en desktop —
+  // Leaflet necesita que se lo avisen o deja tiles a medio cargar.
+  requestAnimationFrame(() => map.invalidateSize());
+}
 
 function initMap() {
   // Centro en Guayaquil, Ecuador
@@ -186,6 +227,13 @@ function updateImpactMetrics(features, routeData = null) {
   document.getElementById('kpi-protected').textContent = protected_ > 999
     ? (protected_ / 1000).toFixed(1) + 'k'
     : protected_;
+
+  // Antes esto solo se sincronizaba al tocar "Vista Ciudadana" — si esa
+  // vista arranca por defecto, quedaba en "--" hasta el primer toggle.
+  document.getElementById('citizen-critical').textContent =
+    document.getElementById('kpi-critical-count').textContent;
+  document.getElementById('citizen-protected').textContent =
+    document.getElementById('kpi-protected').textContent;
 }
 
 function showToast(msg, type = 'info') {
@@ -224,6 +272,7 @@ async function startCamera() {
   const videoEl = document.getElementById('camera-preview');
   const photoPreview = document.getElementById('photo-preview');
   const btnCapture = document.getElementById('btn-capture');
+  const btnUpload = document.getElementById('btn-upload');
   const btnRetake = document.getElementById('btn-retake');
   const btnSend = document.getElementById('btn-send-report');
   const reportResult = document.getElementById('report-result');
@@ -232,13 +281,14 @@ async function startCamera() {
   photoPreview.classList.add('hidden');
   videoEl.classList.remove('hidden');
   btnCapture.classList.remove('hidden');
+  btnUpload.classList.remove('hidden');
   btnRetake.classList.add('hidden');
   btnSend.classList.add('hidden');
   reportResult.classList.add('hidden');
   reportResult.className = 'report-result hidden';
 
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    statusEl.textContent = 'Cámara no disponible — usá HTTPS';
+    statusEl.textContent = 'Cámara no disponible — podés subir una foto.';
     btnCapture.disabled = true;
     return;
   }
@@ -255,7 +305,7 @@ async function startCamera() {
     btnCapture.disabled = false;
   } catch (err) {
     console.error('Error al acceder a la cámara:', err);
-    statusEl.textContent = 'No se pudo acceder a la cámara. Verificá los permisos.';
+    statusEl.textContent = 'No se pudo acceder a la cámara. Verificá los permisos o subí una foto.';
     btnCapture.disabled = true;
   }
 }
@@ -283,6 +333,7 @@ function capturePhoto() {
   const photoPreview = document.getElementById('photo-preview');
   const statusEl = document.getElementById('modal-status');
   const btnCapture = document.getElementById('btn-capture');
+  const btnUpload = document.getElementById('btn-upload');
   const btnRetake = document.getElementById('btn-retake');
   const btnSend = document.getElementById('btn-send-report');
 
@@ -297,15 +348,57 @@ function capturePhoto() {
   videoEl.classList.add('hidden');
 
   btnCapture.classList.add('hidden');
+  btnUpload.classList.add('hidden');
   btnRetake.classList.remove('hidden');
   btnSend.classList.remove('hidden');
   statusEl.textContent = 'Foto capturada. Revisá y enviá el reporte.';
+}
+
+// Vuelca un archivo de imagen elegido por el usuario al mismo canvas que usa
+// la cámara, para que sendReport() no tenga que distinguir el origen de la foto.
+function handleFileUpload(file) {
+  if (!file || !file.type.startsWith('image/')) return;
+
+  const statusEl = document.getElementById('modal-status');
+  const videoEl = document.getElementById('camera-preview');
+  const canvas = document.getElementById('photo-canvas');
+  const photoPreview = document.getElementById('photo-preview');
+  const btnCapture = document.getElementById('btn-capture');
+  const btnUpload = document.getElementById('btn-upload');
+  const btnRetake = document.getElementById('btn-retake');
+  const btnSend = document.getElementById('btn-send-report');
+
+  const objectUrl = URL.createObjectURL(file);
+  const img = new Image();
+
+  img.onload = () => {
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    canvas.getContext('2d').drawImage(img, 0, 0);
+    URL.revokeObjectURL(objectUrl);
+
+    photoPreview.src = canvas.toDataURL('image/jpeg', 0.8);
+    photoPreview.classList.remove('hidden');
+    videoEl.classList.add('hidden');
+
+    btnCapture.classList.add('hidden');
+    btnUpload.classList.add('hidden');
+    btnRetake.classList.remove('hidden');
+    btnSend.classList.remove('hidden');
+    statusEl.textContent = 'Foto cargada. Revisá y enviá el reporte.';
+  };
+  img.onerror = () => {
+    URL.revokeObjectURL(objectUrl);
+    statusEl.textContent = 'No se pudo cargar la imagen seleccionada.';
+  };
+  img.src = objectUrl;
 }
 
 function retakePhoto() {
   const videoEl = document.getElementById('camera-preview');
   const photoPreview = document.getElementById('photo-preview');
   const btnCapture = document.getElementById('btn-capture');
+  const btnUpload = document.getElementById('btn-upload');
   const btnRetake = document.getElementById('btn-retake');
   const btnSend = document.getElementById('btn-send-report');
   const statusEl = document.getElementById('modal-status');
@@ -314,6 +407,7 @@ function retakePhoto() {
   photoPreview.classList.add('hidden');
   videoEl.classList.remove('hidden');
   btnCapture.classList.remove('hidden');
+  btnUpload.classList.remove('hidden');
   btnRetake.classList.add('hidden');
   btnSend.classList.add('hidden');
   reportResult.classList.add('hidden');
@@ -385,18 +479,45 @@ async function sendReport() {
   statusEl.textContent = 'Reporte enviado.';
 }
 
+// Consejo de accion fisica inmediata segun el tipo de deposito detectado —
+// cierra el bucle comunitario: la persona recibe algo que puede hacer YA,
+// sin esperar a que llegue la brigada. Validado con criterio entomologico
+// basico (huevos de Aedes se pegan a la pared seca del recipiente, por eso
+// "cepillar" y no solo "vaciar").
+const HOME_ACTION_TIPS = {
+  tire: 'Perforá la llanta para que no vuelva a acumular agua, o guardala bajo techo seco.',
+  open_tank: 'Cepillá las paredes internas (los huevos se pegan al borde seco) y tapá herméticamente con malla o lona.',
+  bucket: 'Volteá el balde o vacialo por completo. Si no lo usás, guardalo bajo techo.',
+  flowerpot: 'Vaciá el plato bajo la maceta cada 3 días, o rellenalo con arena para que no junte agua.',
+  clogged_drain: 'Sacá las hojas y la basura de la canaleta para que el agua no se estanque.',
+  litter_plastic: 'Juntá y desechá botellas, vasos o bolsas que puedan acumular agua de lluvia.',
+  puddle: 'Rellená el hueco con tierra o mejorá el drenaje de esa zona del patio.',
+  other: 'Eliminá o cubrí el recipiente para que no vuelva a acumular agua.',
+  none: 'No se detectó un criadero en esta foto. Igual, revisá el patio cada semana buscando agua estancada.'
+};
+
 function showReportResult(container, data) {
-  const riskLevel = (data.risk_level || 'medium').toLowerCase();
-  const ire = data.ire_score ?? data.ire ?? '--';
+  // El backend anida el resultado bajo risk_assessment (ver POST /api/reports
+  // en main.py) — no viene en la raiz del payload.
+  const riskAssessment = data.risk_assessment || {};
+  const riskLevel = (riskAssessment.risk_level || 'medium').toLowerCase();
+  const ire = riskAssessment.ire_score ?? '--';
   const citizenMessages = {
     critical: '¡Zona de riesgo alto! Las brigadas sanitarias serán notificadas.',
     medium: 'Riesgo moderado detectado. Gracias por reportar.',
     low: 'Riesgo bajo. Te avisamos si la situación cambia.'
   };
+  const containerType = data.classification?.container_type;
+  const actionTip = HOME_ACTION_TIPS[containerType];
+  const actionCard = actionTip
+    ? `<div class="action-card"><strong>🛠️ Qué podés hacer ahora mismo:</strong><p>${actionTip}</p></div>`
+    : '';
+
   container.className = `report-result ${riskLevel}`;
-  container.innerHTML = isCitizenMode
+  container.innerHTML = (isCitizenMode
     ? `<strong>✅ Reporte recibido</strong><br><span>${citizenMessages[riskLevel] || 'Gracias por tu reporte.'}</span>`
-    : `<strong>IRE Score: ${ire}</strong><br><span>Nivel de Riesgo: ${data.risk_level || riskLevel.toUpperCase()}</span>`;
+    : `<strong>IRE Score: ${ire}</strong><br><span>Nivel de Riesgo: ${riskAssessment.risk_level || riskLevel.toUpperCase()}</span>`
+  ) + actionCard;
   container.classList.remove('hidden');
 }
 
@@ -412,10 +533,6 @@ function toggleView() {
     brigadeEls.forEach(el => el.classList.add('hidden'));
     citizenPanel.classList.remove('hidden');
     btn.textContent = '🧭 Vista Brigada';
-    document.getElementById('citizen-critical').textContent =
-      document.getElementById('kpi-critical-count').textContent;
-    document.getElementById('citizen-protected').textContent =
-      document.getElementById('kpi-protected').textContent;
     // KPI labels — lenguaje ciudadano
     document.querySelector('#kpi-critical-count').closest('.kpi-card').querySelector('.kpi-label').textContent = 'Zonas de riesgo';
     document.querySelector('#kpi-total-count').closest('.kpi-card').querySelector('.kpi-label').textContent = 'Puntos reportados';
@@ -430,11 +547,17 @@ function toggleView() {
     document.querySelector('#kpi-protected').closest('.kpi-card').querySelector('.kpi-label').textContent = 'Personas Protegidas';
   }
   renderDashboard(fociData);
+  updateHeaderHeightVar();  // el texto del boton cambia de largo y puede alterar el wrap del header
 }
 
 function setupEventListeners() {
   // Toggle vista ciudadana / brigada
   document.getElementById('btn-view-toggle').addEventListener('click', toggleView);
+
+  // Mostrar/ocultar panel informativo (hamburguesa) — misma funcion en las
+  // dos vistas, y cerrar tocando el fondo oscuro en mobile.
+  document.getElementById('btn-toggle-sidebar').addEventListener('click', toggleSidebar);
+  document.getElementById('sidebar-backdrop').addEventListener('click', toggleSidebar);
 
   // Demo mode: doble click en brand-title
   document.querySelector('.brand-title').addEventListener('dblclick', () => {
@@ -467,6 +590,41 @@ function setupEventListeners() {
   document.getElementById('btn-capture').addEventListener('click', () => {
     capturePhoto();
   });
+
+  // Subir foto desde galería/archivos
+  document.getElementById('btn-upload').addEventListener('click', () => {
+    document.getElementById('photo-file-input').click();
+  });
+  document.getElementById('photo-file-input').addEventListener('change', (e) => {
+    const file = e.target.files && e.target.files[0];
+    handleFileUpload(file);
+    e.target.value = ''; // permite volver a elegir el mismo archivo
+  });
+
+  // Modal "Confirmar Cuadrilla Cumplida"
+  document.getElementById('btn-close-complete-modal').addEventListener('click', closeCompleteBrigadeModal);
+  document.getElementById('complete-brigade-modal').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('complete-brigade-modal')) {
+      closeCompleteBrigadeModal();
+    }
+  });
+  document.getElementById('input-after-photo').addEventListener('change', (e) => {
+    const file = e.target.files && e.target.files[0];
+    const preview = document.getElementById('after-photo-preview');
+    if (!file) {
+      afterPhotoBase64 = null;
+      preview.classList.add('hidden');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      afterPhotoBase64 = reader.result;  // data:image/...;base64,... — se guarda tal cual, no se decodifica
+      preview.src = reader.result;
+      preview.classList.remove('hidden');
+    };
+    reader.readAsDataURL(file);
+  });
+  document.getElementById('btn-confirm-complete-brigade').addEventListener('click', confirmCompleteBrigade);
 
   // Retomar foto
   document.getElementById('btn-retake').addEventListener('click', () => {
@@ -508,6 +666,14 @@ function setupEventListeners() {
     showToast('Nuevo reporte crítico recibido', 'success');
   });
 
+  // Config de brigadas: filas dinamicas segun el tope maximo ingresado
+  const inputMaxBrigades = document.getElementById("input-max-brigades");
+  renderBrigadeConfigRows(parseInt(inputMaxBrigades.value, 10) || 1);
+  inputMaxBrigades.addEventListener("input", () => {
+    const n = Math.max(1, Math.min(10, parseInt(inputMaxBrigades.value, 10) || 1));
+    renderBrigadeConfigRows(n);
+  });
+
   // Botón Trazar Ruta de Brigada
   document.getElementById("btn-calc-route").addEventListener("click", async () => {
     routeLayer.clearLayers();
@@ -516,7 +682,12 @@ function setupEventListeners() {
       const res = await fetch("http://localhost:8000/api/routes/dispatch", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ depot_coordinates: [-79.895, -2.18], max_foci: 16 })
+        body: JSON.stringify({
+          depot_coordinates: [-79.895, -2.18],
+          max_foci: 16,
+          max_brigades: parseInt(inputMaxBrigades.value, 10) || 1,
+          brigade_configs: collectBrigadeConfigs()
+        })
       });
       const data = await res.json();
       drawRoute(data);
@@ -536,16 +707,70 @@ function setupEventListeners() {
 
 const BRIGADE_COLORS = ['#38bdf8', '#a855f7', '#f97316', '#84cc16', '#ec4899'];
 
+// Debe coincidir con TRANSPORT_MODES en core/logistics/route_optimizer.py.
+// Cada modo corresponde a un tipo de brigada de campo distinto — ver el
+// comentario en ese archivo para la procedencia de cada numero (no todas
+// las cifras tienen el mismo nivel de respaldo cientifico todavia).
+const TRANSPORT_MODE_LABELS = {
+  foot: 'A pie — Control Focal',
+  vehicle_walk_attack: 'Vehículo + ataque a pie — Rociado Residual',
+  vehicle_spray: 'Vehículo fumigador — Fumigación Espacial'
+};
+
+// Crea/actualiza las filas de configuracion (fumigadores + transporte) para
+// el numero de brigadas indicado, preservando los valores ya ingresados.
+function renderBrigadeConfigRows(count) {
+  const container = document.getElementById('brigade-config-rows');
+  const previous = collectBrigadeConfigs();
+  container.innerHTML = '';
+
+  for (let i = 0; i < count; i++) {
+    const prev = previous[i] || { fumigadores: 2, transport_mode: 'vehicle_spray' };
+    const row = document.createElement('div');
+    row.className = 'brigade-config-row';
+    row.innerHTML = `
+      <span class="brigade-row-label">Brigada ${i + 1}</span>
+      <input type="number" min="1" max="10" value="${prev.fumigadores}"
+             class="brigade-cfg-fumigadores" title="Fumigadores/operarios">
+      <select class="brigade-cfg-transport" title="Tipo de transporte">
+        ${Object.entries(TRANSPORT_MODE_LABELS).map(([value, label]) =>
+          `<option value="${value}" ${value === prev.transport_mode ? 'selected' : ''}>${label}</option>`
+        ).join('')}
+      </select>
+    `;
+    container.appendChild(row);
+  }
+}
+
+// Lee la config actual de todas las filas de brigada renderizadas.
+function collectBrigadeConfigs() {
+  const rows = document.querySelectorAll('#brigade-config-rows .brigade-config-row');
+  return Array.from(rows).map(row => ({
+    fumigadores: parseInt(row.querySelector('.brigade-cfg-fumigadores').value, 10) || 2,
+    transport_mode: row.querySelector('.brigade-cfg-transport').value
+  }));
+}
+
 function drawRoute(routeData) {
   lastRouteData = routeData;
   routeLayer.clearLayers();
+  brigadePolylines = {};
 
   const brigades = routeData.brigades;
   let firstPolyline = null;
 
+  const legendContainer = document.getElementById('brigade-legend-items');
+  legendContainer.innerHTML = '';
+
   if (brigades && brigades.length > 0) {
     brigades.forEach((brigade, idx) => {
       const color = BRIGADE_COLORS[idx % BRIGADE_COLORS.length];
+
+      const legendItem = document.createElement('div');
+      legendItem.className = 'legend-item';
+      legendItem.innerHTML = `<span class="line-indicator" style="background:${color}"></span> ${brigade.brigade_id}`;
+      legendContainer.appendChild(legendItem);
+
       const lineCoords = brigade.route_geometry.coordinates.map(c => [c[1], c[0]]);
       const polyline = L.polyline(lineCoords, {
         color,
@@ -553,9 +778,13 @@ function drawRoute(routeData) {
         dashArray: "8, 8",
         opacity: 0.9
       }).addTo(routeLayer);
+      brigadePolylines[brigade.brigade_id] = polyline;
 
+      const transportLabel = TRANSPORT_MODE_LABELS[brigade.transport_mode] || brigade.transport_mode || '';
+      const crewLabel = brigade.fumigadores ? ` · ${brigade.fumigadores} fumigadores` : '';
       polyline.bindTooltip(
-        `${brigade.brigade_id} · ${brigade.stops_count} focos · ${brigade.distance_km} km`,
+        `${brigade.brigade_id} · ${brigade.stops_count} focos · ${brigade.distance_km} km` +
+        (transportLabel ? ` · ${transportLabel}` : '') + crewLabel,
         { sticky: true }
       );
 
@@ -580,18 +809,139 @@ function drawRoute(routeData) {
   const summaryBox = document.getElementById("route-summary");
   summaryBox.classList.remove("hidden");
   document.getElementById("route-dist").textContent = routeData.total_distance_km;
-  document.getElementById("route-time").textContent = routeData.estimated_duration_min;
+
+  // estimated_duration_min es un campo agregado que NO depende de la config
+  // por brigada (fumigadores/transporte) — por eso cambiar esos valores no
+  // se notaba en el resumen. Como las brigadas trabajan en paralelo, el
+  // tiempo real de la operacion lo marca la mas lenta.
+  const brigadeDurations = (brigades || []).map(b => b.duration_min).filter(n => typeof n === 'number');
+  const displayDuration = brigadeDurations.length > 0
+    ? Math.max(...brigadeDurations)
+    : routeData.estimated_duration_min;
+  document.getElementById("route-time").textContent = displayDuration;
 
   const brigadeCount = routeData.savings?.brigades_required ?? 1;
   document.getElementById("route-stops").textContent =
     routeData.priority_foci_count + (brigadeCount > 1 ? ` (${brigadeCount} cuadrillas)` : '');
 
   updateImpactMetrics(fociData, lastRouteData);
+  renderBrigadeStatusList(brigades);
 
   if (routeData.savings) {
     const msg = brigadeCount > 1
       ? `${brigadeCount} cuadrillas · ${routeData.savings.efficiency_pct}% más eficiente que ruta ciega`
       : `Ruta optimizada: ${routeData.savings.efficiency_pct}% más eficiente que ruta ciega`;
     showToast(msg, 'success');
+  }
+}
+
+// Lista con el tiempo real de cada brigada y un boton para marcarla
+// cumplida (soluciona: el tooltip del mapa requiere hover, esto queda
+// visible siempre; y agrega la accion de cerrar la ruta de una brigada).
+function renderBrigadeStatusList(brigades) {
+  const container = document.getElementById('brigade-status-list');
+  container.innerHTML = '';
+  if (!brigades || brigades.length === 0) return;
+
+  brigades.forEach((brigade, idx) => {
+    const color = BRIGADE_COLORS[idx % BRIGADE_COLORS.length];
+    const transportLabel = TRANSPORT_MODE_LABELS[brigade.transport_mode] || brigade.transport_mode || '';
+    const timeMin = Math.round(brigade.tiempo_total_minutos ?? brigade.duration_min ?? 0);
+    const warning = brigade.excede_jornada
+      ? ' · <span class="brigade-warning">⚠ excede jornada de 6h</span>'
+      : '';
+
+    const row = document.createElement('div');
+    row.className = 'brigade-status-row';
+    row.dataset.brigadeId = brigade.brigade_id;
+    row.innerHTML = `
+      <span class="brigade-dot" style="background:${color}"></span>
+      <div class="brigade-info">
+        <strong>${brigade.brigade_id}</strong>
+        <span class="brigade-meta">${brigade.stops_count} focos · ${timeMin} min · ${transportLabel}${warning}</span>
+      </div>
+      <button class="btn-complete-brigade" data-brigade-id="${brigade.brigade_id}">✓ Cumplida</button>
+    `;
+    container.appendChild(row);
+  });
+
+  container.querySelectorAll('.btn-complete-brigade').forEach(btn => {
+    btn.addEventListener('click', () => completeBrigade(btn.dataset.brigadeId));
+  });
+}
+
+// --- Modulo Antes/Despues: cerrar la ruta de una brigada exige nombre de
+// operador + foto de confirmacion (evidencia de que la intervencion se hizo
+// de verdad, no solo un click). Abre el modal en vez de resolver directo.
+let pendingCompleteBrigadeId = null;
+let afterPhotoBase64 = null;
+
+function completeBrigade(brigadeId) {
+  if (!lastRouteData || !lastRouteData.brigades) return;
+  const brigade = lastRouteData.brigades.find(b => b.brigade_id === brigadeId);
+  if (!brigade) return;
+
+  pendingCompleteBrigadeId = brigadeId;
+  afterPhotoBase64 = null;
+  document.getElementById('input-operator-name').value = '';
+  document.getElementById('input-after-photo').value = '';
+  document.getElementById('after-photo-preview').classList.add('hidden');
+  document.getElementById('complete-brigade-modal').classList.remove('hidden');
+}
+
+function closeCompleteBrigadeModal() {
+  pendingCompleteBrigadeId = null;
+  document.getElementById('complete-brigade-modal').classList.add('hidden');
+}
+
+// Marca los focos de la brigada pendiente como resueltos en el backend, saca
+// su linea del mapa y refresca el resto del dashboard (que ya no los trae).
+async function confirmCompleteBrigade() {
+  const brigadeId = pendingCompleteBrigadeId;
+  if (!brigadeId || !lastRouteData || !lastRouteData.brigades) return;
+  const brigade = lastRouteData.brigades.find(b => b.brigade_id === brigadeId);
+  if (!brigade) return;
+
+  const operatorName = document.getElementById('input-operator-name').value.trim();
+  const btnConfirm = document.getElementById('btn-confirm-complete-brigade');
+  btnConfirm.disabled = true;
+  btnConfirm.textContent = 'Confirmando...';
+
+  const row = document.querySelector(`.brigade-status-row[data-brigade-id="${brigadeId}"]`);
+  const rowBtn = row ? row.querySelector('.btn-complete-brigade') : null;
+
+  try {
+    const res = await fetch('http://localhost:8000/api/foci/resolve', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        foco_ids: brigade.secuencia_paradas || [],
+        brigade_id: brigadeId,
+        // "Firma digital" en el alcance de este demo es nombre + timestamp
+        // del operador — no una firma criptografica real. Aclarar en el
+        // pitch si el jurado pregunta.
+        operator_name: operatorName || null,
+        after_photo_base64: afterPhotoBase64
+      })
+    });
+    if (!res.ok) throw new Error('resolve fallo');
+    const data = await res.json();
+
+    if (brigadePolylines[brigadeId]) {
+      routeLayer.removeLayer(brigadePolylines[brigadeId]);
+      delete brigadePolylines[brigadeId];
+    }
+    if (row) row.classList.add('completed');
+    if (rowBtn) rowBtn.textContent = '✓ Hecho';
+
+    closeCompleteBrigadeModal();
+    await loadEpidemiologicalData();  // /api/foci ya no devuelve los resueltos
+    showToast(`${brigadeId} completada — ${data.resolved_count} focos resueltos`, 'success');
+  } catch (err) {
+    console.error('Error al marcar brigada como cumplida:', err);
+    showToast('No se pudo marcar la brigada como cumplida', 'error');
+  } finally {
+    btnConfirm.disabled = false;
+    btnConfirm.textContent = '✓ Confirmar';
   }
 }
