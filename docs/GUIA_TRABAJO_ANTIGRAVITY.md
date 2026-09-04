@@ -1,4 +1,4 @@
-# Guía de Trabajo en Equipo con Antigravity — AedesGuard
+# Guía de Trabajo en Equipo con Antigravity — Ojito al Mosquito
 
 Esta guía explica a cada integrante del equipo cómo utilizar **Antigravity** de forma coordinada, maximizando la velocidad de desarrollo con agentes de IA y evitando colisiones de código.
 

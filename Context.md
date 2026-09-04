@@ -1,4 +1,4 @@
-**Proyecto: AedesGuard (Sistema de Vigilancia Epidemiológica y Control Vectorial Predictivo)**
+**Proyecto: Ojito al Mosquito (Sistema de Vigilancia Epidemiológica y Control Vectorial Predictivo)**
 
 **Contexto General**
 

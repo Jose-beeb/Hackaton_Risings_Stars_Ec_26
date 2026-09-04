@@ -89,7 +89,7 @@ def test_dispatch():
 
 if __name__ == "__main__":
     print("=" * 50)
-    print("AedesGuard — Smoke Test")
+    print("Ojito al Mosquito — Smoke Test")
     print("=" * 50)
 
     results = [

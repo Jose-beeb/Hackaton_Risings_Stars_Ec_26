@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alerta Mosquitos</title>
+  <title>Ojito al Mosquito</title>
   
   <!-- Leaflet & Leaflet Heat CSS/JS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -24,9 +24,12 @@
 <body class="dark-theme">
   <!-- Header / Navigation Bar -->
   <header class="app-header">
-    <div class="brand">
-      <div class="brand-name">
-        <h1 class="brand-title">Alerta<span> Mosquitos</span></h1>
+    <div class="header-left">
+      <button id="btn-toggle-sidebar" class="menu-toggle" aria-label="Mostrar/ocultar panel informativo" title="Mostrar/ocultar panel">☰</button>
+      <div class="brand">
+        <div class="brand-name">
+          <h1 class="brand-title"><span class="brand-line">Ojito al</span><span class="brand-line">Mosquito</span></h1>
+        </div>
       </div>
     </div>
     <div class="header-actions">
@@ -39,7 +42,7 @@
   <!-- Main Container -->
   <main class="app-layout">
     <!-- Sidebar: Metrics & Brigade Dispatch -->
-    <aside class="sidebar">
+    <aside id="sidebar" class="sidebar">
       <section class="kpi-panel">
         <div class="kpi-card critical">
           <span class="kpi-label">Focos Críticos</span>
@@ -82,12 +85,22 @@
       <section class="dispatch-panel brigade-only">
         <h3>🧭 Despacho de Cuadrillas</h3>
         <p class="dispatch-desc">Optimización heurística (TSP + Ponderación IRE) para máximo impacto sanitario.</p>
+
+        <label class="config-label" for="input-max-brigades">
+          Máximo de brigadas disponibles
+          <input id="input-max-brigades" type="number" min="1" max="10" value="2">
+        </label>
+        <div id="brigade-config-rows" class="brigade-config-rows"></div>
+
         <button id="btn-calc-route" class="btn btn-accent full-width">⚡ Trazar Ruta Óptima de Brigada</button>
         <div id="route-summary" class="route-summary hidden">
           <div class="summary-stat"><strong>Distancia:</strong> <span id="route-dist">--</span> km</div>
-          <div class="summary-stat"><strong>Tiempo Est.:</strong> <span id="route-time">--</span> min</div>
+          <div class="summary-stat" title="Tiempo de la brigada más lenta — trabajan en paralelo, la operación completa termina cuando termina esa">
+            <strong>Tiempo Est. (brigada más lenta):</strong> <span id="route-time">--</span> min
+          </div>
           <div class="summary-stat"><strong>Focos a tratar:</strong> <span id="route-stops">--</span></div>
         </div>
+        <div id="brigade-status-list" class="brigade-status-list"></div>
       </section>
 
       <!-- Impact Panel -->
@@ -114,6 +127,8 @@
       </section>
     </aside>
 
+    <div id="sidebar-backdrop" class="sidebar-backdrop hidden"></div>
+
     <!-- Map View -->
     <section class="map-container">
       <div id="map"></div>
@@ -121,8 +136,7 @@
         <div class="legend-item"><span class="dot critical"></span> Crítico (IRE &gt; 70)</div>
         <div class="legend-item"><span class="dot medium"></span> Medio (IRE 40-70)</div>
         <div class="legend-item"><span class="dot low"></span> Bajo (IRE &lt; 40)</div>
-        <div class="legend-item"><span class="line-indicator"></span> Cuadrilla 1</div>
-        <div class="legend-item"><span class="line-indicator" style="background:#a855f7"></span> Cuadrilla 2</div>
+        <div id="brigade-legend-items"></div>
       </div>
     </section>
   </main>
@@ -141,10 +155,35 @@
       </div>
       <div class="modal-actions">
         <button id="btn-capture" class="btn btn-primary full-width">📸 Capturar Foto</button>
+        <button id="btn-upload" class="btn btn-secondary full-width">🖼️ Subir Foto</button>
+        <input id="photo-file-input" type="file" accept="image/*" class="hidden">
         <button id="btn-retake" class="btn btn-secondary hidden">↺ Retomar</button>
         <button id="btn-send-report" class="btn btn-accent hidden">Enviar Reporte</button>
       </div>
       <div id="report-result" class="report-result hidden"></div>
+    </div>
+  </div>
+
+  <div id="complete-brigade-modal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Confirmar Cuadrilla Cumplida</h2>
+        <button id="btn-close-complete-modal" class="btn-icon">✕</button>
+      </div>
+      <div class="modal-body-simple">
+        <label class="config-label" for="input-operator-name">
+          Nombre del operador
+          <input id="input-operator-name" type="text" placeholder="Ej: Juan Pérez">
+        </label>
+        <label class="config-label" for="input-after-photo">
+          Foto de confirmación (opcional)
+          <input id="input-after-photo" type="file" accept="image/*" capture="environment">
+        </label>
+        <img id="after-photo-preview" class="hidden" alt="Foto de confirmación">
+      </div>
+      <div class="modal-actions">
+        <button id="btn-confirm-complete-brigade" class="btn btn-accent full-width">✓ Confirmar</button>
+      </div>
     </div>
   </div>
 

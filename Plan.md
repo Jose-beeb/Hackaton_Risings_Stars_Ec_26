@@ -1,7 +1,7 @@
-# AedesGuard — Plan Estratégico y Arquitectura Técnica MVP
+# Ojito al Mosquito — Plan Estratégico y Arquitectura Técnica MVP
 
 **Competencia:** IEEE Rising Stars 2026 Hackathon (Track 2: Public Health)  
-**Proyecto:** AedesGuard (Sistema de Inteligencia Epidemiológica y Control Vectorial Predictivo)  
+**Proyecto:** Ojito al Mosquito (Sistema de Inteligencia Epidemiológica y Control Vectorial Predictivo)  
 **Modalidad:** Plataforma 100% de Software (PWA Móvil + Backend Orquestador + Dashboard GIS Predictivo)
 
 ---

@@ -1,6 +1,6 @@
 # Especificación de Contrato de API (Contract-First)
 
-Este documento define la interfaz pública e inmutable entre el Frontend, el Backend, el Motor Biológico y el Optimizador Logístico de **AedesGuard**.
+Este documento define la interfaz pública e inmutable entre el Frontend, el Backend, el Motor Biológico y el Optimizador Logístico de **Ojito al Mosquito**.
 
 ---
 

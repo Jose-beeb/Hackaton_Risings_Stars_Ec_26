@@ -1,4 +1,4 @@
-# Alerta Mosquitos — Implementation Plan
+# Ojito al Mosquito — Implementation Plan
 **IEEE Rising Stars 2026 | Track 2: Public Health**
 
 > Living document. El equipo debe hacer pull antes de empezar una tarea.
@@ -25,6 +25,7 @@
 | Vista Ciudadana / Vista Brigada | ✅ Completo |
 | Lenguaje diferenciado ciudadano vs brigada | ✅ Completo |
 | Rebrand: AedesGuard → Alerta Mosquitos | ✅ Completo |
+| Rebrand: Alerta Mosquitos → Ojito al Mosquito | ✅ Completo |
 | README con guía de contribución y ramas | ✅ Completo |
 | PITCH.md — narrativa, problema, impacto, ROI | ⏳ Pendiente |
 
@@ -50,7 +51,7 @@
 > Necesarias para defender el impacto económico ante el jurado.
 
 - [ ] Costo promedio de un brote de dengue en Ecuador (USD) — buscar en MSP, OPS/OMS
-- [ ] Costo de despliegue de Alerta Mosquitos en un municipio (infraestructura cloud + operación)
+- [ ] Costo de despliegue de Ojito al Mosquito en un municipio (infraestructura cloud + operación)
 - [ ] ROI proyectado a 12 meses para un municipio de 500k habitantes
 - [ ] Añadir cifras a `PITCH.md` cuando esté disponible
 
@@ -60,7 +61,7 @@
 
 ### 4.1 Métricas financieras para el pitch
 - [ ] Costo por brote de dengue en Ecuador (USD)
-- [ ] Costo de despliegue de Alerta Mosquitos (infraestructura cloud)
+- [ ] Costo de despliegue de Ojito al Mosquito (infraestructura cloud)
 - [ ] ROI proyectado a 12 meses para un municipio de 500k habitantes
 - [ ] Añadir a `PITCH.md`
 

@@ -1,4 +1,4 @@
-# Guia de Trabajo Git & GitHub — AedesGuard
+# Guia de Trabajo Git & GitHub — Ojito al Mosquito
 **IEEE Rising Stars 2026**
 
 > Lee esto una vez completo. Despues solo necesitas la seccion "Rutina diaria".

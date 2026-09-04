@@ -20,9 +20,15 @@ class TestTemperatureFactor:
         # Tun-Lin et al. (2000): umbral minimo de desarrollo es 8.3°C
         assert _temperature_factor(8.0) == pytest.approx(0.0)
 
-    def test_above_34c_returns_minimal(self):
-        # Rueda et al. (1990): supervivencia cae drasticamente por encima de 34°C
-        assert _temperature_factor(35.0) == pytest.approx(0.05)
+    def test_34c_still_within_productive_range(self):
+        # Rueda et al. (1990) reporta desarrollo pleno a 34°C (6 dias, el mas
+        # rapido de su serie) — el factor no debe colapsar a esta temperatura.
+        assert _temperature_factor(34.0) > 0.5
+
+    def test_above_40c_returns_minimal(self):
+        # El limite termico letal real esta cerca de 40°C para hembras adultas
+        # (Rueda et al., 1990), no a 34°C como se asumia antes.
+        assert _temperature_factor(41.0) == pytest.approx(0.05)
 
     def test_15c_returns_very_low_factor(self):
         # Rueda et al. (1990): supervivencia de Ae. aegypti a 15°C es solo 3%
@@ -45,9 +51,25 @@ class TestCalculateIre:
         assert "recommended_action" in result
 
     def test_critical_risk_at_optimal_conditions(self):
-        result = calculate_ire("tire", 28.0, 90.0, water_present=True)
+        # Escenario "peor caso" real para una llanta: grande y con materia
+        # organica. Una llanta chica/media sin organico ya no satura
+        # automaticamente en CRITICAL — ese aplanamiento era el problema que
+        # motivo bajar la constante base de 55 a 40 (ver ire_calculator.py).
+        result = calculate_ire(
+            "tire", 28.0, 90.0,
+            container_size="large",
+            organic_matter=True,
+            water_present=True,
+        )
         assert result["risk_level"] == "CRITICAL"
         assert result["ire_score"] >= 70.0
+
+    def test_bare_tire_no_longer_saturates_to_critical(self):
+        # Antes de la recalibracion, cualquier llanta con agua daba CRITICAL
+        # sin importar tamano o materia organica (constante base 55 saturaba
+        # el score). Ahora hay margen para diferenciar.
+        result = calculate_ire("tire", 28.0, 90.0, water_present=True)
+        assert result["risk_level"] == "MEDIUM"
 
     def test_no_water_yields_potential_risk_type(self):
         result = calculate_ire("bucket", 28.0, 80.0, water_present=False)
