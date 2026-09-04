@@ -1,4 +1,4 @@
-# AedesGuard — Guia de Setup
+# Ojito al Mosquito — Guia de Setup
 
 Lee esto antes de tocar cualquier archivo. Tiempo estimado: 10 minutos.
 

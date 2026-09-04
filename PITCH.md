@@ -1,4 +1,4 @@
-# AedesGuard — Pitch Document
+# Ojito al Mosquito — Pitch Document
 **IEEE Rising Stars 2026 | Track 2: Salud Pública**
 
 > Documento vivo — actualizar con cada avance del equipo.
@@ -16,7 +16,7 @@ Las brigadas de fumigación operan "a ciegas": recorren barrios enteros sin sabe
 
 ## La Solución (60 segundos)
 
-**AedesGuard** es una plataforma de inteligencia epidemiológica en tiempo real que:
+**Ojito al Mosquito** es una plataforma de inteligencia epidemiológica en tiempo real que:
 
 1. **Detecta** criaderos mediante IA de visión multimodal — el ciudadano toma una foto, la IA la clasifica en segundos
 2. **Calcula** el Índice de Riesgo Entomológico (IRE) cruzando el tipo de recipiente con temperatura y humedad real
@@ -94,7 +94,7 @@ Dashboard GIS (Leaflet + heatmap)
 
 ---
 
-## Por qué AedesGuard gana
+## Por qué Ojito al Mosquito gana
 
 1. **100% software** — deployable en 4 días, escalable sin hardware
 2. **IA explicable** — el IRE es un modelo determinístico, no una caja negra

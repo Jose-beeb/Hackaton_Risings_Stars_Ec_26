@@ -1,4 +1,4 @@
-# AedesGuard — Dependencias del Backend
+# Ojito al Mosquito — Dependencias del Backend
 # Instalar con: pip install -r backend/requirements.txt
 
 # === Framework web ===

@@ -1,5 +1,5 @@
 """
-Generador de Mock Data Geoespacial (GeoJSON) para AedesGuard.
+Generador de Mock Data Geoespacial (GeoJSON) para Ojito al Mosquito.
 Simula 40 focos epidemiológicos realistas en sectores críticos de Guayaquil y alrededores.
 """
 
@@ -96,7 +96,7 @@ def generate_mock_geojson(total_points: int = 40) -> dict:
     return {
         "type": "FeatureCollection",
         "metadata": {
-            "title": "AedesGuard Guayaquil Pilot Dataset",
+            "title": "Ojito al Mosquito — Guayaquil Pilot Dataset",
             "total_foci": len(features),
             "generated_at": now.isoformat() + "Z",
             "bounding_box": {
