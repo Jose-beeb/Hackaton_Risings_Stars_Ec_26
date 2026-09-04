@@ -39,7 +39,7 @@ body {
   background-color: #0b1120;
   border-bottom: 1px solid var(--border-color);
   position: relative;
-  z-index: 1600; /* siempre por encima del drawer (1500) y su fondo (1400) */
+  z-index: 1600; /* por encima de modales/paneles que puedan superponerse */
 }
 
 .header-left {
@@ -827,9 +827,11 @@ body {
 
 /* ============================================================
    Responsive — el panel informativo (sidebar) se puede ocultar
-   con el boton hamburguesa en cualquier ancho de pantalla, y en
-   mobile se convierte en un drawer superpuesto al mapa en vez de
-   empujarlo (el sidebar de 380px fijo no entra en un celular).
+   con el boton hamburguesa en cualquier ancho de pantalla. En
+   mobile, en vez de flotar superpuesto al mapa (lo tapaba), el
+   layout pasa a columna: mapa arriba, menu abajo compartiendo
+   el alto de la pantalla — igual que en desktop comparten el
+   ancho. Cerrado (.hidden) el mapa vuelve a ocupar todo el alto.
    Aplica igual a Vista Ciudadana y Vista Brigada — el toggle
    opera sobre el contenedor #sidebar, no sobre su contenido.
    ============================================================ */
@@ -857,34 +859,33 @@ body {
     font-size: 1.2rem;
   }
 
-  /* El sidebar deja de ser columna del flex y pasa a flotar sobre
-     el mapa — asi #map-container ya ocupa 100% del ancho sin
-     esperar a que el sidebar se oculte. Arranca debajo del header
-     (--header-height, medido en JS) para no tapar el logo ni los
-     botones de vista/reportar/simular. */
-  .sidebar {
-    position: fixed;
-    top: var(--header-height, 64px);
-    bottom: 0;
-    left: 0;
-    width: 85vw;
-    max-width: 340px;
-    z-index: 1500;
-    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.6);
+  /* .app-layout pasa de fila (mapa | sidebar) a columna (mapa / sidebar)
+     para que ambos compartan el alto disponible en vez de superponerse. */
+  .app-layout {
+    flex-direction: column;
   }
 
-  /* Tambien arranca debajo del header (no inset:0) — si no, el fondo
-     oscuro tapa el logo y los botones aunque el drawer en si ya no lo
-     haga, y ademas bloquearia los clicks sobre ellos. */
-  .sidebar-backdrop:not(.hidden) {
-    display: block;
-    position: fixed;
-    top: var(--header-height, 64px);
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1400;
+  /* min-height:0 es necesario: sin esto un hijo flex en columna no se
+     encoge por debajo de su contenido y el sidebar termina empujando
+     el mapa fuera de la pantalla en vez de compartir el alto. */
+  .map-container {
+    min-height: 0;
+  }
+
+  /* Ya no flota ni tapa el mapa — es una fila mas del flex en columna,
+     con su propio scroll porque el contenido (KPIs, feed, dispatch)
+     no siempre entra en el alto que le toca compartir. */
+  .sidebar {
+    width: 100%;
+    max-height: 45vh;
+    border-right: none;
+    border-top: 1px solid var(--border-color);
+  }
+
+  /* Sin drawer superpuesto no hace falta fondo oscuro para cerrarlo
+     tocando afuera — el boton hamburguesa ya alcanza. */
+  .sidebar-backdrop {
+    display: none !important;
   }
 
   .kpi-panel {

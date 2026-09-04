@@ -17,6 +17,38 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
+          -79.8891,
+          -2.1894
+        ]
+      },
+      "properties": {
+        "id": "foco-071",
+        "sector": "Reporte en Vivo",
+        "container_type": "tire",
+        "container_name": "Llanta",
+        "container_category": "artificial",
+        "container_size": "medium",
+        "water_present": true,
+        "organic_matter_present": true,
+        "estimated_volume_liters": 15.0,
+        "temperature_c": 31.6,
+        "humidity_pct": 50,
+        "ire_score": 44.1,
+        "risk_level": "MEDIUM",
+        "risk_type": "ACTIVE",
+        "days_to_emergence_estimate": 7,
+        "status": "PENDING",
+        "reported_at": "2026-09-04T16:07:36.576419Z",
+        "recommended_action": "Eliminacion fisica del deposito o vaciado completo. Educacion comunitaria sobre manejo de recipientes en el predio.",
+        "scientific_note": "El IRE es un indice de riesgo basado en condiciones ambientales. No confirma la presencia de larvas ni la etapa biologica del vector. Se requiere inspeccion directa para confirmacion entomologica.",
+        "notes": "Smoke test — llanta con agua estancada"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           -78.44024051866094,
           -0.15798407162986947
         ]
