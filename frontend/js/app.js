@@ -12,6 +12,59 @@ let brigadePolylines = {};   // brigade_id -> capa Leaflet, para poder sacar una
 
 const MOBILE_BREAKPOINT = 860;
 
+// ---- Exclusión de cuerpos de agua (Río Guayas / Estero Salado) ----
+// Misma fuente de datos que core/logistics/water_bodies.py: geometría REAL de
+// OpenStreetMap (data/water_bodies.geojson), no coordenadas dibujadas a mano.
+// Un primer intento con corredores imaginados tenía ~25% de falsos negativos
+// (el propio botón "Simular Reporte en Vivo" largó un foco dentro del río) —
+// de ahí la necesidad de cargar la geometría real en vez de duplicarla a ojo.
+let waterBodyPolygons = [];
+let waterBodiesReady = fetch('data/water_bodies.geojson')
+  .then((res) => res.json())
+  .then((geojson) => {
+    waterBodyPolygons = geojson.features.map((f) => f.geometry.coordinates[0]);
+  })
+  .catch(() => {
+    // Sin el GeoJSON no hay como validar — no bloquea la demo, pero se pierde
+    // la exclusión de agua para "Simular Reporte en Vivo".
+    console.warn('No se pudo cargar data/water_bodies.geojson — exclusión de agua deshabilitada.');
+  });
+
+function isPointInPolygon(lat, lng, polygon) {
+  let inside = false;
+  for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+    const [xi, yi] = polygon[i];
+    const [xj, yj] = polygon[j];
+    const intersects = ((yi > lat) !== (yj > lat)) &&
+      (lng < (xj - xi) * (lat - yi) / ((yj - yi) || 1e-12) + xi);
+    if (intersects) inside = !inside;
+  }
+  return inside;
+}
+
+function isInWaterBody(lat, lng) {
+  return waterBodyPolygons.some((poly) => isPointInPolygon(lat, lng, poly));
+}
+
+// Genera un punto aleatorio alrededor de un centro, reintentando si cae en agua.
+// Espera a que el GeoJSON real este cargado — si tarda o falla, sigue sin
+// bloquear el boton (mejor un foco ocasional mal ubicado que una demo trabada).
+async function randomLandPoint(centerLat, centerLng, spread) {
+  await Promise.race([waterBodiesReady, new Promise((r) => setTimeout(r, 1500))]);
+  let lat = centerLat;
+  let lng = centerLng;
+  for (let i = 0; i < 20; i++) {
+    const candidateLat = centerLat + (Math.random() - 0.5) * spread;
+    const candidateLng = centerLng + (Math.random() - 0.5) * spread;
+    if (!isInWaterBody(candidateLat, candidateLng)) {
+      return [candidateLat, candidateLng];
+    }
+    lat = candidateLat;
+    lng = candidateLng;
+  }
+  return [lat, lng];
+}
+
 // Inicialización
 document.addEventListener("DOMContentLoaded", () => {
   initMap();
@@ -648,8 +701,7 @@ function setupEventListeners() {
 
   // Botón Simular Reporte en Vivo (Pitch Fail-safe — siempre CRITICAL para la demo)
   document.getElementById("btn-simulate-report").addEventListener("click", async () => {
-    const randomLat = -2.185 + (Math.random() - 0.5) * 0.04;
-    const randomLng = -79.89 + (Math.random() - 0.5) * 0.04;
+    const [randomLat, randomLng] = await randomLandPoint(-2.185, -79.89, 0.04);
 
     const newFeature = {
       type: "Feature",

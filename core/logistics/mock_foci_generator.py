@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 from core.bio_engine.ire_calculator import calculate_ire
+from core.logistics.water_bodies import is_in_water_body
 
 # Sectores y coordenadas centrales de Guayaquil para clustering realista
 SECTORES = [
@@ -40,9 +41,17 @@ def generate_mock_geojson(total_points: int = 40) -> dict:
         sector = random.choice(SECTORES)
         tipo = random.choice(TIPOS_CRIADEROS)
         
-        # Desplazamiento aleatorio dentro del sector (~500m - 1.5km)
-        lat = sector["lat"] + random.uniform(-0.012, 0.012)
-        lng = sector["lng"] + random.uniform(-0.012, 0.012)
+        # Desplazamiento aleatorio dentro del sector (~500m - 1.5km), evitando que el
+        # punto caiga en el cauce del Río Guayas o el Estero Salado (biológicamente
+        # imposible para un criadero de Aedes aegypti). Reintenta unas pocas veces y,
+        # si no logra un punto en tierra firme, usa el centro del sector como respaldo.
+        lat, lng = sector["lat"], sector["lng"]
+        for _ in range(20):
+            candidate_lat = sector["lat"] + random.uniform(-0.012, 0.012)
+            candidate_lng = sector["lng"] + random.uniform(-0.012, 0.012)
+            if not is_in_water_body(candidate_lat, candidate_lng):
+                lat, lng = candidate_lat, candidate_lng
+                break
         
         # Clima típico costero en temporada lluviosa
         temp_c = round(random.uniform(26.5, 31.5), 1)
