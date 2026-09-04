@@ -52,17 +52,41 @@ def _temperature_factor(temperature_c: float) -> float:
     Factor metabolico basado en temperatura. Calibrado con datos empiricos:
     - Umbral minimo de desarrollo: 8.3°C (Tun-Lin et al., 2000)
     - Supervivencia a 15°C: solo 3% para Ae. aegypti (Rueda et al., 1990)
-    - Rango optimo: 27-30°C; pico en 28°C (ambos estudios)
-    - Por encima de 34°C la supervivencia cae drasticamente (Rueda et al., 1990)
+    - Rango optimo: 28-30°C (Rueda et al., 1990; Mordecai et al., 2017)
+    - Rueda et al. (1990) reporta desarrollo pleno incluso a 34-36°C (6 dias a
+      34°C, el mas rapido de su serie) — el colapso letal real esta cerca de
+      40°C para hembras adultas, no a 34°C como se asumia antes aca. El
+      decaimiento se modela entre 30°C y 40°C, no como corte abrupto en 34°C.
     """
     if temperature_c < 8.3:
         return 0.0
-    if temperature_c > 34.0:
+    if temperature_c > 40.0:
         return 0.05
     if temperature_c < 16.0:
         # Zona de desarrollo marginal: supervivencia ~3% a 15°C (Rueda 1990)
         return max(0.0, (temperature_c - 8.3) / (16.0 - 8.3) * 0.10)
-    return max(0.3, 1.0 - abs(28.0 - temperature_c) * 0.06)
+    if temperature_c < 28.0:
+        return max(0.3, 1.0 - (28.0 - temperature_c) * 0.06)
+    if temperature_c <= 30.0:
+        return 1.0
+    # 30°C -> 40°C: decaimiento gradual hasta el limite letal real (~40°C)
+    return max(0.05, 1.0 - (temperature_c - 30.0) * 0.095)
+
+
+def _humidity_factor(humidity_pct: float) -> float:
+    """
+    La humedad relativa ambiental no impacta el metabolismo larvario de forma
+    directa — el agua estancada es su propio microambiente. Su efecto principal
+    es sobre la supervivencia del adulto (tiempo para completar el ciclo
+    gonotrofico) y la tasa de evaporacion del deposito. Por eso se modela como
+    una rampa con piso 0.5, no como una fraccion lineal estricta de la humedad.
+    Por encima de 70% (tipico invierno costero) el factor satura en 1.0.
+    """
+    if humidity_pct >= 70.0:
+        return 1.0
+    if humidity_pct <= 40.0:
+        return 0.5
+    return 0.5 + (humidity_pct - 40.0) / (70.0 - 40.0) * 0.5
 
 
 def _days_to_emergence(ire_score: float, temperature_c: float) -> int:
@@ -118,12 +142,16 @@ def calculate_ire(
     container_weight = CONTAINER_WEIGHTS.get(container_type, 1.0)
     size_factor = SIZE_FACTORS.get(container_size, 1.0)
     temp_factor = _temperature_factor(temperature_c)
-    hum_factor = max(0.5, humidity_pct / 100.0)
+    hum_factor = _humidity_factor(humidity_pct)
     # Tun-Lin et al. (2000): materia organica acelera desarrollo y aumenta tamano del adulto
     organic_factor = 1.30 if organic_matter else 1.0
 
-    # Puntuacion base
-    raw_score = 55.0 * container_weight * size_factor * temp_factor * hum_factor * organic_factor
+    # Puntuacion base. Constante 40.0 (antes 55.0): con 55.0 el peor escenario
+    # (llanta+large+organico+temp/hum optimas) da 134, muy por encima del techo
+    # de 99 — el clamp lo aplanaba junto con otros escenarios distintos,
+    # perdiendo resolucion en el extremo alto. Con 40.0 el peor caso da 97.5,
+    # dentro de rango sin necesidad de aplastar la escala.
+    raw_score = 40.0 * container_weight * size_factor * temp_factor * hum_factor * organic_factor
     ire_score = round(max(5.0, min(99.0, raw_score)), 1)
 
     # Sin agua: riesgo potencial (score reducido — el recipiente puede acumular agua)
