@@ -8,12 +8,13 @@
 ## Cronograma Minuto a Minuto (Target: 3m 30s)
 
 ```
-00:00 ─── [0:35] ──► 1. Personificación del Dolor (Historia Humana)
-00:35 ─── [0:35] ──► 2. La Estadística Impactante (Fuentes Oficiales OPS/OMS/MSP)
-01:10 ─── [0:50] ──► 3. La Solución: Ojito al Mosquito & Puntos Fuertes
-02:00 ─── [0:40] ──► 4. Benchmarking Internacional & Diferenciación Clave
-02:40 ─── [0:30] ──► 5. Video Demostrativo (MVP en Acción, 30s)
-03:10 ─── [0:20] ──► 6. Cierre Contundente & Llamado a la Acción
+00:00 ─── [0:35] ──► 1. Personificación del Dolor (Historia de Mariana & El Niño)
+00:35 ─── [0:30] ──► 2. La Estadística Validada (OPS / OMS / MSP Ecuador)
+01:05 ─── [0:45] ──► 3. La Solución: Ojito al Mosquito & Puntos Fuertes
+01:50 ─── [0:35] ──► 4. Benchmarking Internacional & Diferenciación Clave
+02:25 ─── [0:25] ──► 5. Modelo de Negocio & Alianzas Estratégicas
+02:50 ─── [0:30] ──► 6. Video Demostrativo (MVP en Acción, 30s)
+03:20 ─── [0:10] ──► 7. Cierre de Impacto
 ──────────────────────────────────────────────────────────────────
 Total: 3 minutos y 30 segundos
 ```
@@ -23,84 +24,93 @@ Total: 3 minutos y 30 segundos
 ## Guion Detallado por Secciones
 
 ### 1. Personificación del Dolor (0:00 - 0:35) — 35 segundos
-> **Objetivo:** Conectar emocionalmente con el jurado. Salir del abstracto y ponerle rostro a la tragedia cotidiana.
+> **Objetivo:** Conectar emocionalmente con el jurado y situarlo en la realidad de la costa ecuatoriana.
 
 * **Guion hablado:**  
-  *"Ella es Carmen, vive en el Suburbio de Guayaquil. Hace dos semanas, su hijo de 8 años empezó con fiebre alta, dolor detrás de los ojos y vómitos. Carmen tuvo que pasar tres noches sentada en una silla plástica de un centro de salud colapsado, temiendo que el cuadro pasara a dengue hemorrágico.*  
-  *¿Lo más frustrante? Ese mosquito que picó a su hijo nació a escasos metros de su ventana: en una llanta abandonada con agua estancada que nadie detectó a tiempo. Hoy en día, los municipios siguen combatiendo el dengue exactamente igual que hace 40 años: enviando brigadas a ciegas a recorrer barrios enteros sin saber dónde están los criaderos reales."*
+  *"Tras las lluvias torrenciales de El Niño, la calle de Mariana quedó inundada, con zanjas desbordadas y llantas con agua empozada en la vereda. Con el calor extremo de la Costa, el mosquito pasa de huevo a transmisor en solo cinco días.*  
+  *Mariana cuida a sus hijos y mantiene su casa impecable, pero los mosquitos que nacen a pocos pasos de su puerta entran directo a su sala. A la semana, su hijo menor arde en fiebre con dolores insoportables; ella pierde días de sustento cuidándolo y el centro de salud de su sector no da abasto.*  
+  *La impotencia de miles de familias es ver cómo el peligro crece afuera, en su propia vereda, mientras la ayuda municipal llega semanas tarde a fumigar a ciegas cuando el hospital ya colapsó."*
 
 ---
 
-### 2. Estadística Fuerte & Validada (0:35 - 1:10) — 35 segundos
-> **Objetivo:** Demostrar rigor técnico y magnitud del problema con respaldo institucional irrefutable.
+### 2. Estadística Fuerte & Validada (0:35 - 1:05) — 30 segundos
+> **Objetivo:** Demostrar rigor técnico y magnitud del problema con respaldo de fuentes epidemiológicas irrefutables.
 
 * **Datos clave y fuentes:**
-  - **OPS/OMS (Reporte Epidemiológico Arbovirosis 2024-2025):** Las Américas registraron un récord histórico absoluto de más de **12 millones de casos sospechosos de dengue**.
-  - **Ministerio de Salud Pública del Ecuador (MSP / SIVE Alerta):** En Ecuador, el último año epidemiológico superó los **27.000 casos reportados**, con Guayas y Manabí concentrando más del 60% de los focos críticos.
-  - **Ineficiencia Económica y Sanitaria:** Estudios de control vectorial demuestran que **hasta el 70% del insecticida se aplica en zonas donde no hay criaderos activos**, derrochando presupuesto público y generando resistencia química en el *Aedes aegypti*.
+  - **OPS/OMS (Alerta Epidemiológica 2024-2025):** Récord histórico continental de más de **12 millones de casos** en las Américas.
+  - **MSP Ecuador (SIVE Alerta):** Más de **27.000 contagios** en el último ciclo, con Guayas y Manabí concentrando los focos más críticos.
+  - **Falla Logística:** Hasta el **70% del insecticida se desperdicia** fumigando manzanas al azar sin criaderos activos.
 
 * **Guion hablado:**  
-  *"Esto no es un caso aislado. Según la Organización Panamericana de la Salud (OPS), Latinoamérica superó los 12 millones de casos de dengue en su último ciclo, el peor brote en la historia del continente. En Ecuador, el Ministerio de Salud reportó más de 27.000 casos, saturando hospitales públicos.*  
-  *Pero el verdadero absurdo logístico es este: las cuadrillas municipales gastan miles de dólares fumigando manzanas al azar, donde hasta el 70% del insecticida se desperdicia en zonas sin criaderos. Llegamos tarde, gastamos mal y el mosquito sigue naciendo."*
+  *"Y la realidad de Mariana es la de todo el continente. Según la Organización Panamericana de la Salud (OPS), la región enfrenta su peor crisis histórica con más de 12 millones de casos de dengue. Solo en Ecuador, el Ministerio de Salud superó los 27.000 contagios.*  
+  *Pero el verdadero cuello de botella es logístico: hasta el 70% del insecticida se desperdicia fumigando manzanas al azar donde no hay criaderos activos, mientras la respuesta tarda días: justo cuando el mosquito ya eclosionó y transmitió el virus."*
 
 ---
 
-### 3. La Solución: Ojito al Mosquito & Puntos Fuertes (1:10 - 2:00) — 50 segundos
-> **Objetivo:** Presentar la plataforma como un sistema de inteligencia epidemiológica 100% software, determinista y accionable.
+### 3. La Solución: Ojito al Mosquito & Puntos Fuertes (1:05 - 1:50) — 45 segundos
+> **Objetivo:** Presentar la plataforma como un sistema determinista, 100% software y accionable.
 
-* **Pilares de la solución:**
-  1. **Visión Multimodal Instantánea:** El ciudadano o brigadista captura una foto; la IA clasifica el tipo de depósito (llanta, tanque, balde) y valida agua estancada.
-  2. **Motor Bio-Matemático Determinista (IRE):** No es una caja negra. Cruza la micro-temperatura y humedad local en tiempo real (Open-Meteo) con las curvas biológicas de desarrollo larvario (*Rueda 1990 / Tun-Lin 2000*) para calcular exactamente cuántos días faltan para la eclosión del mosquito adulto.
-  3. **Despacho Logístico Inteligente (TSP):** Ruteo optimizado para que las brigadas municipales ataquen primero los focos donde la eclosión es inminente (< 48h), con enlace directo de navegación en Google Maps.
+* **Pilares técnicos:**
+  1. **Inferencia Visual Multimodal:** Identifica el tipo de depósito (llanta, balde, tanque) y valida agua en segundos con Gemini Flash.
+  2. **Motor Bio-Matemático Determinista (IRE):** Cruza temperatura en tiempo real (Open-Meteo) con modelos validados (*Rueda 1990 / Tun-Lin 2000*) para estimar días exactos para la eclosión.
+  3. **Despacho Logístico Táctico (TSP):** Prioriza visitar primero los focos donde la eclosión es inminente (< 48h).
 
 * **Guion hablado:**  
-  *"Para cortar este ciclo creamos **Ojito al Mosquito**, una plataforma de inteligencia epidemiológica 100% software que transforma cualquier teléfono en un sensor sanitario de precisión.*  
-  *¿Cómo funciona?*  
-  *Primero: el usuario toma una foto del recipiente y nuestra IA multimodal identifica en segundos el tipo de depósito y la presencia de agua.*  
-  *Segundo: no usamos una IA como caja negra. Nuestro motor bio-matemático cruza la temperatura ambiental en tiempo real con modelos entomológicos validados para calcular el Índice de Riesgo y el tiempo exacto de eclosión de las larvas.*  
-  *Tercero: el sistema genera rutas logísticas optimizadas para las brigadas municipales, priorizando intervenir antes de que la larva se convierta en mosquito transmisor."*
+  *"Por eso creamos **Ojito al Mosquito**: para transformar la foto de un vecino o brigadista en una alerta temprana que guíe a las cuadrillas a sanear la calle antes de que comience el brote.*  
+  *Nuestra plataforma 100% software combina tres capas:*  
+  *Primero: visión artificial multimodal que clasifica el depósito y detecta agua en segundos.*  
+  *Segundo: un motor bio-matemático determinista que cruza la temperatura local en tiempo real para calcular exactamente cuántos días faltan para que la larva vuele.*  
+  *Y tercero: optimización de rutas que prioriza los criaderos críticos a punto de eclosionar, guiando a la brigada paso a paso."*
 
 ---
 
-### 4. Benchmarking Internacional & Diferenciación Clave (2:00 - 2:40) — 40 segundos
-> **Objetivo:** Mostrar dominio del estado del arte global y explicar por qué nuestra propuesta es superior y viable.
+### 4. Benchmarking Internacional & Diferenciación (1:50 - 2:25) — 35 segundos
+> **Objetivo:** Demostrar conocimiento del mercado y superioridad frente a alternativas existentes.
 
-* **Comparativa internacional:**
-  - **Mosquito Alert (España / Unión Europea):** Excelente ciencia ciudadana, pero basada en entomólogos humanos que validan fotos días después; sin despacho municipal activo.
-  - **DengueChat (Nicaragua / UC Berkeley):** Enfocado en movilización comunitaria, pero con registro manual en formularios y sin inferencia automatizada ni cálculo microclimático.
-  - **Trampas IoT / Ovitrampas Digitales (Brasil / EE.UU.):** Sensores físicos de conteo acústico u óptico. Costo de cientos de dólares por punto, propensos a vandalismo, robo y fallos de batería.
-
-* **Nuestra Diferenciación Clave:**
-  - **Cero Hardware:** Costo marginal de despliegue (< $50/mes por municipio en nube).
-  - **Tiempo de Respuesta Inmediato:** De 72 horas a menos de 3 minutos.
-  - **Cierre del Circuito:** No se queda en el mapa de calor; genera la orden de despacho táctica para el operador.
+* **Comparativa:**
+  - *Mosquito Alert (Europa):* Depende de validación de entomólogos humanos (tarda días).
+  - *DengueChat (Nicaragua):* Formularios manuales sin inferencia climática ni ruteo.
+  - *Trampas IoT (Brasil/EE.UU.):* Cientos de dólares por punto, inviables por robo, vandalismo y baterías.
 
 * **Guion hablado:**  
-  *"Revisamos las mejores iniciativas del mundo: iniciativas como Mosquito Alert en Europa dependen de entomólogos humanos que tardan días en validar reportes. Soluciones en Brasil y EE.UU. recurren a trampas electrónicas IoT, pero instalar y mantener sensores físicos en una ciudad como Guayaquil cuesta cientos de miles de dólares y es inviable por vandalismo y baterías.*  
-  *Ojito al Mosquito se diferencia en tres puntos críticos:*  
-  *1. **Cero Hardware:** Aprovechamos los smartphones que ya existen en la comunidad y las cuadrillas.*  
-  *2. **Respuesta en 3 minutos, no 72 horas:** Inferencia visual automática en el borde de la nube.*  
-  *3. **Acción, no solo visualización:** No mostramos solo un mapa bonito; entregamos la ruta exacta para que la cuadrilla elimine el foco antes de la eclosión."*
+  *"Las soluciones globales tienen grandes limitaciones: iniciativas como Mosquito Alert en Europa dependen de biólogos humanos que tardan días en validar fotos. En Brasil y EE.UU. usan trampas físicas IoT, pero instalar hardware en miles de esquinas es inviable por costos, vandalismo y baterías.*  
+  *Ojito al Mosquito se diferencia radicalmente: cero hardware nuevo, inferencia en 3 segundos aprovechando los smartphones existentes, y cierre completo del ciclo: no solo mostramos un mapa, generamos la orden de intervención operativa."*
 
 ---
 
-### 5. Video Demostrativo del MVP (2:40 - 3:10) — 30 segundos (Voz en off / Audio)
-> **Objetivo:** Demostrar que el sistema está completamente construido, validado y funcionando.
+### 5. Modelo de Negocio & Alianzas Estratégicas (2:25 - 2:50) — 25 segundos
+> **Objetivo:** Demostrar sostenibilidad financiera, tracción y viabilidad institucional ante el jurado.
 
-* **Secuencia visual del video (Storyline de 30s):**
-  - **00s - 08s:** Interfaz móvil (PWA). Captura de foto de llanta/balde. Se extraen coordenadas GPS y se envía reporte.
-  - **08s - 16s:** Vista de resultado instantáneo: IA detecta "Depósito de riesgo alto", temperatura local 28.5°C, IRE 8.7/10 y "Eclosión estimada: 3.2 días".
-  - **16s - 24s:** Dashboard Municipal GIS (Leaflet). El punto aparece en el mapa de Guayaquil con color de criticidad. Clic en "Calcular Ruta Óptima".
-  - **24s - 30s:** Generación de la ruta de cuadrilla con minimización de kilómetros y botón para abrir directamente en Google Maps.
+* **Estructura comercial y sinergias:**
+  - **B2G (SaaS Municipal / Gobiernos Autónomos Descentralizados - GADs):** Suscripción anual por cantón según población para el panel de inteligencia epidemiológica, tablero GIS y optimizador de cuadrillas.
+  - **B2B (Empresas de Control de Plagas e Industrias):** Licenciamiento de API y módulo de gestión de riesgo vectorial para puertos, florícolas y bananeras.
+  - **Alianzas Estratégicas Clave:**
+    - **Ministerio de Salud Pública (MSP) & GADs Municipales:** Integración con el sistema SIVE Alerta para interoperabilidad de datos.
+    - **Academia & Centros de Investigación (CIREV / INSPI):** Calibración continua de modelos entomológicos locales.
+    - **Líderes Barriales y Comités de Salud Comunitaria:** Red comunitaria de alerta y validación en territorio.
 
-* **Locución sobre el video (o texto en pantalla):**  
-  *"En la pantalla vemos el flujo real: captura de foto, análisis multimodal instantáneo y cálculo del riesgo bio-matemático. Al instante, el foco se refleja en el panel municipal de Guayaquil. El operador presiona un botón y el sistema calcula la ruta más eficiente, enviando la navegación directa al teléfono del brigadista."*
+* **Guion hablado:**  
+  *"Nuestro modelo de sostenibilidad es B2G y B2B: un SaaS para municipios y GADs con tarifa por habitante para su central de despacho, y una API para empresas privadas de control vectorial.*  
+  *Y nos apalancamos en alianzas estratégicas: integración directa con la vigilancia del Ministerio de Salud y municipios locales, validación entomológica con centros de investigación como el INSPI, y activación territorial a través de los comités barriales de salud."*
 
 ---
 
-### 6. Cierre & Impacto (3:10 - 3:30) — 20 segundos
-> **Objetivo:** Dejar una frase memorable y una llamada a la acción clara para el jurado.
+### 6. Video Demostrativo del MVP (2:50 - 3:20) — 30 segundos
+> **Objetivo:** Probar que el producto está construido y funciona en vivo.
+
+* **Secuencia de video:**
+  - **00s - 08s:** PWA móvil. Foto de llanta/recipiente con agua $\rightarrow$ GPS automático.
+  - **08s - 16s:** Clasificación IA + IRE score + "Eclosión estimada: 3.2 días".
+  - **16s - 24s:** Punto aparece en el panel GIS de Guayaquil con nivel de criticidad.
+  - **24s - 30s:** Cálculo de ruta TSP y botón directo de apertura en Google Maps.
+
+* **Locución sobre video:**  
+  *"En pantalla vemos el sistema en tiempo real: el reporte genera la clasificación y el cálculo bio-matemático al instante. En el centro de mando municipal de Guayaquil el foco aparece geolocalizado, y con un solo clic el sistema traza la ruta óptima de intervención, enviando la navegación directa a la brigada."*
+
+---
+
+### 7. Cierre & Llamado a la Acción (3:20 - 3:30) — 10 segundos
+> **Objetivo:** Remate contundente.
 
 * **Guion hablado:**  
-  *"Con Ojito al Mosquito convertimos datos y biología en acción preventiva directa: reducimos hasta un 40% el uso innecesario de pesticidas y bajamos el tiempo de respuesta de 3 días a menos de 3 horas.*  
-  *El dengue no espera. Nuestra tecnología tampoco. Muchas gracias."*
+  *"Ojito al Mosquito: tecnología que previene el dolor de familias como la de Mariana antes de que el mosquito nazca. Muchas gracias."*
