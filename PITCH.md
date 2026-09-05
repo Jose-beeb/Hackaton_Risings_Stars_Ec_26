@@ -72,6 +72,25 @@ GeoJSON (data/mock_foci_guayaquil.geojson)
 
 ---
 
+## Cómo se define el nivel de riesgo (para responder "¿qué es bajo o alto riesgo?")
+
+Verificado contra `core/bio_engine/ire_calculator.py` — no es una estimación cualitativa, es una fórmula:
+
+```
+IRE = 40 × peso_contenedor × factor_tamaño × factor_temperatura × factor_humedad × factor_materia_orgánica
+```
+
+- **Peso del contenedor:** llanta 1.5, tanque abierto 1.4, canaleta obstruida 1.3, balde 1.1, maceta 0.8, charco 0.7, plástico 0.6.
+- **Tamaño:** chico (<5L) 0.85 · mediano (5-50L) 1.0 · grande (>50L) 1.25.
+- **Temperatura:** curva calibrada con Rueda (1990), óptimo 28-30°C, decae hacia el límite letal (~40°C).
+- **Humedad:** rampa 0.5-1.0, satura sobre 70%. **Materia orgánica:** ×1.30 si hay presencia visible. Sin agua presente, el score cae a 40% del valor (riesgo potencial, no activo).
+
+**Umbrales — decisión operativa del equipo, no un hallazgo científico (decirlo así si preguntan):** ≥70 = 🔴 CRITICAL · 40-69.9 = 🟡 MEDIUM · <40 = 🟢 LOW.
+
+**Cómo se recopila — 2 fuentes automáticas, nada manual:** la foto se clasifica con Gemini Vision (tipo de recipiente, tamaño, agua, materia orgánica, volumen), el clima se consulta en tiempo real a Open-Meteo con el GPS exacto del reporte. Esos 6 datos son el único input — mismos inputs, mismo score, siempre. Es el mismo argumento de "explicabilidad total" del punto anterior, con el detalle exacto por si el jurado pide precisión.
+
+---
+
 ## Cómo deciden las rutas y el tiempo de las brigadas (para responder preguntas técnicas del jurado)
 
 Esto es contenido real de `core/logistics/route_optimizer.py`, no marketing — útil si el jurado pregunta "¿cómo deciden qué foco visitar primero?":

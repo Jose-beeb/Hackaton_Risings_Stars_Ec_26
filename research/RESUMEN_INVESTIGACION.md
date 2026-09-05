@@ -31,7 +31,45 @@
 
 ---
 
-## 3. Por qué la fumigación tradicional no alcanza
+## 3. Metodología: cómo se define el nivel de riesgo y cómo se recopila la información
+
+Esto es 100% verificable contra el código (`core/bio_engine/ire_calculator.py`), no una estimación — útil para responder "¿cómo deciden qué es alto o bajo riesgo?" con precisión ante el jurado o en el informe.
+
+**Cómo se calcula el score (0-99):**
+
+```
+IRE = 40 × peso_contenedor × factor_tamaño × factor_temperatura × factor_humedad × factor_materia_orgánica
+```
+
+| Factor | Valores |
+|---|---|
+| Peso del contenedor | Llanta 1.5, tanque abierto 1.4, canaleta obstruida 1.3, balde 1.1, maceta 0.8, charco 0.7, plástico 0.6 |
+| Tamaño | Chico (<5L) 0.85, mediano (5-50L) 1.0, grande (>50L) 1.25 |
+| Temperatura | Curva calibrada con Rueda (1990): sube hasta 28-30°C (óptimo), decae gradual hacia 40°C (límite letal), cae a casi 0 bajo 8.3°C (Tun-Lin 2000) |
+| Humedad | Rampa 0.5-1.0, satura sobre 70% |
+| Materia orgánica | ×1.30 si hay presencia visible |
+
+Si no hay agua presente, el score se multiplica además por 0.40 (`risk_type: POTENTIAL` en vez de `ACTIVE`) — es riesgo latente, no un criadero activo ahora mismo.
+
+**Los 3 umbrales de clasificación (decisión operativa del equipo, no un hallazgo de un paper — decirlo así si preguntan):**
+
+| Score | Nivel |
+|---|---|
+| ≥ 70 | 🔴 CRITICAL |
+| 40 – 69.9 | 🟡 MEDIUM |
+| < 40 | 🟢 LOW |
+
+**Cómo se recopila la información — 2 fuentes automáticas, nada manual:**
+1. **Foto → Gemini Vision** clasifica: tipo de recipiente, tamaño, si hay agua, si hay materia orgánica, volumen estimado. Es percepción pura — la IA no decide el riesgo.
+2. **GPS del reporte → Open-Meteo** trae temperatura y humedad reales del punto exacto, en tiempo real (no un promedio genérico de la ciudad).
+
+Esos 6 datos son el único input de la fórmula — nada se tipea a mano, por eso el resultado es reproducible: mismos inputs, mismo score, siempre.
+
+*(✅ Toda esta sección está verificada directamente contra el código fuente, no es una síntesis de investigación externa.)*
+
+---
+
+## 4. Por qué la fumigación tradicional no alcanza
 
 | Dato | Confianza | Fuente |
 |---|---|---|
@@ -44,7 +82,7 @@
 
 ---
 
-## 4. Economía sanitaria — costos y ROI
+## 5. Economía sanitaria — costos y ROI
 
 | Dato | Confianza | Fuente |
 |---|---|---|
@@ -61,7 +99,7 @@
 
 ---
 
-## 5. Benchmarking competitivo
+## 6. Benchmarking competitivo
 
 | Criterio | Mosquito Alert (España) | DengueChat (Nicaragua) | Trampas IoT | **Ojito al Mosquito** |
 |---|---|---|---|---|
@@ -76,7 +114,7 @@
 
 ---
 
-## 6. Marco legal y modelo de negocio
+## 7. Marco legal y modelo de negocio
 
 | Dato | Confianza | Fuente |
 |---|---|---|
@@ -89,7 +127,7 @@
 
 ---
 
-## 7. Preguntas de jurado ya preparadas (ver también `PITCH.md`)
+## 8. Preguntas de jurado ya preparadas (ver también `PITCH.md`)
 
 - ¿Por qué no trampas IoT? → Costo + vandalismo hacen inviable cubrir una ciudad; los smartphones ya existen.
 - ¿Cómo evitan que la IA alucine el riesgo? → La IA solo clasifica la foto; el riesgo lo calcula una fórmula determinista (IRE), no la IA.
@@ -102,7 +140,7 @@
 
 ---
 
-## 8. Regla de uso para el equipo
+## 9. Regla de uso para el equipo
 
 Antes de poner un número en una diapositiva o en el informe:
 1. Buscalo en la tabla correspondiente de arriba.

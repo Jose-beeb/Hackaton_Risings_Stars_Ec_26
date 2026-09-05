@@ -57,6 +57,24 @@ POST /api/foci/resolve → Gemini valida visualmente que la intervención fue re
 
 **Stack:** FastAPI (Python) · Vanilla JS + Leaflet.js · Google Gemini 3.6 Flash · Open-Meteo · PWA.
 
+### Cómo se define el nivel de riesgo (LOW / MEDIUM / CRITICAL)
+
+El score IRE (0-99) sale de una fórmula determinista, no de una estimación cualitativa:
+
+```
+IRE = 40 × peso_contenedor × factor_tamaño × factor_temperatura × factor_humedad × factor_materia_orgánica
+```
+
+- **Peso del contenedor:** llanta 1.5, tanque abierto 1.4, canaleta obstruida 1.3, balde 1.1, maceta 0.8, charco 0.7, plástico 0.6.
+- **Tamaño:** chico (<5L) 0.85, mediano (5-50L) 1.0, grande (>50L) 1.25.
+- **Temperatura:** curva calibrada con Rueda (1990) — óptimo 28-30°C, decae hacia el límite letal (~40°C), cae casi a 0 bajo 8.3°C (Tun-Lin 2000).
+- **Humedad:** rampa 0.5-1.0, satura sobre 70%.
+- **Materia orgánica:** ×1.30 si hay presencia visible. Si no hay agua, el score total se reduce además a un 40% (riesgo potencial, no activo).
+
+**Umbrales de clasificación** (decisión operativa del equipo, no un hallazgo científico — aclarar así si preguntan): **≥70 = CRITICAL**, **40-69.9 = MEDIUM**, **<40 = LOW**.
+
+**Recolección de datos — 2 fuentes automáticas, sin intervención manual:** la foto se clasifica con Gemini Vision (tipo de recipiente, tamaño, presencia de agua, materia orgánica, volumen estimado — pura percepción, la IA no decide el riesgo); el clima se consulta en tiempo real a Open-Meteo con las coordenadas GPS exactas del reporte. Esos 6 datos son el único input de la fórmula, lo que hace el resultado reproducible: mismos inputs, mismo score, siempre. Verificado directamente contra `core/bio_engine/ire_calculator.py`.
+
 ---
 
 ## 4. Beneficios e impacto esperado
