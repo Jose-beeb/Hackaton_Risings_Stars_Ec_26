@@ -609,25 +609,38 @@ function showFloatingReportCard(data, coords) {
   const badgeLabels = { critical: 'CRÍTICO', medium: 'MEDIO', low: 'BAJO' };
   const containerName = data.classification?.container_name;
   const containerType = data.classification?.container_type;
-  const actionTip = HOME_ACTION_TIPS[containerType];
 
-  const headline = isCitizenMode
-    ? (citizenMessages[riskLevel] || 'Gracias por tu reporte.')
-    : `IRE ${ire}${daysToEmergence != null ? ` · ${daysToEmergence}d para emergencia adulta` : ''}`;
+  // Si Gemini no pudo analizar la foto (cuota agotada, timeout, error de red —
+  // ver vision_service.py, sources "fallback"/"fallback_api_error"/
+  // "fallback_json_error"), el backend devuelve un clasificador heuristico fijo
+  // (bucket/balde) solo para que la demo no se caiga. Mostrar esa recomendacion
+  // como si fuera la foto real es peor que no mostrar nada: se vio con una
+  // selfie sugiriendo "vaciar el balde". "no_image" es distinto (el usuario no
+  // adjunto foto a proposito) y ahi si corresponde el consejo generico.
+  const analysisFailed = /^fallback/.test(data.classification?.source || '');
+  const actionTip = !analysisFailed ? HOME_ACTION_TIPS[containerType] : null;
+
+  const headline = analysisFailed
+    ? 'No pudimos analizar la foto en este momento (el servicio de IA no respondió). Tu reporte quedó guardado igual.'
+    : isCitizenMode
+      ? (citizenMessages[riskLevel] || 'Gracias por tu reporte.')
+      : `IRE ${ire}${daysToEmergence != null ? ` · ${daysToEmergence}d para emergencia adulta` : ''}`;
 
   const actionCard = actionTip
     ? `<div class="action-card"><strong>🛠️ Qué podés hacer ahora mismo:</strong><p>${actionTip}</p></div>`
-    : '';
+    : analysisFailed
+      ? '<div class="action-card"><strong>🔍 Mientras tanto:</strong><p>Revisá vos mismo si hay agua estancada en el sitio — no pudimos confirmarlo con la foto.</p></div>'
+      : '';
 
   const card = document.createElement('div');
-  card.className = `floating-report-card ${riskLevel}`;
+  card.className = `floating-report-card ${analysisFailed ? 'medium' : riskLevel}`;
   card.innerHTML = `
     <div class="frc-header">
-      <span class="frc-badge">${badgeLabels[riskLevel] || riskLevel.toUpperCase()}</span>
+      <span class="frc-badge">${analysisFailed ? 'SIN ANALIZAR' : (badgeLabels[riskLevel] || riskLevel.toUpperCase())}</span>
       <button class="frc-close" aria-label="Cerrar">✕</button>
     </div>
     <div class="frc-body">
-      <strong>${containerName || 'Reporte analizado'}</strong>
+      <strong>${analysisFailed ? 'Reporte guardado' : (containerName || 'Reporte analizado')}</strong>
       <p>${headline}</p>
     </div>
     ${actionCard}
