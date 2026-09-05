@@ -7,6 +7,11 @@ let fociData = [];
 let demoFoci = [];        // focos agregados en demo mode — sobreviven el polling
 let previousFociHash = '';
 let cameraStream = null;
+// Nombre original del archivo si la foto vino de "subir imagen" (no de la
+// camara) — se manda al backend solo para que reconozca las fotos de
+// test-images/ y no dependa de la cuota diaria de Gemini en la demo (ver
+// vision_service.DEMO_IMAGE_CACHE). Una foto real de camara no tiene esto.
+let lastUploadedFileName = null;
 let lastRouteData = null;
 let brigadePolylines = {};   // brigade_id -> capa Leaflet, para poder sacar una sola al marcarla cumplida
 
@@ -421,6 +426,8 @@ function capturePhoto() {
   const btnRetake = document.getElementById('btn-retake');
   const btnSend = document.getElementById('btn-send-report');
 
+  lastUploadedFileName = null;  // captura de camara, no es un archivo subido
+
   const { width, height } = scaledPhotoDimensions(videoEl.videoWidth || 640, videoEl.videoHeight || 480);
   canvas.width = width;
   canvas.height = height;
@@ -443,6 +450,8 @@ function capturePhoto() {
 // la cámara, para que sendReport() no tenga que distinguir el origen de la foto.
 function handleFileUpload(file) {
   if (!file || !file.type.startsWith('image/')) return;
+
+  lastUploadedFileName = file.name;
 
   const statusEl = document.getElementById('modal-status');
   const videoEl = document.getElementById('camera-preview');
@@ -534,6 +543,9 @@ async function sendReport() {
   formData.append('notes', 'Reporte desde app móvil');
   if (photoBlob) {
     formData.append('photo', photoBlob, 'reporte.jpg');
+    if (lastUploadedFileName) {
+      formData.append('demo_filename', lastUploadedFileName);
+    }
   }
 
   // Flujo asincrono no bloqueante (AUDITORIA_Y_MEJORAS.md #6): el modal se

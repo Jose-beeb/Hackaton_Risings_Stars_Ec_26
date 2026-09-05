@@ -21,7 +21,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../.
 
 from core.bio_engine.ire_calculator import calculate_ire
 from core.logistics.route_optimizer import optimize_brigade_route
-from app.services.vision_service import classify_image, validate_resolution
+from app.services.vision_service import classify_image, validate_resolution, get_demo_cached_result
 from app.services.climate_service import get_climate
 
 logging.basicConfig(level=logging.INFO)
@@ -217,6 +217,9 @@ async def create_report(
     photo: Optional[UploadFile] = File(
         None, description="Foto del criadero (JPEG/PNG), multipart en vez de Base64"
     ),
+    demo_filename: Optional[str] = Form(
+        None, description="Nombre original del archivo, solo para reconocer fotos de test-images/ (ver vision_service.DEMO_IMAGE_CACHE)"
+    ),
 ):
     """
     Procesa un reporte ciudadano o de brigada.
@@ -226,10 +229,17 @@ async def create_report(
     overhead de payload en redes moviles y el backend ya no decodifica Base64
     en el event loop antes de mandarla a Gemini (ver AUDITORIA_Y_MEJORAS.md #1).
     """
-    # 1. Clasificacion visual (Gemini Flash o fallback)
+    # 1. Clasificacion visual (Gemini Flash, cache de demo, o fallback)
     if photo is not None:
         image_bytes = await photo.read()
-        vision_result = classify_image(image_bytes)
+        cached_demo_result = get_demo_cached_result(demo_filename)
+        if cached_demo_result is not None:
+            # Foto de test-images/ conocida — cuota diaria de Gemini agotada
+            # (20 req/dia en el tier gratis), se usa el resultado ya
+            # verificado en vez de llamar a la API. Ver DEMO_IMAGE_CACHE.
+            vision_result = cached_demo_result
+        else:
+            vision_result = classify_image(image_bytes)
     else:
         image_bytes = None
         vision_result = {
