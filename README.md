@@ -87,9 +87,8 @@ OjitoAlMosquito/
 ├── data/
 │   └── mock_foci_guayaquil.geojson  # ~70 focos base de Guayaquil, IRE real (LOW/MEDIUM/CRITICAL)
 ├── docs/
-│   └── research/                    # Papers cientificos del modelo IRE
-│       ├── rueda1990.pdf            # Rueda et al. (1990) — desarrollo Ae. aegypti
-│       └── 10.1046@j.1365-2915.2000.00207.x.pdf  # Tun-Lin et al. (2000)
+│   └── research/                    # Papers y fuentes primarias (PDFs) — ver docs/research/README.md
+├── research/                        # Guiones de pitch, estrategia, investigacion — ver research/README.md
 ├── SETUP.md                         # Guia de instalacion paso a paso
 ├── IMPLEMENTATION_PLAN.md           # Checklist de tareas con estado
 └── .env.example                     # Plantilla de variables de entorno
@@ -174,17 +173,18 @@ Snippets de referencia listos para copiar/pegar para los puntos 3, 6, 7 y 8: `do
 
 ## Preparacion del pitch
 
-Documentos con contenido para el pitch, mas nuevos y especificos que `PITCH.md` (que el equipo ya marco como desactualizado):
+`PITCH.md` (raiz del repo) es el documento principal, ya actualizado y con verificacion de cifras. Estos son los documentos de research que lo alimentan — ver tambien `research/README.md` y `docs/research/README.md` para donde va cada tipo de archivo:
 
 | Documento | Contenido |
 |---|---|
-| `research/GUION_PITCH_3_30_MIN.md` | Guion completo minuto a minuto para el formato largo (3:30 min) |
-| `research/GUION_PITCH_2_30_MIN.md` | Guion recortado para el limite duro del concurso (2:30 min objetivo, 3:00 min tope) |
-| `research/ESTRATEGIA_Y_BLINDAJE_JURADO.md` | Benchmarking vs. soluciones existentes (apps ciudadanas, IoT, control tradicional), FODA tecnico, y respuestas preparadas para preguntas dificiles del jurado |
-| `research/Jose.md` | Investigacion ampliada con bibliografia de 65 fuentes APA: epidemiologia Ecuador 2019-2026, resistencia genetica del vector, modelos bio-matematicos, marco legal COOTAD/LOS y via de contratacion SERCOP, costos reales de brigadas. Dos citas puntuales sin confirmar de forma independiente — ver `PITCH.md` |
+| `research/GUION_PITCH_2_30_MIN.md` | Guion recomendado — objetivo 2:30 min, limite real del concurso confirmado en 3:00 |
+| `research/GUION_PITCH_3_30_MIN.md` | Guion mas largo (3:30-4:00), excede el limite real — solo como referencia |
+| `research/ESTRATEGIA_Y_BLINDAJE_JURADO.md` | Benchmarking vs. soluciones existentes, FODA tecnico, respuestas preparadas para preguntas dificiles del jurado |
+| `research/Jose.md` | Investigacion ampliada con bibliografia de 65 fuentes APA: epidemiologia Ecuador 2019-2026, resistencia genetica del vector, modelos bio-matematicos, marco legal COOTAD/LOS y via de contratacion SERCOP, costos reales de brigadas |
+| `docs/research/Nathy Research.pdf` | Parametros bioclimaticos sugeridos (algunos NO implementados todavia en `ire_calculator.py` — ver nota en `PITCH.md`), restricciones logisticas de brigadas y metricas financieras con bibliografia propia |
 | `INFORME_PROPUESTA.md` | Informe formal de la propuesta (problema, solucion, impacto, estado de avance, recursos, plan de implementacion) — mismo nivel de verificacion de cifras que `PITCH.md` |
 
-Antes de citar cualquier cifra financiera en el pitch, revisar la tabla **Metricas financieras para el pitch** de este README — dos de las citas propuestas por el equipo no resistieron la verificacion (una cita no existe, otra cambia el numero real en 2-3x).
+Antes de citar cualquier cifra en el pitch, revisar la tabla **Metricas financieras para el pitch** de este README y la seccion equivalente de `PITCH.md` — varias citas propuestas por el equipo en distintos documentos no resistieron la verificacion cruzada (paginas incorrectas, cifras sin fuente primaria, o citas que no se pudieron confirmar de forma independiente).
 
 ---
 

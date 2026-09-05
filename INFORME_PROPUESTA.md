@@ -17,7 +17,7 @@
 Ecuador atraviesa un crecimiento crítico de casos de dengue, agravado por los patrones de lluvia intensa asociados a El Niño en la Costa: agua estancada en llantas, tanques y zanjas desbordadas crea criaderos masivos de *Aedes aegypti* justo cuando las temperaturas de la Costa (26-32°C) permiten que el mosquito complete su ciclo de huevo a adulto transmisor en apenas **5-7 días**.
 
 **Cifras verificadas contra fuente oficial (búsqueda directa en esta sesión, no solo la síntesis previa del equipo):**
-- Ecuador registró **27.838 casos** de dengue en 2023 y **61.329 en 2024** — un incremento del **+120%** interanual — con **76 muertes confirmadas** (48 adultos, 28 niños). Fuente: boletines epidemiológicos del MSP Ecuador (sistema SIVE-Alerta, [salud.gob.ec](https://www.salud.gob.ec/wp-content/uploads/2025/02/ENFERMEDADES-TRANSMITIDAS-POR-VECTORES-SE-06.pdf)) y cobertura de prensa que los cita directamente ([Primicias](https://www.primicias.ec/sociedad/dengue-casos-ecuador-duplicaron-muertes-covid-88226/)).
+- Ecuador registró **27.838 casos** de dengue en 2023 y **61.329 en 2024** — un incremento del **+120%** interanual — con **76 muertes confirmadas** (48 adultos, 28 niños). Fuente: boletines epidemiológicos del MSP Ecuador (sistema SIVE-Alerta, [salud.gob.ec](https://www.salud.gob.ec/wp-content/uploads/2025/02/ENFERMEDADES-TRANSMITIDAS-POR-VECTORES-SE-06.pdf)) y cobertura de prensa que los cita directamente ([Primicias](https://www.primicias.ec/sociedad/dengue-casos-ecuador-duplicaron-muertes-covid-88226/)). *(Nota: `docs/research/Nathy Research.pdf` cita 61.352 para el mismo año — diferencia menor entre documentos del equipo, usar 61.329 que tiene el boletín MSP linkeado.)* Hasta la semana epidemiológica 06 de 2025 ya había 5.507 casos y 4 muertes — el problema sigue escalando, no fue solo un pico de 2024.
 - Un caso hospitalizado de dengue implica en promedio **5.6 días escolares y 9.9 días laborales perdidos** (Suaya et al. 2009, *AJTMH* 80(5):846-855 — verificado contra AJTMH/PubMed).
 - El control focalizado y proactivo puede reducir **15-20%** los costos operativos recurrentes frente a un modelo reactivo (Baly, Toledo & Boelaert 2007, *Trans R Soc Trop Med Hyg* 101:578-586 — verificado).
 - La fumigación ULV en zonas urbanas densas logra solo un **40-60% de reducción transitoria por ciclo** de la población adulta (Bonds 2012, *Medical and Veterinary Entomology* 26(2):121-130 — revisión crítica, confirmada real en esta sesión), y la población se recupera en semanas. `research/Jose.md` atribuye a Giglioli (1948) el umbral de que se necesitaría cubrir >97% de la biomasa adulta para bajar la transmisión a nivel poblacional ("paradoja de Giglioli") — **ese 97%/1948 puntual no lo pude confirmar independientemente**; usar el 40-60% de Bonds (2012) como cifra principal, y el concepto de la paradoja de forma cualitativa si no se puede verificar el original antes del pitch.
@@ -70,6 +70,8 @@ POST /api/foci/resolve → Gemini valida visualmente que la intervención fue re
 
 *Nota de honestidad: las cifras de porcentaje de ahorro de pesticida/combustible que circulan en materiales previos del equipo no tienen todavía una medición propia auditada — el beneficio real se puede argumentar cualitativamente (evidencia científica de que el tratamiento dirigido es más eficiente) y se debe medir con datos reales durante un piloto, no proyectar como número cerrado.*
 
+**Contraste de costos verificado en esta sesión** (`docs/research/Nathy Research.pdf`, dos de tres citas confirmadas): un caso hospitalizado de dengue cuesta entre **USD 196 y 866** al sistema de salud (Thalagala et al. 2016, confirmado), mientras que el biolarvicida Bti suprime la producción de pupas en **91% durante 8 semanas** — más efectivo que el temefos químico tradicional, que muestra reinfestación en solo 6 semanas por resistencia del vector (Setha 2016 y George 2015, ambos confirmados). Esto sostiene el argumento de prevención-vs-tratamiento con evidencia real, independientemente de las cifras de ahorro operativo (35-40%) que siguen sin medición propia.
+
 ---
 
 ## 5. Estado de avance de la solución
@@ -92,6 +94,7 @@ Verificado contra el código, no contra lo que dice cada commit — ver `README.
 - Migración de persistencia a una base de datos real (SQLite/PostGIS) — hoy usa un archivo GeoJSON plano, funcional para un piloto pero no para producción con múltiples procesos concurrentes
 - Soporte offline (PWA con cola local) y polling adaptativo para ahorrar batería/datos móviles
 - Selector dinámico de base de operaciones de brigadas (hoy sigue fijo en una coordenada)
+- Refinamientos bio-climáticos sugeridos por `docs/research/Nathy Research.pdf` (aceleración del ciclo por anomalía tipo El Niño, punto de calibración a 35°C) y tope de carga por mochila de brigadista (5kg/14L) — ninguno está en el código todavía; el umbral de 8.3°C sí está implementado
 
 **Parcial / con matices a declarar:**
 - Algunos parámetros operativos de brigadas (velocidad, minutos por parada) son estimaciones internas del equipo, no todos tienen cita académica primaria confirmada de forma independiente
@@ -139,6 +142,6 @@ Verificado contra el código, no contra lo que dice cada commit — ver `README.
 - **Guion de pitch y preparación ante jurado:** `PITCH.md` (incluye benchmarking competitivo, Q&A de jurado, y la misma tabla de verificación de cifras que este informe)
 - **Guiones de pitch cronometrados:** `research/GUION_PITCH_2_30_MIN.md` (usar este — límite de tiempo confirmado en 3:00 min), `research/GUION_PITCH_3_30_MIN.md` (referencia, excede el límite real)
 - **Bibliografía de 65 fuentes APA (epidemiología, resistencia genética, modelos bio-matemáticos, marco legal y SERCOP):** `research/Jose.md` — dos citas puntuales (Ponce et al. 2020 sobre kdr en Ecuador, y el "97%"/Giglioli 1948) no se pudieron confirmar de forma independiente en esta sesión, ver `PITCH.md` para el detalle
-- **Base científica del modelo IRE:** `docs/research/rueda1990.pdf`, `docs/research/10.1046@j.1365-2915.2000.00207.x.pdf`
+- **Base científica del modelo IRE y papers de respaldo:** `docs/research/` (ver `docs/research/README.md` — incluye Rueda 1990, Tun-Lin 2000, Doeurk 2025, y la investigación de contexto técnico de una compañera del equipo)
 - **Benchmark de clasificación de imágenes:** `test-images/` (8 imágenes diseñadas para casos límite — control negativo, falso positivo, ambigüedad taxonómica, arquetipos positivos)
 - **Dataset de demostración:** `data/mock_foci_guayaquil.geojson`
