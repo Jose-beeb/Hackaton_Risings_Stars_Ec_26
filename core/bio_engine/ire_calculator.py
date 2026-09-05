@@ -79,14 +79,18 @@ def _humidity_factor(humidity_pct: float) -> float:
     directa — el agua estancada es su propio microambiente. Su efecto principal
     es sobre la supervivencia del adulto (tiempo para completar el ciclo
     gonotrofico) y la tasa de evaporacion del deposito. Por eso se modela como
-    una rampa con piso 0.5, no como una fraccion lineal estricta de la humedad.
-    Por encima de 70% (tipico invierno costero) el factor satura en 1.0.
+    una rampa con piso alto (0.75), no como una fraccion lineal estricta de la
+    humedad: el piso anterior (0.5) castigaba a la mitad el score de un
+    criadero con agua YA estancada solo porque el aire ambiental estaba seco
+    (ej. Guayaquil en tarde calurosa y seca, ~40-45% HR) — inconsistente con
+    que el propio deposito es su microambiente independiente. Por encima de
+    70% (tipico invierno costero) el factor satura en 1.0.
     """
     if humidity_pct >= 70.0:
         return 1.0
     if humidity_pct <= 40.0:
-        return 0.5
-    return 0.5 + (humidity_pct - 40.0) / (70.0 - 40.0) * 0.5
+        return 0.75
+    return 0.75 + (humidity_pct - 40.0) / (70.0 - 40.0) * 0.25
 
 
 def _days_to_emergence(ire_score: float, temperature_c: float) -> int:

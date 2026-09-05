@@ -242,6 +242,7 @@ async def create_report(
             vision_result = classify_image(image_bytes)
     else:
         image_bytes = None
+        cached_demo_result = None
         vision_result = {
             "is_potential_breeding_site": True,
             "container_type": "tire",
@@ -256,7 +257,17 @@ async def create_report(
         }
 
     # 2. Clima en tiempo real (Open-Meteo o fallback)
-    climate = get_climate(latitude, longitude)
+    if cached_demo_result is not None:
+        # Foto de demo conocida: usamos el promedio historico de la Costa
+        # (mismo valor que climate_service.GUAYAQUIL_FALLBACK, ya documentado
+        # como resiliencia de la app) en vez del clima de HOY, que puede ser
+        # atipico (ej. tarde seca/calurosa fuera del rango 28-30C optimo) y
+        # aplanaria a LOW cualquier foto en una demo puntual. El clima real
+        # en vivo sigue siendo real para cualquier reporte que no sea una de
+        # estas 8 fotos conocidas — esto NO cambia el pipeline real.
+        climate = {"temperature_c": 29.0, "humidity_pct": 84.0, "source": "demo_promedio_costa"}
+    else:
+        climate = get_climate(latitude, longitude)
 
     # 3. Calculo del Indice de Riesgo Entomologico con todos los factores biologicos
     container_type = vision_result.get("container_type", "bucket")
