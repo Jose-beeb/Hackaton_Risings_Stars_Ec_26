@@ -155,31 +155,83 @@ Análisis basado en procesos SERCOP verificados del GAD Guayaquil y distritos de
 
 ---
 
-## 8. Bibliografía y Fuentes Oficiales (APA 7ma Edición)
+## 8. Bibliografía Consolidada y Fuentes Oficiales (APA 7ma Edición)
 
-### A. Literatura Científica y Entomológica
-1. Brière, J. F., Pracros, P., Le Roux, A. Y., & Pierre, J. S. (1999). A novel rate model of temperature-dependent development for arthropods. *Environmental Entomology*, 28(1), 22–29. https://doi.org/10.1093/ee/28.1.22
-2. Giglioli, G. (1948). *Malaria, filariasis and yellow fever in British Guiana: Control by DDT*. Mosquito Control Service, Medical Department, British Guiana.
-3. INSPI — Instituto Nacional de Investigación en Salud Pública. (2023). *Vigilancia de la resistencia a insecticidas en poblaciones de Aedes aegypti en el litoral ecuatoriano*. Boletín Epidemiológico del INSPI, 12(3), 45–58.
-4. Logan, J. A., Wollkind, D. J., Hoyt, S. C., & Tanigoshi, L. K. (1976). An analytic model for description of temperature dependent rate phenomena in arthropods. *Environmental Entomology*, 5(6), 1133–1140. https://doi.org/10.1093/ee/5.6.1133
-5. Mordecai, E. A., Caldwell, J. M., Grossman, M. K., Lippi, C. A., Johnson, L. R., Neira, M., Rohr, J. R., Ryan, S. J., Savage, V., Shocket, M. S., Sippy, R., Stewart-Ibarra, A. M., Thomas, M. B., & Villena, O. (2019). Thermal biology of mosquito-borne transmission: Thermal responses of vector and parasite traits. *PLOS Neglected Tropical Diseases*, 13(4), e0007214. https://doi.org/10.1371/journal.pntd.0007214
-6. Palmer, J. R. B., Oltra, A., Collantes, F., Delgado, J. A., Lucientes, J., Delacour, S., Bengoa, M., Eritja, R., & Bartumeus, F. (2017). Citizen science provides a reliable and scalable tool to track disease-carrying mosquitoes. *Nature Communications*, 8(1), 14845. https://doi.org/10.1038/ncomms14845
-7. Ponce, P., Morales, D., Argoti, A., & Carvalho, M. S. (2020). Knockdown resistance (kdr) mutations in Aedes aegypti from Ecuador: First report of F1534C and V1016I mutations in coastal populations. *Infection, Genetics and Evolution*, 85, 104523. https://doi.org/10.1016/j.meegid.2020.104523
-8. Rueda, L. M., Patel, K. J., Axtell, R. C., & Stinner, R. E. (1990). Temperature-dependent development and survival rates of Culex quinquefasciatus and Aedes aegypti (Diptera: Culicidae). *Journal of Medical Entomology*, 27(5), 892–898. https://doi.org/10.1093/jmedent/27.5.892
-9. Ryan, S. J., Mundis, S. J., Aguirre, A., Stewart-Ibarra, A. M., Hargrove, T. E., & Kaelin, M. A. (2019). Seasonal and spatial dynamics of dengue transmission risk in Machala, Ecuador. *International Journal of Environmental Research and Public Health*, 16(18), 3465. https://doi.org/10.3390/ijerph16183465
-10. Shepard, D. S., Undurraga, E. A., Halasa, Y. A., & Stanaway, J. D. (2016). The global economic burden of dengue: a systematic analysis. *The Lancet Infectious Diseases*, 16(8), 935–941. https://doi.org/10.1016/S1473-3099(16)00146-8
-11. Stewart-Ibarra, A. M., Ryan, S. J., Beltrán, E., Mejía, R., Silva, M., & Muñoz, Á. (2013). Dengue vector dynamics (Aedes aegypti) influencing outbreak potential in Machala, Ecuador. *Revista Ecuatoriana de Medicina y Ciencias Biológicas*, 34(1-2), 41–56.
-12. Tun-Lin, W., Burkot, T. R., & Kay, B. H. (2000). Effects of temperature and container type on development of Aedes aegypti, the vector of dengue fever. *Medical and Veterinary Entomology*, 14(1), 31–37. https://doi.org/10.1046/j.1365-2915.2000.00207.x
-13. World Health Organization — WHO. (2021). *Manual for indoor and outdoor space spraying of insecticides for vector control*. Geneva: World Health Organization.
-14. World Health Organization — WHO. (2024). *Dengue and severe dengue: Fact sheet*. Geneva: World Health Organization.
+### A. Epidemiología Oficial y Clima (OPS/OMS, MSP Ecuador y ERFEN)
+1. CNN Español. (2024, diciembre 9). *La epidemia de dengue en América este año es la mayor desde que hay registro, advierte la OPS*. [CNN Español](https://cnnespanol.cnn.com/2024/12/10/salud/epidemia-dengue-america-mayor-registro-orix)
+2. Comité Nacional para el Estudio Regional del Fenómeno El Niño (ERFEN). (2024). *Informe del Comité Nacional ERFEN del 10 de abril de 2024*. Armada del Ecuador. [Armada del Ecuador](https://www.armada.mil.ec/blog/armada-en-la-comunidad-3/informe-del-comite-nacional-erfen-del-10-de-abril-de-2024-1403)
+3. CRC-OSA (Centro Regional del Clima para el Sur de América del Sur). (2024). *2024 en el clima de Ecuador* [Presentación técnica]. [CRC-OSA / CIIFEN](https://crc-osa.ciifen.org/CST/wp-content/uploads/2024/06/06-ECUADOR-FORO-CLIMATICO-OSA-LIMA-JG-Ecuador.pdf)
+4. El Comercio. (2026, agosto 25). *Ecuador entra en meses clave para definir la evolución del fenómeno de El Niño*. [El Comercio](https://www.elcomercio.com/actualidad/ecuador/ecuador-entra-meses-decisivos-definiran-rumbo-fenomeno-el-nino/)
+5. Expreso. (2025, enero 28). *Alerta por dengue en Ecuador: 28 niños muertos en 2024 y aumento de casos en 2025*. [Diario Expreso](https://www.expreso.ec/guayaquil/alerta-sanitaria-ninos-fallecidos-dengue-ecuador-aumento-casos-2025-ecuador-ministerio-salud-guayaquil-temporada-lluvia-salud-publica-229628.html)
+6. Ministerio de Salud Pública del Ecuador. (2025a). *Enfermedades transmitidas por vectores, semana epidemiológica 10*. [MSP](https://www.salud.gob.ec/wp-content/uploads/2025/03/ENFERMEDADES-TRANSMITIDAS-POR-VECTORES-SE-10-2025-OK.pdf)
+7. Ministerio de Salud Pública del Ecuador. (2025b). *Mapa de enfermedades vectoriales por provincia, SE 01-06*. [MSP](https://www.salud.gob.ec/wp-content/uploads/2025/02/ENFERMEDADES-TRANSMITIDAS-POR-VECTORES-SE-06.pdf)
+8. Ministerio de Salud Pública del Ecuador. (2026a). *Histórico de casos de enfermedades vectoriales, gaceta epidemiológica 11*. [MSP](https://www.salud.gob.ec/wp-content/uploads/2026/03/ETV_Gaceta_11.pdf)
+9. Ministerio de Salud Pública del Ecuador. (2026b). *Histórico de casos de enfermedades vectoriales, gaceta epidemiológica 33*. [MSP](https://www.salud.gob.ec/wp-content/uploads/2026/08/ETV_Gaceta_33-1.pdf)
+10. Organización Panamericana de la Salud. (2024a). *Actualización epidemiológica: Aumento de casos de dengue en la Región de las Américas, 29 de marzo de 2024*. [OPS/OMS](https://www.paho.org/es/documentos/actualizacion-epidemiologica-aumento-casos-dengue-region-americas-29-marzo-2024)
+11. Organización Panamericana de la Salud. (2024b, diciembre 9). *El dengue deja un récord de 12,6 millones de casos y 7.713 muertes en 2024 en las Américas* [Comunicado de prensa]. [SwissInfo / EFE](https://www.swissinfo.ch/spa/el-dengue-deja-un-r%C3%A9cord-de-12,6-millones-de-casos-y-7.713-muertes-en-2024-en-las-am%C3%A9ricas/88570740)
+12. Organización Panamericana de la Salud. (2024c). *Alerta epidemiológica: Aumento de casos de dengue en la región de las Américas* [Reporte técnico]. [OPS / Gob.pe](https://cdn.www.gob.pe/uploads/document/file/7092147/4752905-alerta-epidemiologica-aumento-de-casos-de-dengue-en-la-region-de-las-americas.pdf?v=1729115800)
+13. Primicias. (2025, enero 25). *Casos de dengue en Ecuador se duplicaron en 2024 y las muertes superaron al COVID-19*. [Primicias](https://www.primicias.ec/sociedad/dengue-casos-ecuador-duplicaron-muertes-covid-88226/)
 
-### B. Normativa Legal y Portales Estatales del Ecuador
-15. Asamblea Nacional del Ecuador. (2010). *Código Orgánico de Organización Territorial, Autonomía y Descentralización (COOTAD)*. Registro Oficial Suplemento 303.
-16. Congreso Nacional del Ecuador. (2006). *Ley Orgánica de Salud (LOS)*. Registro Oficial Suplemento 423.
-17. Ministerio de Salud Pública del Ecuador — MSP. (2024). *Gaceta Epidemiológica Semanal: Enfermedades Transmitidas por Vectores (SE 52 - 2024)*. Quito: MSP.
-18. Ministerio de Salud Pública del Ecuador — MSP. (2024). *Informe de Ejecución Presupuestaria del Programa Nacional de Control de Vectores 2024*. Quito: MSP.
-19. Ministerio del Trabajo del Ecuador. (2025). *Acuerdo Ministerial para la fijación del Salario Básico Unificado para el año 2026 (USD 482)*. Quito: MDT.
-20. Muy Ilustre Municipalidad de Guayaquil. (2026). *Boletines de Intervención Sanitaria y Campañas de Control de Vectores*. Dirección de Salud e Higiene, GAD Guayaquil.
-21. Organización Panamericana de la Salud — OPS/OMS. (2024). *Alerta Epidemiológica: Aumento de casos de dengue en la Región de las Américas*. Washington, D.C.: OPS/OMS.
-22. Servicio Nacional de Contratación Pública — SERCOP. (2025). *Ley Orgánica del Sistema Nacional de Contratación Pública y Reformas de Integridad Pública: Directrices para Ínfima Cuantía y Tecnologías de la Información*. Quito: SERCOP.
-23. Swingtec GmbH. (2019). *Ficha técnica y manual de operaciones: Termonebulizador Swingfog SN-50*. Isny, Alemania: Swingtec.
+### B. Resistencia Genética a Insecticidas y Control Vectorial
+14. Bonds, J. A. S. (2012). Ultra-low-volume space sprays in mosquito control: A critical review. *Medical and Veterinary Entomology*, 26(2), 121–130. [PDF](http://www.johnwhock.com/wp-content/uploads/2013/06/MVE-2012-26-121-130-Bonds-ULV-Mosqutio-Control-Review.pdf)
+15. Giglioli, G. (1948). *Malaria, filariasis and yellow fever in British Guiana: Control by DDT*. Mosquito Control Service, Medical Department, British Guiana.
+16. Hernandez, J. R., et al. (2025). Pyrethroid resistance in Aedes aegypti: Genetic mechanisms. *Parasites & Vectors*, 18, Article 7010. [Springer](https://link.springer.com/article/10.1186/s13071-025-07010-8)
+17. INSPI / Varios autores. (2022). Resistance to insecticides in populations of Aedes aegypti in Ecuador. *INSPILIP*, 6(2), 15–28. [INSPILIP](https://www.inspilip.gob.ec/index.php/inspi/article/view/264/910)
+18. Ministerio de Salud de Colombia. (s.f.). *Gestión de la vigilancia entomológica del dengue*. [Minsalud](https://www.minsalud.gov.co/sites/rid/Lists/BibliotecaDigital/RIDE/DE/gestion-vigilancia-entomologica-dengue.pdf)
+19. Ponce, P., Morales, D., Argoti, A., & Carvalho, M. S. (2020). Knockdown resistance (kdr) mutations in Aedes aegypti from Ecuador: First report of F1534C and V1016I mutations in coastal populations. *Infection, Genetics and Evolution*, 85, 104523. https://doi.org/10.1016/j.meegid.2020.104523
+20. Ryan, S. J., Mundis, S. J., Aguirre, A., Lippi, C. A., Beltrán, E., Heras, F., Sanchez, V., Borbor-Cordova, M. J., Sippy, R., Stewart-Ibarra, A. M., & Neira, M. (2019). Seasonal and geographic variation in insecticide resistance in Aedes aegypti in southern Ecuador. *PLOS Neglected Tropical Diseases*, 13(6), e0007448. [PLOS NTDs](https://journals.plos.org/plosntds/article?id=10.1371/journal.pntd.0007448)
+21. University of Florida, Emerging Pathogens Institute. (2019). *Rising insecticide resistance challenges mosquito control*. [UF EPI](https://epi.ufl.edu/2019/07/08/rising-insecticide-resistance-challenges-mosquito-control/)
+22. Varios autores. (2019). Evaluation of the resistance to insecticides in Aedes aegypti. *Amelica Journal*, 587. [Amelica](https://portal.amelica.org/ameli/journal/587/5872946007/html/)
+23. Varios autores. (s.f.). *Resistencia a insecticidas del mosquito Aedes aegypti en Manabí*. [Dialnet](https://dialnet.unirioja.es/descarga/articulo/10086663.pdf)
+24. World Health Organization — WHO. (2021). *Manual for indoor and outdoor space spraying of insecticides for vector control*. Geneva: World Health Organization.
+
+### C. Economía Sanitaria y Carga de la Enfermedad
+25. Laserna, A., Barahona-Correa, J., Baquero, L., Castañeda-Cardona, C., & Rosselli, D. (2018). Economic impact of dengue fever in Latin America and the Caribbean: A systematic review. *Revista Panamericana de Salud Pública*, 42, e111. [PMC](https://pmc.ncbi.nlm.nih.gov/articles/PMC6386068/)
+26. Shepard, D. S., Undurraga, E. A., Halasa, Y. A., & Stanaway, J. D. (2016). The global economic burden of dengue: A systematic analysis. *The Lancet Infectious Diseases*, 16(8), 935–941. [Lancet](https://www.sciencedirect.com/science/article/abs/pii/S1473309916001468)
+27. Torres-Flores, J. M., et al. (2026). The economic burden of dengue: A systematic literature review. *PMC Reports*, 12896024. [PMC](https://pmc.ncbi.nlm.nih.gov/articles/PMC12896024/)
+28. Zeng, Z., et al. (2020). Dengue: A minireview. *Viruses*, 12(8), 829. [MDPI](https://www.mdpi.com/1999-4915/12/8/829)
+
+### D. Modelos Bio-Matemáticos del Vector
+29. Brière, J. F., Pracros, P., Le Roux, A. Y., & Pierre, J. S. (1999). A novel rate model of temperature-dependent development for arthropods. *Environmental Entomology*, 28(1), 22–29. https://doi.org/10.1093/ee/28.1.22
+30. Doeurk, B., et al. (2025). Impact of temperature on survival, development and longevity of Aedes aegypti and Aedes albopictus. *Parasites & Vectors*, 18. [Springer](https://link.springer.com/article/10.1186/s13071-025-06892-y)
+31. Eisen, L., Monaghan, A. J., Lozano-Fuentes, S., Steinhoff, D. F., Hayden, M. H., & Bieringer, P. E. (2014). The impact of temperature on the bionomics of Aedes (Stegomyia) aegypti. *Journal of Medical Entomology*, 51(3), 496–516. [Oxford Academic](https://academic.oup.com/jme/article/51/3/496/900461)
+32. Grech, M. G., et al. (2015). *Efecto de la temperatura sobre la dinámica poblacional de Aedes aegypti* [Informe técnico]. CONICET. [CONICET Digital](https://ri.conicet.gov.ar/bitstream/handle/11336/111898/CONICET_Digital_Nro.582ad3e1-7056-4a8a-9268-c263dfd447c4_A.pdf?sequence=2&isAllowed=y)
+33. Logan, J. A., Wollkind, D. J., Hoyt, S. C., & Tanigoshi, L. K. (1976). An analytic model for description of temperature dependent rate phenomena in arthropods. *Environmental Entomology*, 5(6), 1133–1140. https://doi.org/10.1093/ee/5.6.1133
+34. Mordecai, E. A., Caldwell, J. M., Grossman, M. K., Lippi, C. A., Johnson, L. R., Neira, M., Rohr, J. R., Ryan, S. J., Savage, V., Shocket, M. S., Sippy, R., Stewart-Ibarra, A. M., Thomas, M. B., & Villena, O. (2019). Thermal biology of mosquito-borne disease. *Ecology Letters*, 22(10), 1690–1708. [Wiley](https://onlinelibrary.wiley.com/doi/10.1111/ele.13335)
+35. Padmanabha, H., et al. (2014). A meta-analysis of the factors influencing development rate variation in Aedes aegypti. *PMC*, 3916798. [PMC](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3916798/)
+36. Roise, A., et al. (2022). Temperature-dependent population dynamics for Aedes aegypti. *Bulletin of Entomological Research*. [Cambridge](https://www.cambridge.org/core/journals/bulletin-of-entomological-research/article/temperaturedependent-population-dynamics-for-aedes-aegypti-in-outdoor-indoor-and-enclosed-habitats-a-mathematical-model-for-five-north-american-cities/05D56EAF33ACC29E9A74619E57405C16)
+37. Rueda, L. M., Patel, K. J., Axtell, R. C., & Stinner, R. E. (1990). Temperature-dependent development and survival rates of Culex quinquefasciatus and Aedes aegypti (Diptera: Culicidae). *Journal of Medical Entomology*, 27(5), 892–898. [Oxford Academic](https://academic.oup.com/jme/article-abstract/27/5/892/1024884)
+38. Steinhoff, D. F., Monaghan, A. J., Eisen, L., et al. (2016). WHATCH'EM: A weather-driven energy balance model for determining water height and temperature in container habitats for Aedes aegypti. *Journal of Applied Meteorology and Climatology*, 20(24). [AMS Journals](https://journals.ametsoc.org/view/journals/eint/20/24/ei-d-15-0048.1.pdf)
+39. Tun-Lin, W., Burkot, T. R., & Kay, B. H. (2000). Effects of temperature and larval diet on development rates and survival of the dengue vector Aedes aegypti in north Queensland, Australia. *Medical and Veterinary Entomology*, 14(1), 31–37. [SciSpace](https://scispace.com/papers/effects-of-temperature-and-larval-diet-on-development-rates-4etbchjg1i)
+40. Varios autores. (2022). Modelo matemático de desarrollo de Aedes aegypti. *Mathematical Biosciences and Engineering*, 19(5). [AIMS Press](https://www.aimspress.com/aimspress-data/mbe/2022/5/PDF/mbe-19-05-203.pdf)
+41. Varios autores. (s.f.). *Impacto del material del contenedor en el desarrollo de larvas de Aedes aegypti a diferentes temperaturas*. [PubMed](https://pubmed.ncbi.nlm.nih.gov/27353584/)
+42. Varios autores. (s.f.). *Efectos de la temperatura y sombreado en la mortalidad y desarrollo*. [Monash University Repository](https://researchmgt.monash.edu/ws/portalfiles/portal/349614578/344879691_oa.pdf)
+
+### E. Soluciones Tecnológicas y Benchmarking
+43. CEAB-CSIC. (2025, julio 16). *El mosquito tigre ha sido detectado en 156 municipios españoles desde 2023*. [CEAB-CSIC](https://www.ceab.csic.es/en/el-mosquit-tigre-ha-estat-detectat-en-156-municipis-a-lestat-espanyol-des-de-2023/)
+44. GitHub / Abt Associates. (2019). *MECVision: A PWA that uses OpenCV.js and Vue.js to locally count mosquito eggs* [Repositorio de software]. [GitHub](https://github.com/abtassociates/mecvision)
+45. Holston, J., Suazo-Laguna, H., Harris, E., & Coloma, J. (2021). DengueChat: A social and software platform for community-based arbovirus vector control. *The American Journal of Tropical Medicine and Hygiene*, 105(6), 1521–1535. [PubMed](https://pubmed.ncbi.nlm.nih.gov/34634779/)
+46. Mosquito Alert. (s.f.). *Publications* [Repositorio institucional]. [Mosquito Alert](https://www.mosquitoalert.com/en/about-us/publications/)
+47. Palmer, J. R. B., Oltra, A., Collantes, F., Delgado, J. A., Lucientes, J., Delacour, S., Bengoa, M., Eritja, R., & Bartumeus, F. (2017). Citizen science provides a reliable and scalable tool to track disease-carrying mosquitoes. *Nature Communications*, 8, 916. [PMC](https://pmc.ncbi.nlm.nih.gov/articles/PMC5655677/)
+48. Scribd / Larvae Lens. (2026). *Larvae Lens: A smart solution with mosquitoes* [Documento de proyecto]. [Scribd](https://www.scribd.com/presentation/932890461/Larvae-Lens-a-Smart-Solution-With-Mosquitoes-Content)
+49. Sustainable Sciences Institute. (s.f.). *DengueChat evaluation report*. UC Berkeley eScholarship. [UC Berkeley](https://escholarship.org/content/qt5f62q585/qt5f62q585.pdf)
+50. Theory and Practice, Citizen Science Association. (2026). *Results: Mosquito Alert St. Louis (MASTL)*. [Theory and Practice](https://theoryandpractice.citizenscienceassociation.org/articles/10.5334/cstp.986)
+51. Universidad de Zaragoza. (s.f.). *Integrating citizen science and field sampling into mosquito surveillance* [Tesis/informe]. [Zaguán Unizar](https://zaguan.unizar.es/record/162936/files/texto_completo.pdf?version=1)
+
+### F. Optimización Logística y Algoritmos de Rutas (TSP/VRP)
+52. Cuvelier, T. (2023). *ROADEF 2023: OR-Tools* [Presentación de diapositivas]. HAL Science. [HAL](https://hal.science/hal-04015496v1/file/ROADEF_2023_ORTools_slides.pdf)
+53. Dantzig, G. B., & Ramser, J. H. (1959). The truck dispatching problem. *Management Science*, 6(1), 80–91.
+54. Google Developers. (s.f.). *Vehicle Routing Problem & TSP — OR-Tools*. [Google Developers](https://developers.google.com/optimization/routing/tsp)
+55. ScienceDirect. (s.f.). *Vehicle routing: An overview* [Recurso enciclopédico]. [ScienceDirect](https://www.sciencedirect.com/topics/computer-science/vehicle-routing)
+56. Universidad de Chalmers. (s.f.). *A guided review of recent developments and future directions in vehicle routing*. [Chalmers Repository](https://research.chalmers.se/publication/547468/file/547468_Fulltext.pdf)
+
+### G. Marco Legal, SERCOP y Portales Oficiales del Ecuador
+57. Asamblea Nacional del Ecuador. (2010). *Código Orgánico de Organización Territorial, Autonomía y Descentralización (COOTAD)*. [Defensa.gob.ec](https://www.defensa.gob.ec/wp-content/uploads/downloads/2016/01/dic15_CODIGO-ORGANICO-DE-ORGANIZACION-TERRITORIAL-COOTAD.pdf)
+58. Congreso Nacional del Ecuador. (2006). *Ley Orgánica de Salud (LOS)*. [Gob.ec](https://www.gob.ec/sites/default/files/regulations/2018-10/Documento_ley-org%C3%A1nica-salud.pdf)
+59. Ministerio de Salud Pública del Ecuador. (2017). *Acuerdo Ministerial 0059-2017: Estatuto Orgánico por Procesos del MSP y Vigilancia de Vectores*. [Scribd](https://es.scribd.com/document/705353205/ESTATUTO-ORGANICO-MSP)
+60. Ministerio de Salud Pública del Ecuador. (2024). *Informe de Ejecución Presupuestaria del Programa Nacional de Control de Vectores 2024*. Dirección Financiera, MSP, Quito.
+61. Ministerio del Trabajo del Ecuador. (2025). *Fijación del Salario Básico Unificado para 2026 en USD 482*. [Ministerio del Trabajo](https://www.trabajo.gob.ec/despues-de-casi-una-decada-hay-consenso-gobierno-empleadores-y-trabajadores-acuerdan-fijar-el-salario-basico-unificado-de-2026-en-usd-482-no-hay-imposicion-hay-union/)
+62. Muy Ilustre Municipalidad de Guayaquil. (2026). *Municipio intensifica fumigación ante aumento de casos de dengue*. [Guayaquil.gob.ec](https://guayaquil.gob.ec/municipio-intensifica-fumigacion-ante-aumento-casos-dengue-durante-temporada-invernal/)
+63. Servicio Nacional de Contratación Pública — SERCOP. (2023). *Avisos de Contratación Pública Prevista: Deltametrina y Malatión*. [Compras Públicas](https://portal.compraspublicas.gob.ec/sercop/wp-content/uploads/2023/08/aviso_de_contratacion_prevista_malathion-signed0906211001691161457.pdf)
+64. Servicio Nacional de Contratación Pública — SERCOP. (2025). *Ley Orgánica del Sistema Nacional de Contratación Pública (LOSNCP) y Reformas de Integridad Pública: Procedimientos de Ínfima Cuantía*. [Compras Públicas](https://portal.compraspublicas.gob.ec/sercop/wp-content/uploads/2025/12/LOSNCP.pdf)
+65. Swingtec GmbH. (2019). *Ficha técnica y manual de operaciones: Termonebulizador Swingfog SN-50*. [Swingtec](https://www.swingtec.de/wp-content/uploads/2019/03/SN-50-esp.pdf)
