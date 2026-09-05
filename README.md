@@ -87,9 +87,10 @@ OjitoAlMosquito/
 ├── data/
 │   └── mock_foci_guayaquil.geojson  # ~70 focos base de Guayaquil, IRE real (LOW/MEDIUM/CRITICAL)
 ├── docs/
-│   ├── research/                    # Papers y fuentes primarias (PDFs) — ver docs/research/README.md
 │   └── archive/                     # Planificacion de Dia 0-2, desactualizada — ver docs/archive/README.md
-├── research/                        # Guiones de pitch, estrategia, investigacion — ver research/README.md
+├── research/                        # TODO lo de investigacion y pitch — ver research/README.md
+│   ├── RESUMEN_INVESTIGACION.md     # <- Leer primero: todo consolidado con nivel de confianza
+│   └── papers/                      # Papers y fuentes primarias (PDFs)
 ├── SETUP.md                         # Guia de instalacion paso a paso
 ├── PITCH.md                         # Documento de pitch actualizado (narrativa, cifras verificadas, Q&A jurado)
 ├── INFORME_PROPUESTA.md             # Informe formal de la propuesta
@@ -175,15 +176,16 @@ Snippets de referencia listos para copiar/pegar para los puntos 3, 6, 7 y 8: `do
 
 ## Preparacion del pitch
 
-`PITCH.md` (raiz del repo) es el documento principal, ya actualizado y con verificacion de cifras. Estos son los documentos de research que lo alimentan — ver tambien `research/README.md` y `docs/research/README.md` para donde va cada tipo de archivo:
+`PITCH.md` (raiz del repo) es el documento principal, ya actualizado y con verificacion de cifras. `research/` (una sola carpeta, ver `research/README.md`) tiene todo lo que lo alimenta:
 
 | Documento | Contenido |
 |---|---|
+| `research/RESUMEN_INVESTIGACION.md` | **Leer primero** — consolida todo lo de abajo por tema, con nivel de confianza en cada dato. Suficiente para sacar contenido de pitch/diapositivas sin abrir los demas archivos |
 | `research/GUION_PITCH_2_30_MIN.md` | Guion recomendado — objetivo 2:30 min, limite real del concurso confirmado en 3:00 |
 | `research/GUION_PITCH_3_30_MIN.md` | Guion mas largo (3:30-4:00), excede el limite real — solo como referencia |
-| `research/ESTRATEGIA_Y_BLINDAJE_JURADO.md` | Benchmarking vs. soluciones existentes, FODA tecnico, respuestas preparadas para preguntas dificiles del jurado |
-| `research/Jose.md` | Investigacion ampliada con bibliografia de 65 fuentes APA: epidemiologia Ecuador 2019-2026, resistencia genetica del vector, modelos bio-matematicos, marco legal COOTAD/LOS y via de contratacion SERCOP, costos reales de brigadas |
-| `docs/research/Nathy Research.pdf` | Parametros bioclimaticos sugeridos (algunos NO implementados todavia en `ire_calculator.py` — ver nota en `PITCH.md`), restricciones logisticas de brigadas y metricas financieras con bibliografia propia |
+| `research/ESTRATEGIA_Y_BLINDAJE_JURADO.md` | Fuente del benchmarking y FODA que ya esta resumido en `RESUMEN_INVESTIGACION.md` |
+| `research/Jose.md` | Fuente: bibliografia de 65 fuentes APA (epidemiologia, resistencia genetica, modelos bio-matematicos, marco legal COOTAD/LOS y SERCOP) |
+| `research/papers/Nathy Research.pdf` | Fuente: parametros bioclimaticos sugeridos (NO implementados todavia en `ire_calculator.py`), costos y metricas financieras con bibliografia propia |
 | `INFORME_PROPUESTA.md` | Informe formal de la propuesta (problema, solucion, impacto, estado de avance, recursos, plan de implementacion) — mismo nivel de verificacion de cifras que `PITCH.md` |
 
 Antes de citar cualquier cifra en el pitch, revisar la tabla **Metricas financieras para el pitch** de este README y la seccion equivalente de `PITCH.md` — varias citas propuestas por el equipo en distintos documentos no resistieron la verificacion cruzada (paginas incorrectas, cifras sin fuente primaria, o citas que no se pudieron confirmar de forma independiente).
@@ -207,7 +209,7 @@ El Indice de Riesgo Entomologico esta calibrado con datos empiricos de laborator
 - **Focks & Alexander (2006, OMS/TDR)** — Encuestas de productividad pupal: tanques/cisternas grandes pueden aportar la mayor carga de produccion de adultos en una comunidad urbana. Validado contra el modelo: el `size_factor` (independiente del tipo de recipiente) ya hace que un tanque *large* supere a una llanta *small* o *medium* en el IRE.
 - **Arrivillaga & Barrera (2004)** — La disponibilidad de alimento (materia organica) es un factor limitante/acelerador del desarrollo larvario, respaldando el `organic_factor` (×1.30) del modelo.
 
-Los dos primeros papers estan disponibles en `docs/research/`. Mordecai, Focks & Alexander y Arrivillaga & Barrera se citan en `core/bio_engine/ire_calculator.py` pero sus PDFs todavia no se agregaron a la carpeta.
+Los dos primeros papers estan disponibles en `research/papers/`. Mordecai, Focks & Alexander y Arrivillaga & Barrera se citan en `core/bio_engine/ire_calculator.py` pero sus PDFs todavia no se agregaron a la carpeta.
 
 ### Recalibracion del 3-4 sep 2026 (revision por jurado tecnico)
 
