@@ -87,10 +87,12 @@ OjitoAlMosquito/
 ├── data/
 │   └── mock_foci_guayaquil.geojson  # ~70 focos base de Guayaquil, IRE real (LOW/MEDIUM/CRITICAL)
 ├── docs/
-│   └── research/                    # Papers y fuentes primarias (PDFs) — ver docs/research/README.md
+│   ├── research/                    # Papers y fuentes primarias (PDFs) — ver docs/research/README.md
+│   └── archive/                     # Planificacion de Dia 0-2, desactualizada — ver docs/archive/README.md
 ├── research/                        # Guiones de pitch, estrategia, investigacion — ver research/README.md
 ├── SETUP.md                         # Guia de instalacion paso a paso
-├── IMPLEMENTATION_PLAN.md           # Checklist de tareas con estado
+├── PITCH.md                         # Documento de pitch actualizado (narrativa, cifras verificadas, Q&A jurado)
+├── INFORME_PROPUESTA.md             # Informe formal de la propuesta
 └── .env.example                     # Plantilla de variables de entorno
 ```
 
