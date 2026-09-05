@@ -181,7 +181,7 @@ Documentos con contenido para el pitch, mas nuevos y especificos que `PITCH.md` 
 | `research/GUION_PITCH_3_30_MIN.md` | Guion completo minuto a minuto para el formato largo (3:30 min) |
 | `research/GUION_PITCH_2_30_MIN.md` | Guion recortado para el limite duro del concurso (2:30 min objetivo, 3:00 min tope) |
 | `research/ESTRATEGIA_Y_BLINDAJE_JURADO.md` | Benchmarking vs. soluciones existentes (apps ciudadanas, IoT, control tradicional), FODA tecnico, y respuestas preparadas para preguntas dificiles del jurado |
-| `research/Jose.md` | Cifras oficiales (casos Ecuador 2023 vs 2024, eficacia real de la fumigacion ULV, resistencia a insecticidas, brecha presupuestaria del MSP) para blindar el pitch con datos duros |
+| `research/Jose.md` | Investigacion ampliada con bibliografia de 65 fuentes APA: epidemiologia Ecuador 2019-2026, resistencia genetica del vector, modelos bio-matematicos, marco legal COOTAD/LOS y via de contratacion SERCOP, costos reales de brigadas. Dos citas puntuales sin confirmar de forma independiente — ver `PITCH.md` |
 | `INFORME_PROPUESTA.md` | Informe formal de la propuesta (problema, solucion, impacto, estado de avance, recursos, plan de implementacion) — mismo nivel de verificacion de cifras que `PITCH.md` |
 
 Antes de citar cualquier cifra financiera en el pitch, revisar la tabla **Metricas financieras para el pitch** de este README — dos de las citas propuestas por el equipo no resistieron la verificacion (una cita no existe, otra cambia el numero real en 2-3x).
