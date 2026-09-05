@@ -9,16 +9,17 @@ Este documento define la interfaz pública e inmutable entre el Frontend, el Bac
 ### `POST /api/reports`
 Recibe un reporte de criadero potencial desde la PWA móvil.
 
-* **Headers:** `Content-Type: application/json`
-* **Request Body:**
-```json
-{
-  "latitude": -2.189412,
-  "longitude": -79.889123,
-  "image_base64": "data:image/jpeg;base64,...",
-  "notes": "Llantas acumuladas cerca de vivienda"
-}
-```
+* **Headers:** `Content-Type: multipart/form-data` (lo arma el browser solo al usar `FormData`; no fijarlo a mano o se pierde el boundary)
+* **Request Body (campos de formulario):**
+
+| Campo | Tipo | Requerido | Notas |
+|---|---|---|---|
+| `latitude` | float | Sí | |
+| `longitude` | float | Sí | |
+| `photo` | file (JPEG/PNG) | No | Comprimida en Canvas a máx. 1280px de lado antes de enviarse |
+| `notes` | string | No | |
+
+Reemplaza el body JSON con `image_base64` que se usaba antes — mandar la foto como binario en vez de texto Base64 reduce ~33% el tamaño del payload y evita decodificar Base64 en el event loop del backend (ver `AUDITORIA_Y_MEJORAS.md` #1).
 
 * **Response (201 Created):**
 ```json

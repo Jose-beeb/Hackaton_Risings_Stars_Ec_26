@@ -12,6 +12,27 @@ let brigadePolylines = {};   // brigade_id -> capa Leaflet, para poder sacar una
 
 const MOBILE_BREAKPOINT = 860;
 
+// Lado mas largo permitido para las fotos de reporte. Una foto de celular
+// moderna sale en 3000-4000px de lado — enviarla asi satura la red movil y
+// no aporta nada a Gemini, que igual la reescala internamente. Bajar la
+// resolucion aca (Canvas) es lo que de verdad reduce el payload; mandarla
+// como multipart en vez de Base64 solo evita el overhead extra de texto.
+const MAX_PHOTO_DIMENSION = 1024;
+
+// Calcula el ancho/alto de destino manteniendo la relacion de aspecto, sin
+// agrandar fotos que ya son mas chicas que el maximo.
+function scaledPhotoDimensions(width, height) {
+  const largestSide = Math.max(width, height);
+  if (largestSide <= MAX_PHOTO_DIMENSION) return { width, height };
+  const scale = MAX_PHOTO_DIMENSION / largestSide;
+  return { width: Math.round(width * scale), height: Math.round(height * scale) };
+}
+
+// URL base del backend: se arma con el mismo host desde el que se abrio el
+// frontend (en vez de "localhost" fijo), asi funciona igual accediendo desde
+// la PC o desde un celular en la misma red local.
+const API_BASE = `http://${window.location.hostname}:8000`;
+
 // ---- Exclusión de cuerpos de agua (Río Guayas / Estero Salado) ----
 // Misma fuente de datos que core/logistics/water_bodies.py: geometría REAL de
 // OpenStreetMap (data/water_bodies.geojson), no coordenadas dibujadas a mano.
@@ -146,7 +167,7 @@ function initMap() {
 async function loadEpidemiologicalData() {
   try {
     // Intentar conectar con el backend local primero, con fallback al archivo mock local
-    let res = await fetch("http://localhost:8000/api/foci").catch(() => null);
+    let res = await fetch(`${API_BASE}/api/foci`).catch(() => null);
     if (!res || !res.ok) {
       res = await fetch("../data/mock_foci_guayaquil.geojson");
     }
@@ -400,8 +421,9 @@ function capturePhoto() {
   const btnRetake = document.getElementById('btn-retake');
   const btnSend = document.getElementById('btn-send-report');
 
-  canvas.width = videoEl.videoWidth || 640;
-  canvas.height = videoEl.videoHeight || 480;
+  const { width, height } = scaledPhotoDimensions(videoEl.videoWidth || 640, videoEl.videoHeight || 480);
+  canvas.width = width;
+  canvas.height = height;
   const ctx = canvas.getContext('2d');
   ctx.drawImage(videoEl, 0, 0, canvas.width, canvas.height);
 
@@ -435,9 +457,10 @@ function handleFileUpload(file) {
   const img = new Image();
 
   img.onload = () => {
-    canvas.width = img.naturalWidth;
-    canvas.height = img.naturalHeight;
-    canvas.getContext('2d').drawImage(img, 0, 0);
+    const { width, height } = scaledPhotoDimensions(img.naturalWidth, img.naturalHeight);
+    canvas.width = width;
+    canvas.height = height;
+    canvas.getContext('2d').drawImage(img, 0, 0, width, height);
     URL.revokeObjectURL(objectUrl);
 
     photoPreview.src = canvas.toDataURL('image/jpeg', 0.8);
@@ -485,14 +508,11 @@ function retakePhoto() {
 
 async function sendReport() {
   const canvas = document.getElementById('photo-canvas');
-  const statusEl = document.getElementById('modal-status');
-  const reportResult = document.getElementById('report-result');
-  const btnSend = document.getElementById('btn-send-report');
 
-  btnSend.disabled = true;
-  statusEl.textContent = 'Analizando con IA...';
-
-  const imageBase64 = canvas.toDataURL('image/jpeg', 0.8);
+  // Blob binario (JPEG) en vez de Base64: evita ~33% de overhead de texto en
+  // el payload y el backend ya no tiene que decodificar Base64 en el event
+  // loop antes de mandarla a Gemini.
+  const photoBlob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.8));
 
   // Obtener GPS
   let latitude = -2.19;
@@ -508,38 +528,49 @@ async function sendReport() {
     // Usar coordenadas por defecto si GPS no disponible
   }
 
-  const payload = {
-    latitude,
-    longitude,
-    image_base64: imageBase64,
-    notes: 'Reporte desde app móvil'
-  };
+  const formData = new FormData();
+  formData.append('latitude', String(latitude));
+  formData.append('longitude', String(longitude));
+  formData.append('notes', 'Reporte desde app móvil');
+  if (photoBlob) {
+    formData.append('photo', photoBlob, 'reporte.jpg');
+  }
+
+  // Flujo asincrono no bloqueante (AUDITORIA_Y_MEJORAS.md #6): el modal se
+  // cierra apenas se dispara el envio, en vez de dejar 2-4 segundos de
+  // pantalla congelada mientras Gemini y el clima responden. El usuario
+  // sigue explorando el mapa y la tarjeta de resultado aparece sola.
+  closeReportModal();
+  showToast('📤 Enviando reporte... analizando con IA...', 'info');
 
   try {
-    const res = await fetch('http://localhost:8000/api/reports', {
+    // Sin header Content-Type explicito: el browser arma el boundary del
+    // multipart solo. Si lo fijamos a mano, fetch manda el body sin boundary
+    // y el backend no puede parsear el form.
+    const res = await fetch(`${API_BASE}/api/reports`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      body: formData
     });
 
     if (res.ok) {
       const data = await res.json();
-      showReportResult(reportResult, data);
+      showFloatingReportCard(data, [longitude, latitude]);
       await loadEpidemiologicalData();
     } else {
       throw new Error('Backend no disponible');
     }
   } catch {
-    // Fallback: simular resultado de IA
+    // Fallback: simular resultado de IA (mismo shape que la respuesta real,
+    // anidado bajo risk_assessment — antes iba plano y showReportResult
+    // nunca llegaba a leerlo, mostrando siempre "medio"/"--").
     const mockResult = {
-      ire_score: Math.round(60 + Math.random() * 35),
-      risk_level: Math.random() > 0.4 ? 'CRITICAL' : 'MEDIUM'
+      risk_assessment: {
+        ire_score: Math.round(60 + Math.random() * 35),
+        risk_level: Math.random() > 0.4 ? 'CRITICAL' : 'MEDIUM'
+      }
     };
-    showReportResult(reportResult, mockResult);
+    showFloatingReportCard(mockResult, [longitude, latitude]);
   }
-
-  btnSend.disabled = false;
-  statusEl.textContent = 'Reporte enviado.';
 }
 
 // Consejo de accion fisica inmediata segun el tipo de deposito detectado —
@@ -559,29 +590,69 @@ const HOME_ACTION_TIPS = {
   none: 'No se detectó un criadero en esta foto. Igual, revisá el patio cada semana buscando agua estancada.'
 };
 
-function showReportResult(container, data) {
+// Tarjeta flotante con el resultado del reporte (AUDITORIA_Y_MEJORAS.md #6):
+// el modal ya se cerro apenas se toco "Enviar", esta tarjeta aparece sola
+// cuando el backend responde, con badge de riesgo, consejo de accion y un
+// atajo para centrar el mapa en el foco nuevo — sin bloquear al usuario.
+function showFloatingReportCard(data, coords) {
   // El backend anida el resultado bajo risk_assessment (ver POST /api/reports
   // en main.py) — no viene en la raiz del payload.
   const riskAssessment = data.risk_assessment || {};
   const riskLevel = (riskAssessment.risk_level || 'medium').toLowerCase();
   const ire = riskAssessment.ire_score ?? '--';
+  const daysToEmergence = riskAssessment.days_to_emergence_estimate;
   const citizenMessages = {
     critical: '¡Zona de riesgo alto! Las brigadas sanitarias serán notificadas.',
     medium: 'Riesgo moderado detectado. Gracias por reportar.',
     low: 'Riesgo bajo. Te avisamos si la situación cambia.'
   };
+  const badgeLabels = { critical: 'CRÍTICO', medium: 'MEDIO', low: 'BAJO' };
+  const containerName = data.classification?.container_name;
   const containerType = data.classification?.container_type;
   const actionTip = HOME_ACTION_TIPS[containerType];
+
+  const headline = isCitizenMode
+    ? (citizenMessages[riskLevel] || 'Gracias por tu reporte.')
+    : `IRE ${ire}${daysToEmergence != null ? ` · ${daysToEmergence}d para emergencia adulta` : ''}`;
+
   const actionCard = actionTip
     ? `<div class="action-card"><strong>🛠️ Qué podés hacer ahora mismo:</strong><p>${actionTip}</p></div>`
     : '';
 
-  container.className = `report-result ${riskLevel}`;
-  container.innerHTML = (isCitizenMode
-    ? `<strong>✅ Reporte recibido</strong><br><span>${citizenMessages[riskLevel] || 'Gracias por tu reporte.'}</span>`
-    : `<strong>IRE Score: ${ire}</strong><br><span>Nivel de Riesgo: ${riskAssessment.risk_level || riskLevel.toUpperCase()}</span>`
-  ) + actionCard;
-  container.classList.remove('hidden');
+  const card = document.createElement('div');
+  card.className = `floating-report-card ${riskLevel}`;
+  card.innerHTML = `
+    <div class="frc-header">
+      <span class="frc-badge">${badgeLabels[riskLevel] || riskLevel.toUpperCase()}</span>
+      <button class="frc-close" aria-label="Cerrar">✕</button>
+    </div>
+    <div class="frc-body">
+      <strong>${containerName || 'Reporte analizado'}</strong>
+      <p>${headline}</p>
+    </div>
+    ${actionCard}
+    ${coords ? '<div class="frc-actions"><button class="frc-btn frc-center-map">📍 Ver en el mapa</button></div>' : ''}
+  `;
+  document.body.appendChild(card);
+
+  card.querySelector('.frc-close').addEventListener('click', () => card.remove());
+  const centerBtn = card.querySelector('.frc-center-map');
+  if (centerBtn && coords) {
+    centerBtn.addEventListener('click', () => {
+      map.setView([coords[1], coords[0]], 16);
+      card.remove();
+    });
+  }
+
+  // Vibracion hapfica suave al llegar el resultado (solo dispositivos que
+  // la soportan; en desktop navigator.vibrate no existe y no hace nada).
+  if (navigator.vibrate) {
+    navigator.vibrate([80, 50, 80]);
+  }
+
+  setTimeout(() => {
+    if (card.isConnected) card.remove();
+  }, 8000);
 }
 
 let isCitizenMode = false;
@@ -741,7 +812,7 @@ function setupEventListeners() {
     routeLayer.clearLayers();
 
     try {
-      const res = await fetch("http://localhost:8000/api/routes/dispatch", {
+      const res = await fetch(`${API_BASE}/api/routes/dispatch`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -897,6 +968,32 @@ function drawRoute(routeData) {
   }
 }
 
+// Arma un link universal de Google Maps (sin API key) con el depot como
+// origen, las paradas intermedias como waypoints y la ultima parada como
+// destino. travelmode sigue el transport_mode de la brigada: a pie ->
+// walking, cualquier modo con vehiculo -> driving.
+function buildGoogleMapsUrl(brigade) {
+  const coords = brigade.route_geometry?.coordinates || [];
+  if (coords.length < 2) return null;
+
+  const toLatLng = ([lng, lat]) => `${lat},${lng}`;
+  const [origin, ...rest] = coords;
+  const destination = rest[rest.length - 1];
+  const waypoints = rest.slice(0, -1);
+  const travelmode = brigade.transport_mode === 'foot' ? 'walking' : 'driving';
+
+  const params = new URLSearchParams({
+    api: '1',
+    origin: toLatLng(origin),
+    destination: toLatLng(destination),
+    travelmode
+  });
+  if (waypoints.length > 0) {
+    params.set('waypoints', waypoints.map(toLatLng).join('|'));
+  }
+  return `https://www.google.com/maps/dir/?${params.toString()}`;
+}
+
 // Lista con el tiempo real de cada brigada y un boton para marcarla
 // cumplida (soluciona: el tooltip del mapa requiere hover, esto queda
 // visible siempre; y agrega la accion de cerrar la ruta de una brigada).
@@ -913,6 +1010,11 @@ function renderBrigadeStatusList(brigades) {
       ? ' · <span class="brigade-warning">⚠ excede jornada de 6h</span>'
       : '';
 
+    const mapsUrl = buildGoogleMapsUrl(brigade);
+    const mapsLink = mapsUrl
+      ? `<a class="btn-open-maps" href="${mapsUrl}" target="_blank" rel="noopener">📲 Abrir en Maps</a>`
+      : '';
+
     const row = document.createElement('div');
     row.className = 'brigade-status-row';
     row.dataset.brigadeId = brigade.brigade_id;
@@ -922,6 +1024,7 @@ function renderBrigadeStatusList(brigades) {
         <strong>${brigade.brigade_id}</strong>
         <span class="brigade-meta">${brigade.stops_count} focos · ${timeMin} min · ${transportLabel}${warning}</span>
       </div>
+      ${mapsLink}
       <button class="btn-complete-brigade" data-brigade-id="${brigade.brigade_id}">✓ Cumplida</button>
     `;
     container.appendChild(row);
@@ -973,7 +1076,7 @@ async function confirmCompleteBrigade() {
   const rowBtn = row ? row.querySelector('.btn-complete-brigade') : null;
 
   try {
-    const res = await fetch('http://localhost:8000/api/foci/resolve', {
+    const res = await fetch(`${API_BASE}/api/foci/resolve`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -998,7 +1101,19 @@ async function confirmCompleteBrigade() {
 
     closeCompleteBrigadeModal();
     await loadEpidemiologicalData();  // /api/foci ya no devuelve los resueltos
-    showToast(`${brigadeId} completada — ${data.resolved_count} focos resueltos`, 'success');
+
+    // Contraste Antes/Despues: solo contamos validaciones que de verdad pasaron
+    // por Gemini (source empieza con "gemini"); si la API no esta configurada
+    // el backend devuelve resolution_confirmed=null y no aporta nada al mensaje.
+    let message = `${brigadeId} completada — ${data.resolved_count} focos resueltos`;
+    const validations = (data.resolution_validations || []).filter(
+      (v) => v.source && v.source.startsWith('gemini')
+    );
+    if (validations.length > 0) {
+      const confirmed = validations.filter((v) => v.resolution_confirmed === true).length;
+      message += ` · IA confirmó evidencia en ${confirmed}/${validations.length}`;
+    }
+    showToast(message, 'success');
   } catch (err) {
     console.error('Error al marcar brigada como cumplida:', err);
     showToast('No se pudo marcar la brigada como cumplida', 'error');

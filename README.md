@@ -123,12 +123,15 @@ OjitoAlMosquito/
 | Tiempo real por brigada visible en lista (no solo tooltip del mapa) | ✅ |
 | Marcar brigada como cumplida: resuelve sus focos y los saca del mapa (`POST /api/foci/resolve`) | ✅ |
 | Modulo Antes/Despues: nombre de operador + foto de confirmacion al cerrar una brigada | ✅ (firma es texto simple, no criptografica) |
+| Validacion visual Antes/Despues con Gemini al resolver un foco (contrasta la foto original del reporte contra la foto de cierre; si no hay foto original — caso comun en los focos semilla — evalua solo la de cierre) | ✅ |
+| Subida de fotos por `multipart/form-data` (no Base64 en JSON) + compresion en Canvas a maximo 1280px de lado antes de enviar | ✅ |
+| Reporte ciudadano asincrono: el modal se cierra al instante al enviar (no bloquea 2-4s esperando a Gemini), tarjeta flotante con badge de riesgo, IRE, consejo de accion y atajo para centrar el mapa | ✅ |
 | Tarjeta de accion domestica instantanea segun tipo de criadero detectado | ✅ |
 | Parametros operativos reales de brigadas (stops, horas, litros, velocidad) | 🔶 Parcial — ver tabla de investigacion abajo |
 | Metricas financieras: costo brote dengue Ecuador, ROI a 12 meses | 🔶 Parcial — 2 de 3 citas verificadas, 2 cifras de ROI sin fuente |
 | Offline-first (cola local IndexedDB + sincronizacion diferida) | 🔍 Investigado, no implementado — ver nota abajo |
 | Deduplicacion espacio-temporal de reportes vecinos (10-15m / 72h) | 🔍 Investigado, no implementado — ver nota abajo |
-| PITCH.md — narrativa, problema, impacto, ROI | ⚠️ Existe pero esta desactualizado (checklist y conteo de endpoints de Dia 1) — revisar antes de usarlo, no reemplaza este README |
+| PITCH.md — narrativa, problema, impacto, ROI, guion recomendado, Q&A de jurado | ✅ Actualizado (sept 2026) contra el estado real del codigo y los docs de `research/`. Limite de tiempo confirmado en 3:00 min — usar `research/GUION_PITCH_2_30_MIN.md`, no el de 3:30 |
 
 ---
 
@@ -138,9 +141,50 @@ OjitoAlMosquito/
 |---|---|---|
 | GET | `/health` | Estado del servidor |
 | GET | `/api/foci` | Focos activos (no resueltos) en GeoJSON |
-| POST | `/api/reports` | Nuevo reporte con foto + GPS |
+| POST | `/api/reports` | Nuevo reporte: `multipart/form-data` (`latitude`, `longitude`, `notes`, `photo` opcional) — no JSON con Base64 |
 | POST | `/api/routes/dispatch` | Ruta optima de brigadas |
-| POST | `/api/foci/resolve` | Marca focos como resueltos (operador + foto opcional) |
+| POST | `/api/foci/resolve` | Marca focos como resueltos (operador + foto opcional); responde `resolution_validations[]` con el veredicto de Gemini por foco |
+
+---
+
+## Estado de la auditoria tecnica (docs/AUDITORIA_Y_MEJORAS.md, sept 2026)
+
+La auditoria del equipo lista 8 mejoras priorizadas. Estado real verificado contra el codigo (no contra lo que dice cada commit):
+
+| # | Mejora | Prioridad | Estado |
+|---|---|---|---|
+| 1 | Multipart + compresion en Canvas | Alta | ✅ Hecho |
+| 2 | Migrar persistencia a SQLite/TinyDB/PostGIS | Alta | ❌ Pendiente — sigue en `.geojson` plano con `threading.Lock` |
+| 3 | Selector de Centro Operativo / Depot dinamico en el mapa | Alta | ❌ Pendiente — `depot_coordinates` sigue hardcodeado en `frontend/js/app.js:777` (`[-79.895, -2.18]`), no hay marcador arrastrable ni boton de GPS |
+| 4 | Polling adaptativo + PWA offline (IndexedDB/Service Worker) | Alta | ❌ Pendiente |
+| 5 | Optimizacion del modelo de vision (prompt mas estricto + resize 1024px) | **Critica** | ✅ Hecho — ver nota abajo sobre el modelo real usado |
+| 6 | Flujo asincrono no bloqueante (cerrar modal al instante + toast flotante con el resultado) | Alta | ✅ Hecho — `sendReport()` cierra el modal al instante, `showFloatingReportCard()` en `app.js` |
+| 7 | Evitar focos simulados en cuerpos de agua (Rio Guayas / Estero) | Alta | ✅ Hecho (`core/logistics/water_bodies.py`) |
+| 8 | Exportar rutas a Google Maps (a pie / vehiculo) | Alta | ✅ Hecho (`buildGoogleMapsUrl()` en `app.js`) |
+
+**Correccion sobre una afirmacion previa de esta sesion:** en un chequeo anterior se dijo que el punto 3 (depot dinamico) ya estaba resuelto por una coincidencia de `grep` sobre la palabra "geolocation" — esa coincidencia era del GPS del reporte ciudadano, no del depot de despacho. Verificado de nuevo leyendo el codigo: **sigue pendiente**.
+
+Extra ya implementado que la revision de auditoria actual no lista (viene de una version anterior del documento): **validacion visual Antes/Despues con Gemini** en `POST /api/foci/resolve` (ver tabla de Funcionalidades y seccion "Cumplimiento de rutas").
+
+**Nota sobre el modelo de vision real (punto 5):** la auditoria recomendaba migrar a `gemini-2.5-flash`, pero al probarlo la API respondio `404 — no longer available to new users` y sugirio `gemini-3.6-flash` como reemplazo directo. Se uso ese (verificado con la API key del proyecto). Benchmark contra las 8 imagenes de `test-images/` (el mismo set que uso el equipo para diagnosticar el modelo viejo): **8/8 clasificadas correctamente**, incluyendo los dos casos que antes fallaban (`canal_techo_inundado.jpg` ya no se confunde con tanque, `alcantarilla_bien.jpg` ya no genera falsa alarma). Advertencia honesta: la latencia por imagen vario mucho en la prueba (5s a 113s) — no correlaciona con el tamaño del archivo, parece variabilidad propia del modelo. El flujo asincrono del punto 6 amortigua esto (el usuario no se queda mirando una pantalla congelada), pero vale la pena remedirlo antes del pitch en vivo.
+
+Snippets de referencia listos para copiar/pegar para los puntos 3, 6, 7 y 8: `docs/PUNTOS_EXTRAS_IMPLEMENTACION.md`.
+
+---
+
+## Preparacion del pitch
+
+Documentos con contenido para el pitch, mas nuevos y especificos que `PITCH.md` (que el equipo ya marco como desactualizado):
+
+| Documento | Contenido |
+|---|---|
+| `research/GUION_PITCH_3_30_MIN.md` | Guion completo minuto a minuto para el formato largo (3:30 min) |
+| `research/GUION_PITCH_2_30_MIN.md` | Guion recortado para el limite duro del concurso (2:30 min objetivo, 3:00 min tope) |
+| `research/ESTRATEGIA_Y_BLINDAJE_JURADO.md` | Benchmarking vs. soluciones existentes (apps ciudadanas, IoT, control tradicional), FODA tecnico, y respuestas preparadas para preguntas dificiles del jurado |
+| `research/Jose.md` | Cifras oficiales (casos Ecuador 2023 vs 2024, eficacia real de la fumigacion ULV, resistencia a insecticidas, brecha presupuestaria del MSP) para blindar el pitch con datos duros |
+| `INFORME_PROPUESTA.md` | Informe formal de la propuesta (problema, solucion, impacto, estado de avance, recursos, plan de implementacion) — mismo nivel de verificacion de cifras que `PITCH.md` |
+
+Antes de citar cualquier cifra financiera en el pitch, revisar la tabla **Metricas financieras para el pitch** de este README — dos de las citas propuestas por el equipo no resistieron la verificacion (una cita no existe, otra cambia el numero real en 2-3x).
 
 ---
 
@@ -287,7 +331,7 @@ Verificacion contra fuente primaria (no cite nada de esta lista sin leer esta ta
 
 | Metrica | Cita propuesta | Estado |
 |---|---|---|
-| Dias de perdida laboral/escolar por dengue (5.5 - 9.9 dias) | Suaya et al. (2009), *AJTMH* 80(5):696-701 | ✅ **Confirmado** — 5.6 dias escolares / 9.9 dias laborales para casos hospitalizados |
+| Dias de perdida laboral/escolar por dengue (5.5 - 9.9 dias) | Suaya et al. (2009), *AJTMH* 80(5):846-855 | ✅ **Confirmado** — 5.6 dias escolares / 9.9 dias laborales para casos hospitalizados |
 | Costo por paciente hospitalizado ($400-1000) vs ambulatorio ($50-90) | "Shepard, Undurraga & Halasa (2013), *AJTMH* 88(4):679-684" | ❌ **Esa cita no existe** (verificado dos veces). El Shepard 2013 real es de Sudeste Asiatico. El paper real de Americas es **Shepard, Coudeville, Halasa, Zambrano & Dayan (2011), *AJTMH* 84:200-207** (~$2.1B/año regional) — falta confirmar las cifras de $/paciente ahi antes de citarlas |
 | Ahorro en costos operativos por control focalizado vs reactivo (30-45% / 35-40%, segun el mensaje) | Baly, Toledo, Boelaert et al. (2007), *Trans R Soc Trop Med Hyg* 101(6):578-586 | ⚠️ **Paper real, cifra incorrecta.** Lo que reporta de verdad: **13%** de reduccion en costos recurrentes (2001-02) y **~19%** en el seguimiento a 5 años (2004: $29.8 vs $36.7 USD/hab/año). Usar ~15-20%, no 30-45% |
 | $2 USD por criadero intervenido (abatizacion) | — | 🏷️ **Estimacion interna del equipo, sin fuente** — declarar asi explicitamente en el pitch, no presentar como dato de un paper |

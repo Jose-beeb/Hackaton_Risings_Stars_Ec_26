@@ -49,12 +49,14 @@ def test_get_foci():
 
 def test_create_report():
     print("\n--- POST /api/reports ---")
+    # /api/reports ahora es multipart/form-data (ver AUDITORIA_Y_MEJORAS.md #1),
+    # no JSON — sin "photo" adjunto cae en la rama "sin imagen" del endpoint.
     payload = {
         "latitude": GUAYAQUIL_LAT,
         "longitude": GUAYAQUIL_LNG,
         "notes": "Smoke test — llanta con agua estancada",
     }
-    r = httpx.post(f"{BASE_URL}/api/reports", json=payload, timeout=10)
+    r = httpx.post(f"{BASE_URL}/api/reports", data=payload, timeout=10)
     data = r.json()
     ok = check("Status 201", r.status_code == 201)
     ok &= check("ID generado", "id" in data, data.get("id", ""))

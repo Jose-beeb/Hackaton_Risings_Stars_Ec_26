@@ -6,12 +6,13 @@ Integra Vision AI, datos climaticos en tiempo real y el motor bio-matematico IRE
 import os
 import sys
 import json
+import base64
 import logging
 import threading
 from typing import Optional
 from datetime import datetime
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
@@ -20,7 +21,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../.
 
 from core.bio_engine.ire_calculator import calculate_ire
 from core.logistics.route_optimizer import optimize_brigade_route
-from app.services.vision_service import classify_image
+from app.services.vision_service import classify_image, validate_resolution
 from app.services.climate_service import get_climate
 
 logging.basicConfig(level=logging.INFO)
@@ -59,13 +60,6 @@ _store_lock = threading.Lock()
 def save_foci_store() -> None:
     with open(DATA_PATH, "w", encoding="utf-8") as f:
         json.dump(foci_store, f, ensure_ascii=False, indent=2)
-
-
-class ReportRequest(BaseModel):
-    latitude: float = Field(..., example=-2.1894)
-    longitude: float = Field(..., example=-79.8891)
-    image_base64: Optional[str] = Field(None, description="Imagen en base64 (JPEG/PNG)")
-    notes: Optional[str] = None
 
 
 class BrigadeConfig(BaseModel):
@@ -129,10 +123,57 @@ def resolve_foci(req: ResolveFociRequest):
     lugar, no solo un click. "operator_name" es un campo de texto simple,
     NO una firma digital criptografica; aclarar esa distincion si preguntan
     en el pitch.
+
+    Contraste "Antes vs Despues" (AUDITORIA_Y_MEJORAS.md #5): si mandan foto
+    de cierre, se valida con Gemini contra la foto original del reporte
+    (cuando existe) o se evalua sola si no hay foto previa guardada.
     """
     ids = set(req.foco_ids)
-    resolved = []
     resolved_at = datetime.utcnow().isoformat() + "Z"
+
+    after_bytes = None
+    if req.after_photo_base64:
+        raw = req.after_photo_base64
+        if raw.startswith("data:"):
+            raw = raw.split(",", 1)[1]
+        try:
+            after_bytes = base64.b64decode(raw)
+        except (ValueError, TypeError) as e:
+            logger.error("No se pudo decodificar after_photo_base64: %s", e)
+
+    # Fase 1 (sin lock): identificar candidatos y correr las validaciones de
+    # Gemini. Son llamadas de red de 1-3s cada una — no conviene tenerlas
+    # bloqueando _store_lock, que tambien usan /api/foci y /api/reports.
+    candidates = [
+        f["properties"] for f in foci_store.get("features", [])
+        if f.get("properties", {}).get("id") in ids
+        and f.get("properties", {}).get("status") != "RESOLVED"
+    ]
+
+    validation_by_id = {}
+    if after_bytes is not None:
+        # Los focos semilla de la demo no tienen foto "antes" (no vinieron de
+        # un reporte ciudadano): se comparten un solo llamado a Gemini para
+        # todos en vez de repetir la misma foto de cierre N veces.
+        generic_validation = None
+        for props in candidates:
+            before_b64 = props.get("before_photo_base64")
+            if before_b64:
+                try:
+                    before_bytes = base64.b64decode(before_b64)
+                except (ValueError, TypeError):
+                    before_bytes = None
+                validation_by_id[props["id"]] = validate_resolution(
+                    after_bytes, before_bytes, props.get("container_type", "unknown")
+                )
+            else:
+                if generic_validation is None:
+                    generic_validation = validate_resolution(after_bytes)
+                validation_by_id[props["id"]] = generic_validation
+
+    # Fase 2 (con lock): aplicar los resultados ya calculados al store.
+    resolved = []
+    validations = []
     with _store_lock:
         for feature in foci_store.get("features", []):
             props = feature.get("properties", {})
@@ -145,26 +186,52 @@ def resolve_foci(req: ResolveFociRequest):
                     props["resolved_by_operator"] = req.operator_name
                 if req.after_photo_base64:
                     props["after_photo_base64"] = req.after_photo_base64
+
+                validation = validation_by_id.get(props["id"])
+                if validation:
+                    props["resolution_confirmed"] = validation.get("resolution_confirmed")
+                    props["resolution_confidence"] = validation.get("confidence")
+                    props["resolution_justification"] = validation.get("justification")
+                    validations.append({"id": props["id"], **validation})
+
                 resolved.append(props["id"])
         save_foci_store()
 
     logger.info(
-        "Focos resueltos: %s (brigada %s, operador %s, con foto: %s)",
-        resolved, req.brigade_id or "?", req.operator_name or "?", bool(req.after_photo_base64),
+        "Focos resueltos: %s (brigada %s, operador %s, con foto: %s, validados: %d)",
+        resolved, req.brigade_id or "?", req.operator_name or "?",
+        bool(req.after_photo_base64), len(validations),
     )
-    return {"resolved_count": len(resolved), "resolved_ids": resolved}
+    return {
+        "resolved_count": len(resolved),
+        "resolved_ids": resolved,
+        "resolution_validations": validations,
+    }
 
 
 @app.post("/api/reports", status_code=201)
-def create_report(report: ReportRequest):
+async def create_report(
+    latitude: float = Form(..., example=-2.1894),
+    longitude: float = Form(..., example=-79.8891),
+    notes: Optional[str] = Form(None),
+    photo: Optional[UploadFile] = File(
+        None, description="Foto del criadero (JPEG/PNG), multipart en vez de Base64"
+    ),
+):
     """
     Procesa un reporte ciudadano o de brigada.
     Ejecuta clasificacion de imagen con Gemini, obtiene clima real y calcula IRE.
+
+    La foto viaja como multipart/form-data (no Base64 en JSON): evita ~33% de
+    overhead de payload en redes moviles y el backend ya no decodifica Base64
+    en el event loop antes de mandarla a Gemini (ver AUDITORIA_Y_MEJORAS.md #1).
     """
     # 1. Clasificacion visual (Gemini Flash o fallback)
-    if report.image_base64:
-        vision_result = classify_image(report.image_base64)
+    if photo is not None:
+        image_bytes = await photo.read()
+        vision_result = classify_image(image_bytes)
     else:
+        image_bytes = None
         vision_result = {
             "is_potential_breeding_site": True,
             "container_type": "tire",
@@ -179,7 +246,7 @@ def create_report(report: ReportRequest):
         }
 
     # 2. Clima en tiempo real (Open-Meteo o fallback)
-    climate = get_climate(report.latitude, report.longitude)
+    climate = get_climate(latitude, longitude)
 
     # 3. Calculo del Indice de Riesgo Entomologico con todos los factores biologicos
     container_type = vision_result.get("container_type", "bucket")
@@ -211,7 +278,7 @@ def create_report(report: ReportRequest):
         "type": "Feature",
         "geometry": {
             "type": "Point",
-            "coordinates": [report.longitude, report.latitude],
+            "coordinates": [longitude, latitude],
         },
         "properties": {
             "id": report_id,
@@ -233,7 +300,13 @@ def create_report(report: ReportRequest):
             "reported_at": now_iso,
             "recommended_action": bio_result["recommended_action"],
             "scientific_note": bio_result["scientific_note"],
-            "notes": report.notes,
+            "notes": notes,
+            # Foto "antes" para el contraste Antes/Despues al resolver el foco
+            # (ver validate_resolution en vision_service). None si el reporte
+            # no trajo foto — la mayoria de los focos semilla de la demo caen aca.
+            "before_photo_base64": (
+                base64.b64encode(image_bytes).decode("ascii") if image_bytes else None
+            ),
         },
     }
 
@@ -252,7 +325,7 @@ def create_report(report: ReportRequest):
     return {
         "id": report_id,
         "timestamp": now_iso,
-        "coordinates": [report.longitude, report.latitude],
+        "coordinates": [longitude, latitude],
         "classification": {
             "container_type": container_type,
             "container_name": container_names.get(container_type, "Recipiente"),
