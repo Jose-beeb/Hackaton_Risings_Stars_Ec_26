@@ -72,13 +72,21 @@ El sistema implementa una tubería de inteligencia epidemiológica orientada a r
 
 ## 4. Diagnóstico y Optimización del Reconocimiento de Imágenes (`test-images/`)
 
-### A. Diagnóstico de Fallas en las Imágenes de Prueba
-Analizando las imágenes reales del repositorio (`test-images/`):
-- `Pared.jpg`: Imagen negativa de control (sin recipientes ni agua).
-- `Basuero_inundado.jpg` / `Calle_tierra_con_agua.jpg`: Acumulación de basura dispersa y charcos extensos. El modelo confunde si clasificarlo como `puddle`, `litter_plastic` o `other`.
-- `canal_techo_inundado.jpg`: Canaleta de techo con agua estancada (`clogged_drain`). A menudo clasificada erróneamente como `other` o `bucket` por la perspectiva cenital.
-- `alcantarilla_bien.jpg`: Alcantarilla sin riesgo o con drenaje adecuado. Riesgo de falso positivo.
-- `Tanque_inundado.jpg` / `Llanta_Con_agua.jpg` / `maceta_con_agua.jpg`: Criaderos arquetípicos de *Aedes aegypti*.
+### A. Metodología de Benchmark y Diagnóstico con Imágenes de Prueba (`test-images/`)
+
+> [!NOTE]
+> **Sobre la validez metodológica (¿Existe sesgo al listar las imágenes?):**  
+> **No.** Detallar los nombres y propósitos de los archivos en esta auditoría constituye una práctica estándar de ingeniería de software y evaluación empírica (test harness / benchmark suite). No introduce sesgo estadístico (*data leakage*) debido a que:
+> 1. **Cero filtración al clasificador:** El backend envía exclusivamente los bytes puros de la imagen a la API de visión; en ningún momento se inyecta el nombre del archivo ni sus metadatos en el prompt o pipeline de inferencia.
+> 2. **Evaluación de casos límite (*Edge Cases*):** La suite fue diseñada intencionalmente para contrastar controles negativos, perspectivas anómalas y arquetipos positivos de riesgo vectorial.
+
+| Imagen de Prueba | Rol Metodológico en el Benchmark | Desafío / Riesgo Evaluado |
+|---|---|---|
+| `Pared.jpg` | **Control Negativo** | Superficie neutra sin agua ni depósitos. Valida que el modelo no alucine criaderos (Score 0). |
+| `alcantarilla_bien.jpg` | **Control de Falso Positivo** | Drenaje funcional con flujo normal. Evalúa que el sistema no alerte falsas alarmas comunitarias. |
+| `Basuero_inundado.jpg` / `Calle_tierra_con_agua.jpg` | **Ambigüedad Taxonómica** | Residuos dispersos y agua extendida. Evalúa resolución entre `puddle`, `litter_plastic` y `other`. |
+| `canal_techo_inundado.jpg` | **Perspectiva Cenital / Compleja** | Canaleta elevada obstruida con agua estancada (`clogged_drain`). Riesgo de clasificarla erróneamente como `bucket` o `other`. |
+| `Tanque_inundado.jpg` / `Llanta_Con_agua.jpg` / `maceta_con_agua.jpg` | **Arquetipos Positivos (*Aedes aegypti*)** | Criaderos domiciliarios y peridomiciliarios clásicos de alta prioridad sanitaria. |
 
 ### B. Causas Técnicas de Baja Precisión y Lentitud
 1. **Modelo obsoleto configurado (`gemini-flash-lite-latest`):** Este alias apunta a versiones ligeras de primera generación con menor capacidad de razonamiento espacial y mayor tendencia al timeout o al fallback automático.

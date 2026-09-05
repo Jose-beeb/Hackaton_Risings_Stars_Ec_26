@@ -29,3 +29,7 @@
 * **Mecatrónico (Logística y Modelado GIS):** Diseño de la lógica de optimización de rutas de intervención para las cuadrillas sanitarias y estructuración de la base de datos geoespacial (GeoJSON).
 * **Software 1 (Backend & Integración):** Construcción del servidor, enlace con las APIs externas (Visión y Clima), ejecución del motor de cálculo y preparación de los endpoints del sistema.
 * **Software 2 (Frontend & Demo UX):** Desarrollo de la interfaz web móvil de captura de reportes y despliegue del dashboard GIS interactivo con actualización en tiempo real para la presentación final.
+
+**Regla de Gestión de Mejoras y Evolución**
+
+* **Documentación de Mejoras Futuras:** Cualquier mejora adicional, optimización técnica o nueva funcionalidad que se proponga o implemente a futuro debe registrarse y detallarse en un documento extra independiente (por ejemplo dentro de `docs/` o como especificación técnica dedicada), preservando la trazabilidad y el alcance del MVP.
